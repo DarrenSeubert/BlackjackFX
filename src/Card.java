@@ -2,10 +2,10 @@
  * 
  */
 public class Card {
-    public enum SUIT {CLUB, SPADE, HEART, DIAMOND};
-    public enum VALUE {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING};
-    private SUIT suit;
-    private VALUE value;
+    public static enum Suit {CLUB, SPADE, HEART, DIAMOND}
+    public static enum Value {ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING}
+    private Suit suit;
+    private Value value;
 
     /**
      * 
@@ -13,7 +13,7 @@ public class Card {
      * @param suit
      * @param value
      */
-    public Card(SUIT suit, VALUE value) {
+    public Card(Suit suit, Value value) {
         this.suit = suit;
         this.value = value;
     }
@@ -23,7 +23,7 @@ public class Card {
      * 
      * @return
      */
-    public VALUE getValue() {
+    public Value getValue() {
         return value;
     }
 
@@ -32,7 +32,7 @@ public class Card {
      * 
      * @return
      */
-    public SUIT getSuit() {
+    public Suit getSuit() {
         return suit;
     }
 
