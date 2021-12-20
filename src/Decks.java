@@ -9,6 +9,7 @@ import java.util.Random;
 public class Decks {
     private Random rand = new Random();
     private List<Card> cardList;
+    private int numberOfShuffles;
     private int minShuffles = 5;
     private int maxShuffles = 100;
 
@@ -24,8 +25,8 @@ public class Decks {
             createDeck();
         }
 
-        int shuffleTime = rand.nextInt(((maxShuffles - minShuffles) + 1) + minShuffles);
-        for (int i = 0; i < shuffleTime; i++) {
+        numberOfShuffles = rand.nextInt(((maxShuffles - minShuffles) + 1) + minShuffles);
+        for (int i = 0; i < numberOfShuffles; i++) {
             Collections.shuffle(cardList);
         }
     }
