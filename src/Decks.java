@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class Decks {
     private Random rand = new Random();
-    private List<Card> cardList = new ArrayList<>();
+    private List<Card> cardList;
     private int minShuffles = 5;
     private int maxShuffles = 100;
 
@@ -18,6 +18,8 @@ public class Decks {
      * @param numberOfDecks
      */
     Decks(int numberOfDecks) {
+        cardList = new ArrayList<>();
+        
         for (int i = 0; i < numberOfDecks; i++) {
             createDeck();
         }

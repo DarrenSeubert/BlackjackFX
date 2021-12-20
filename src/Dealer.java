@@ -4,37 +4,14 @@ import java.util.List;
 /**
  * 
  */
-public class Player {
-    private String name;
-    private int cash;
+public class Dealer {
     private List<Card> hand;
 
     /**
      * 
-     * @param name
      */
-    Player(String name) {
-        this.name = name;
-        this.cash = 100;
+    Dealer() {
         hand = new ArrayList<>();
-    }
-
-    /**
-     * 
-     * 
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * 
-     * 
-     * @return
-     */
-    public int getCash() {
-        return cash;
     }
 
     /**
@@ -48,17 +25,7 @@ public class Player {
 
     /**
      * 
-     * 
-     * @param amount
-     */
-    public void setCash(int amount) {
-        cash += amount;
-    }
-
-    /**
-     * 
-     * 
-     * @param card
+     * @param
      */
     public void addCard(Card card) {
         hand.add(card);
