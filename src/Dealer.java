@@ -10,7 +10,7 @@ public class Dealer {
     /**
      * 
      */
-    Dealer() {
+    public Dealer() {
         hand = new ArrayList<>();
     }
 

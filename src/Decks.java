@@ -18,7 +18,7 @@ public class Decks {
      * 
      * @param numberOfDecks
      */
-    Decks(int numberOfDecks) {
+    public Decks(int numberOfDecks) {
         cardList = new ArrayList<>();
         
         for (int i = 0; i < numberOfDecks; i++) {

@@ -13,9 +13,15 @@ public class Player {
      * 
      * @param name
      */
-    Player(String name) {
+    public Player(String name) {
         this.name = name;
         this.cash = 100;
+        hand = new ArrayList<>();
+    }
+
+    public Player(Player playerToExtend) {
+        this.name = playerToExtend.getName();
+        this.cash = -1;
         hand = new ArrayList<>();
     }
 
