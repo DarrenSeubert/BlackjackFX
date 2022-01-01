@@ -9,39 +9,50 @@ import java.util.Random;
 public class Decks {
     private Random rand = new Random();
     private List<Card> cardList;
+    private List<Card> usedCardList;
     private int numberOfShuffles;
-    private int minShuffles = 5;
-    private int maxShuffles = 100;
+    private int cutCardIndex;
+    private final int MIN_SHUFFLES = 5;
+    private final int MAX_SHUFFLES = 100;
+    private final int CUT_MIN_OFFSET = 60;
+    private final int CUT_MAX_OFFSET = 75;
 
     /**
-     * 
+     * Constructor for the Decks of cards
      * 
      * @param numberOfDecks
      */
-    public Decks(int numberOfDecks) {
+    public Decks(int numberOfDecks) { // numOfDecks hardcoded to 6 for now
         cardList = new ArrayList<>();
-        
+        usedCardList = new ArrayList<>();
         for (int i = 0; i < numberOfDecks; i++) {
             createDeck();
         }
 
-        numberOfShuffles = rand.nextInt(((maxShuffles - minShuffles) + 1) + minShuffles);
+        numberOfShuffles = rand.nextInt(((MAX_SHUFFLES - MIN_SHUFFLES) + 1) + MIN_SHUFFLES);
         for (int i = 0; i < numberOfShuffles; i++) {
             Collections.shuffle(cardList);
+        }
+
+        if (numberOfDecks >= 6) {
+            cutCardIndex = cardList.size() - (rand.nextInt(((CUT_MAX_OFFSET - CUT_MIN_OFFSET) + 1) +
+                CUT_MIN_OFFSET));
+            
+            cardList.add(cutCardIndex, new Card(Suit.Cut, Value.Cut));
         }
     }
 
     /**
+     * Getter method for Card List
      * 
-     * 
-     * @return
+     * @return The list containing the cards
      */
     public List<Card> getCardList() {
         return cardList;
     }
 
     /**
-     * 
+     * Method that creates a standard deck of 52 cards and add them to the Card List
      */
     private void createDeck() {
         cardList.add(new Card(Suit.Club, Value.Ace));
@@ -108,5 +119,21 @@ public class Decks {
         cardList.add(new Card(Suit.Spade, Value.King));
         cardList.add(new Card(Suit.Diamond, Value.King));
         cardList.add(new Card(Suit.Heart, Value.King));
+    }
+
+    /**
+     * Method that reshuffles the deck of cards
+     */
+    public void reshuffle() {
+        for (Card card : usedCardList) {
+            cardList.add(card);
+            usedCardList.remove(card);
+        }
+        usedCardList.clear();
+
+        numberOfShuffles = rand.nextInt(((MAX_SHUFFLES - MIN_SHUFFLES) + 1) + MIN_SHUFFLES);
+        for (int i = 0; i < numberOfShuffles; i++) {
+            Collections.shuffle(cardList);
+        }
     }
 }

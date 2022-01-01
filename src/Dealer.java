@@ -2,7 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class that represents a Dealer in Blackjack
  * 
+ * @author Darren Seubert
  */
 public class Dealer {
     private List<Card> hand;
