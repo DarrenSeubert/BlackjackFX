@@ -3,21 +3,38 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * 
  */
 public class DataManager {
-    private int largestIDNumber = -1;
+    public Hashtable<Integer, Player> playerTable;
+    private int largestIDNumber;
+
+    public DataManager() {
+        playerTable = new Hashtable<Integer, Player>();
+        largestIDNumber = 0;
+    }
 
     /**
-     * Getter method for Largest ID Number
      * 
-     * @return value of largestIDNumber
+     * 
+     * @return
      */
     public int getLargestIDNumber() {
         return largestIDNumber;
+    }
+
+    /**
+     * 
+     */
+    public void incrementLargestIDNumber() {
+        largestIDNumber++;
     }
 
     /**
@@ -26,23 +43,23 @@ public class DataManager {
      * @param csvFilePath
      * @return
      */
-    public Hashtable<Integer, Player> loadPlayerFile(String csvFilePath) {
-        Hashtable<Integer, Player> hashtable = new Hashtable<>();
+    public void loadPlayerFile() {
         int IDIndex = 0;
         int nameIndex = 1;
         int cashIndex = 2;
         String line = "";
 
         try {
-            File file = new File(csvFilePath);
+            File file = new File(Constants.playerCSVFilePath);
             
             if (!file.exists()) {
-                throw new FileNotFoundException("File at Path " + csvFilePath + 
+                throw new FileNotFoundException("File at Path " + Constants.playerCSVFilePath + 
                     " Could Not Be Found");
             }
-
-            BufferedReader br = new BufferedReader(new FileReader(csvFilePath));
             
+            BufferedReader br = new BufferedReader(new FileReader(Constants.playerCSVFilePath));
+            br.readLine(); // Reads header line of csv
+
             String[] val;
             int ID;
             String name;
@@ -60,19 +77,15 @@ public class DataManager {
                 cash = Integer.parseInt(val[cashIndex].replaceAll("\"",""));
 
                 player = new Player(ID, name, cash);
-                hashtable.put(player.getIDNumber(), player);
+                playerTable.put(player.getIDNumber(), player);
             }
 
             br.close();
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
-            return null;
         } catch (IOException e2) {
             e2.printStackTrace();
-            return null;
         }
-
-        return hashtable;
     }
 
     /**
@@ -80,10 +93,71 @@ public class DataManager {
      * 
      * @param player
      */
-    public void updateExistingPlayerInPlayerFile(Player player) {
-        int ID = player.getIDNumber();
-        String name = player.getName();
-        int cash = player.getCash();
+    public void updateExistingPlayerInPlayerFile(int playerID, int cash) {
+        String readLine = "";
+
+        try {
+            File file = new File(Constants.playerCSVFilePath);
+            
+            if (!file.exists()) {
+                throw new FileNotFoundException("File at Path " + Constants.playerCSVFilePath + 
+                    " Could Not Be Found");
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(Constants.playerCSVFilePath));
+
+            List<String[]> fileCont = new ArrayList<>();
+            String[] val = null;
+
+            br.readLine();
+            int lineCount = 1;
+            int lineToEdit = -1;
+            while ((readLine = br.readLine()) != null) {
+                lineCount++;
+
+                val = readLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                fileCont.add(val);
+
+                if (Integer.parseInt(val[0]) == playerID) {
+                    lineToEdit = lineCount;
+                }
+            }
+                
+            br.close();
+
+            if (lineToEdit == -1) {
+                throw new NoSuchElementException("Error: Player to update is not in csv file");
+            }
+            
+            PrintWriter pr = new PrintWriter(file);
+            
+            pr.write("ID,Name,Cash\n"); // Line 1
+
+            for (int i = 0; i < fileCont.size(); i++) { // Starts at Line 2
+                if (i + 2 == lineToEdit) {
+                    pr.write(playerID + ",");
+                    pr.write(playerTable.get(playerID).getName() + ",");
+                    pr.write(cash + "\n");
+                    continue;
+                }
+
+                for (int j = 0; j < val.length; j++) {
+                    if (j + 1 == (val.length)) {
+                        pr.write(fileCont.get(i)[j] + "\n");
+                    } else {
+                        pr.write(fileCont.get(i)[j] + ",");
+                    }
+                }
+            }
+
+            pr.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        } catch (NoSuchElementException e3) {
+            e3.printStackTrace();
+        }
     }
 
     /**
@@ -91,9 +165,54 @@ public class DataManager {
      * 
      * @param player
      */
-    public void createNewPlayerAndWriteToPlayerFile(Player player) { // TODO Make it so writing to file is handled in this file and putting into hashtable in backend
+    public void writeNewPlayerToFile(Player player) {
         int ID = player.getIDNumber();
         String name = player.getName();
         int cash = player.getCash();
+
+        String readLine = "";
+
+        try {
+            File file = new File(Constants.playerCSVFilePath);
+            
+            if (!file.exists()) {
+                throw new FileNotFoundException("File at Path " + Constants.playerCSVFilePath + 
+                    " Could Not Be Found");
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(Constants.playerCSVFilePath));
+
+            List<String[]> fileCont = new ArrayList<>();
+            String[] val = null;
+            while ((readLine = br.readLine()) != null) {
+                val = readLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                fileCont.add(val);
+            }
+                
+            br.close();
+
+            PrintWriter pr = new PrintWriter(file);
+            
+
+            for (int i = 0; i < fileCont.size(); i++) { // Starts at Line 1
+                for (int j = 0; j < val.length; j++) {
+                    if (j + 1 == (val.length)) {
+                        pr.write(fileCont.get(i)[j] + "\n");
+                    } else {
+                        pr.write(fileCont.get(i)[j] + ",");
+                    }
+                }
+            }
+
+            pr.write(ID + "," + name + "," + cash + "\n");
+
+            pr.close();
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        } catch (NoSuchElementException e3) {
+            e3.printStackTrace();
+        }
     }
 }
