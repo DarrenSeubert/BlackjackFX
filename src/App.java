@@ -10,7 +10,7 @@ public class App {
 
         BackEnd engine = new BackEnd(dataManager);
 
-        FrontEnd ui = new FrontEnd(engine);
-        ui.run();
+        FrontEnd ui = new FrontEnd();
+        ui.run(engine);
     }
 }
