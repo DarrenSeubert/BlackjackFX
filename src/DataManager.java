@@ -220,4 +220,54 @@ public class DataManager {
             e3.printStackTrace();
         }
     }
+
+    /**
+     * 
+     * 
+     * @param nameToSearch
+     * @return -1 if name is not on file, else the ID number of the given name
+     */
+    public int getPlayerID(String nameToSearch) {
+        int outputID;
+        
+        int IDIndex = 0;
+        int nameIndex = 1;
+        String line = "";
+
+        try {
+            File file = new File(Constants.playerCSVFilePath);
+            
+            if (!file.exists()) {
+                throw new FileNotFoundException("File at Path " + Constants.playerCSVFilePath + 
+                    " Could Not Be Found");
+            }
+            
+            BufferedReader br = new BufferedReader(new FileReader(Constants.playerCSVFilePath));
+            br.readLine(); // Reads header line of csv
+
+            String[] val;
+            String currentName;
+            while ((line = br.readLine()) != null) {
+                val = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+
+                currentName = val[nameIndex].replaceAll("\"","").trim().toLowerCase();
+                if (currentName.equals(nameToSearch.toLowerCase())) {
+                    outputID = Integer.parseInt(val[IDIndex].replaceAll("\"",""));
+                    br.close();
+                    return outputID;
+                }
+            }
+
+            br.close();
+            throw new NoSuchElementException("Name is not on file, create a new account.");
+        } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        } catch (NoSuchElementException e3) {
+            e3.printStackTrace();
+        }
+
+        return -1;
+    }
 }
