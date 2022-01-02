@@ -31,14 +31,15 @@ public class Decks {
             createDeck();
         }
 
-        numberOfShuffles = rand.nextInt(((MAX_SHUFFLES - MIN_SHUFFLES) + 1) + MIN_SHUFFLES);
+        numberOfShuffles = rand.nextInt((MAX_SHUFFLES - MIN_SHUFFLES) + 1) + MIN_SHUFFLES;
+        
         for (int i = 0; i < numberOfShuffles; i++) {
             Collections.shuffle(cardList);
         }
 
         if (numberOfDecks >= 6) {
-            cutCardIndex = cardList.size() - (rand.nextInt(((CUT_MAX_OFFSET - CUT_MIN_OFFSET) + 1) +
-                CUT_MIN_OFFSET));
+            cutCardIndex = cardList.size() - (rand.nextInt((CUT_MAX_OFFSET - CUT_MIN_OFFSET) + 1) +
+                CUT_MIN_OFFSET);
             
             cardList.add(cutCardIndex, new Card(Card.Suit.Cut, Card.Value.Cut));
         }
