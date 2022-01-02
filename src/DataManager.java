@@ -10,28 +10,33 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
+ * Class that manages the hashtable of players and the players csv file
  * 
+ * @author Darren Seubert
  */
 public class DataManager {
     public Hashtable<Integer, Player> playerTable;
     private int largestIDNumber;
 
+    /**
+     * 
+     */
     public DataManager() {
         playerTable = new Hashtable<Integer, Player>();
         largestIDNumber = 0;
     }
 
     /**
+     * Getter method for largest ID number in csv file
      * 
-     * 
-     * @return
+     * @return value of largestIDNumber
      */
     public int getLargestIDNumber() {
         return largestIDNumber;
     }
 
     /**
-     * 
+     * Method that increments largestIDNumber by one
      */
     public void incrementLargestIDNumber() {
         largestIDNumber++;

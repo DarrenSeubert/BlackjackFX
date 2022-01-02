@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * Class that represents the decks of cards
  * 
+ * @author Darren Seubert
  */
 public class Decks {
     private Random rand = new Random();
@@ -38,7 +40,7 @@ public class Decks {
             cutCardIndex = cardList.size() - (rand.nextInt(((CUT_MAX_OFFSET - CUT_MIN_OFFSET) + 1) +
                 CUT_MIN_OFFSET));
             
-            cardList.add(cutCardIndex, new Card(Suit.Cut, Value.Cut));
+            cardList.add(cutCardIndex, new Card(Card.Suit.Cut, Card.Value.Cut));
         }
     }
 
@@ -55,70 +57,70 @@ public class Decks {
      * Method that creates a standard deck of 52 cards and add them to the Card List
      */
     private void createDeck() {
-        cardList.add(new Card(Suit.Club, Value.Ace));
-        cardList.add(new Card(Suit.Spade, Value.Ace));
-        cardList.add(new Card(Suit.Diamond, Value.Ace));
-        cardList.add(new Card(Suit.Heart, Value.Ace));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Ace));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Ace));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Ace));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Ace));
 
-        cardList.add(new Card(Suit.Club, Value.Two));
-        cardList.add(new Card(Suit.Spade, Value.Two));
-        cardList.add(new Card(Suit.Diamond, Value.Two));
-        cardList.add(new Card(Suit.Heart, Value.Two));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Two));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Two));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Two));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Two));
 
-        cardList.add(new Card(Suit.Club, Value.Three));
-        cardList.add(new Card(Suit.Spade, Value.Three));
-        cardList.add(new Card(Suit.Diamond, Value.Three));
-        cardList.add(new Card(Suit.Heart, Value.Three));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Three));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Three));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Three));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Three));
 
-        cardList.add(new Card(Suit.Club, Value.Four));
-        cardList.add(new Card(Suit.Spade, Value.Four));
-        cardList.add(new Card(Suit.Diamond, Value.Four));
-        cardList.add(new Card(Suit.Heart, Value.Four));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Four));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Four));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Four));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Four));
 
-        cardList.add(new Card(Suit.Club, Value.Five));
-        cardList.add(new Card(Suit.Spade, Value.Five));
-        cardList.add(new Card(Suit.Diamond, Value.Five));
-        cardList.add(new Card(Suit.Heart, Value.Five));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Five));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Five));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Five));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Five));
 
-        cardList.add(new Card(Suit.Club, Value.Six));
-        cardList.add(new Card(Suit.Spade, Value.Six));
-        cardList.add(new Card(Suit.Diamond, Value.Six));
-        cardList.add(new Card(Suit.Heart, Value.Six));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Six));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Six));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Six));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Six));
         
-        cardList.add(new Card(Suit.Club, Value.Seven));
-        cardList.add(new Card(Suit.Spade, Value.Seven));
-        cardList.add(new Card(Suit.Diamond, Value.Seven));
-        cardList.add(new Card(Suit.Heart, Value.Seven));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Seven));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Seven));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Seven));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Seven));
 
-        cardList.add(new Card(Suit.Club, Value.Eight));
-        cardList.add(new Card(Suit.Spade, Value.Eight));
-        cardList.add(new Card(Suit.Diamond, Value.Eight));
-        cardList.add(new Card(Suit.Heart, Value.Eight));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Eight));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Eight));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Eight));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Eight));
 
-        cardList.add(new Card(Suit.Club, Value.Nine));
-        cardList.add(new Card(Suit.Spade, Value.Nine));
-        cardList.add(new Card(Suit.Diamond, Value.Nine));
-        cardList.add(new Card(Suit.Heart, Value.Nine));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Nine));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Nine));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Nine));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Nine));
 
-        cardList.add(new Card(Suit.Club, Value.Ten));
-        cardList.add(new Card(Suit.Spade, Value.Ten));
-        cardList.add(new Card(Suit.Diamond, Value.Ten));
-        cardList.add(new Card(Suit.Heart, Value.Ten));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Ten));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Ten));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Ten));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Ten));
 
-        cardList.add(new Card(Suit.Club, Value.Jack));
-        cardList.add(new Card(Suit.Spade, Value.Jack));
-        cardList.add(new Card(Suit.Diamond, Value.Jack));
-        cardList.add(new Card(Suit.Heart, Value.Jack));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Jack));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Jack));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Jack));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Jack));
 
-        cardList.add(new Card(Suit.Club, Value.Queen));
-        cardList.add(new Card(Suit.Spade, Value.Queen));
-        cardList.add(new Card(Suit.Diamond, Value.Queen));
-        cardList.add(new Card(Suit.Heart, Value.Queen));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.Queen));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.Queen));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.Queen));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.Queen));
 
-        cardList.add(new Card(Suit.Club, Value.King));
-        cardList.add(new Card(Suit.Spade, Value.King));
-        cardList.add(new Card(Suit.Diamond, Value.King));
-        cardList.add(new Card(Suit.Heart, Value.King));
+        cardList.add(new Card(Card.Suit.Club, Card.Value.King));
+        cardList.add(new Card(Card.Suit.Spade, Card.Value.King));
+        cardList.add(new Card(Card.Suit.Diamond, Card.Value.King));
+        cardList.add(new Card(Card.Suit.Heart, Card.Value.King));
     }
 
     /**

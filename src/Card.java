@@ -1,23 +1,11 @@
 /**
- * Enum that represents the suit of a card
- */
-enum Suit {
-    Club, Spade, Diamond, Heart, Cut
-}
-
-/**
- * Enum that represents the value of a card
- */
-enum Value {
-    Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Cut
-}
-
-/**
  * Class that represents a playing card
  * 
  * @author Darren Seubert
  */
 public class Card {
+    public enum Value {Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Cut}
+    public enum Suit {Club, Spade, Diamond, Heart, Cut}
     private Suit suit;
     private Value value;
     private boolean isFaceUp;

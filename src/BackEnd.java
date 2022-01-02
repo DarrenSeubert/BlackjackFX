@@ -1,17 +1,38 @@
+/**
+ * Class that handles the back end engine for Blackjack
+ * 
+ * @author Darren Seubert
+ */
 public class BackEnd {
     private Dealer dealer;
     private Decks cards;
     private DataManager dm;
 
+    /**
+     * 
+     * 
+     * @param dataManager
+     */
     public BackEnd(DataManager dataManager) {
         dealer = new Dealer();
         this.dm = dataManager;
     }
 
+    /**
+     * 
+     * 
+     * @param numberOfDecks
+     */
     public void createDeck(int numberOfDecks) {
         cards = new Decks(numberOfDecks);
     }
 
+    /**
+     * 
+     * 
+     * @param playerID
+     * @return
+     */
     public boolean checkIfPlayerExists(int playerID) {
         if (dm.playerTable.get(playerID) == null) {
             return false;
@@ -20,6 +41,12 @@ public class BackEnd {
         }
     }
 
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param cash
+     */
     public void updateExistingPlayerInGame(int playerID, int cash) {
         Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), cash);
 
@@ -27,6 +54,12 @@ public class BackEnd {
         dm.updateExistingPlayerInPlayerFile(playerID, cash);
     }
 
+    /**
+     * 
+     * 
+     * @param name
+     * @param cash
+     */
     public void addNewPlayerToGame(String name, int cash) {
         dm.incrementLargestIDNumber();
         Player newPlayer = new Player(dm.getLargestIDNumber(), name, cash);

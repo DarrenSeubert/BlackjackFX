@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class that represents a Player in Blackjack
+ * Class that represents a player in Blackjack
  * 
  * @author Darren Seubert
  */
@@ -91,7 +91,7 @@ public class Player {
         int handValue = 0;
 
         for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getValue() == Value.Ace) {
+            if (hand.get(i).getValue() == Card.Value.Ace) {
                 numberOfAces++;
             }
 

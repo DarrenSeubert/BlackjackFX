@@ -1,3 +1,8 @@
+/**
+ * Class that handles the front end UI for Blackjack
+ * 
+ * @author Darren Seubert
+ */
 public class FrontEnd {
     private BackEnd backEnd;
     private int player1ID;
@@ -14,7 +19,7 @@ public class FrontEnd {
         // Prompt User for Number of Decks
         // Four TextBox's for possible player ID's
         // A create new player button (Prompts for name and cash)
-        
+
     }
 
     private void setScene() {
