@@ -25,6 +25,10 @@ public class BackEnd {
         return decks;
     }
 
+    public DataManager getDm() {
+        return dm;
+    }
+
     /**
      * 
      * 

@@ -1,10 +1,12 @@
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -58,7 +60,7 @@ public class FrontEnd extends Application{
         
         Button okButton = (Button) deckPrompt.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setOnAction((event) -> {
-            String stringDecks = deckPrompt.getEditor().getText();
+            String stringDecks = deckPrompt.getEditor().getText().trim();
             
             try {
                 numOfDecks = Integer.parseInt(stringDecks);
@@ -180,14 +182,44 @@ public class FrontEnd extends Application{
         newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
         newAccountButton.setTextAlignment(TextAlignment.CENTER);
+
         Button lookupAccountIDButton = new Button("Lookup\nAccount ID");
         lookupAccountIDButton.setLayoutX(605);
         lookupAccountIDButton.setLayoutY(25);
         lookupAccountIDButton.setTextAlignment(TextAlignment.CENTER);
+        lookupAccountIDButton.setOnAction((event) -> {
+            TextInputDialog lookupAccountIDPrompt = new TextInputDialog();
+            lookupAccountIDPrompt.setTitle("BlackjackFX"); // Set Window Title
+            ((Stage) lookupAccountIDPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
+            lookupAccountIDPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
+            lookupAccountIDPrompt.setHeaderText("Type in Name\nto Lookup"); // Set Text in Window
+            lookupAccountIDPrompt.show();
+
+            Button okButton = (Button) lookupAccountIDPrompt.getDialogPane().lookupButton(ButtonType.OK);
+            okButton.setOnAction((okEvent) -> {
+                String lookUpName = lookupAccountIDPrompt.getEditor().getText().trim();
+                int resultID = backEnd.getDm().getPlayerID(lookUpName);
+                if (resultID == -1) {
+                    Alert personDNEAlert = new Alert(AlertType.ERROR);
+                    personDNEAlert.setTitle("BlackjackFX");
+                    ((Stage) personDNEAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                    personDNEAlert.setHeaderText("Player does not Exist, Create a New Account");
+                    personDNEAlert.show();
+                } else {
+                    Alert personIDAlert = new Alert(AlertType.INFORMATION);
+                    personIDAlert.setTitle("BlackjackFX");
+                    ((Stage) personIDAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                    personIDAlert.setHeaderText(lookUpName + "'s ID Number is: " + resultID);
+                    personIDAlert.show();
+                }
+            });
+        });
+
         Button addCashButton = new Button("Add Cash\nto Account");
         addCashButton.setLayoutX(565);
         addCashButton.setLayoutY(73);
         addCashButton.setTextAlignment(TextAlignment.CENTER);
+
         Button dealButton = new Button("DEAL");
         dealButton.setFont(new Font(20));
         dealButton.setPrefWidth(74);

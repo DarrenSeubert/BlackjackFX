@@ -259,13 +259,10 @@ public class DataManager {
             }
 
             br.close();
-            throw new NoSuchElementException("Name is not on file, create a new account.");
         } catch (FileNotFoundException e1) {
             e1.printStackTrace();
         } catch (IOException e2) {
             e2.printStackTrace();
-        } catch (NoSuchElementException e3) {
-            e3.printStackTrace();
         }
 
         return -1;
