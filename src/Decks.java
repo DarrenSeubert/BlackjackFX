@@ -24,7 +24,7 @@ public class Decks {
      * 
      * @param numberOfDecks
      */
-    public Decks(int numberOfDecks) { // numOfDecks hardcoded to 6 for now
+    public Decks(int numberOfDecks) {
         cardList = new ArrayList<>();
         usedCardList = new ArrayList<>();
         for (int i = 0; i < numberOfDecks; i++) {
