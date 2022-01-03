@@ -62,21 +62,25 @@ public class FrontEnd extends Application{
             
             try {
                 numOfDecks = Integer.parseInt(stringDecks);
+                if (numOfDecks < 1) {
+                    throw new NumberFormatException();
+                }
+
                 backEnd.createDeck(numOfDecks);
                 launchGame();
             } catch (NumberFormatException e) {
-                greetingString = "Welcome to BlackjackFX!\nEnter Number of\nDecks as an Integer:";
+                greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks\nas a Positive Integer:";
                 start(mStage);
             }
         });
         
         deckPrompt.show();
 
-        //backEnd.createDeck(6); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
+        //backEnd.createDeck(-1); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
         //launchGame(); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
     }
 
-    private void setLayoutGrid(Group group) { //REMOVE FOR FINAL PROJECT
+    private void setLayoutGrid(Group group) { // TODO REMOVE FOR FINAL PROJECT
         Rectangle middleLine = new Rectangle();
         middleLine.setWidth(1);
         middleLine.setHeight(700);
