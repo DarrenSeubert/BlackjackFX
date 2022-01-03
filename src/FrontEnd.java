@@ -8,6 +8,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -20,10 +24,6 @@ public class FrontEnd extends Application{
     private Stage mStage;
     private String greetingString;
     private int numOfDecks;
-    //private int player1ID;
-    //private int player2ID;
-    //private int player3ID;
-    //private int player4ID;
 
     /**
      * 
@@ -42,6 +42,7 @@ public class FrontEnd extends Application{
     }
 
     /**
+     * Method that prompts user to enter number of decks, then launches rest of the game
      * 
      * @param stage
      */
@@ -70,20 +71,167 @@ public class FrontEnd extends Application{
         });
         
         deckPrompt.show();
+
+        //backEnd.createDeck(6); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
+        //launchGame(); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
     }
 
-    /**
-     * 
-     */
-    private void startingConfig() {
+    private void setLayoutGrid(Group group) { //REMOVE FOR FINAL PROJECT
+        Rectangle middleLine = new Rectangle();
+        middleLine.setWidth(1);
+        middleLine.setHeight(700);
+        middleLine.setLayoutX(600);
+        middleLine.setLayoutY(0);
+        middleLine.setFill(Color.BLACK);
+
+        Rectangle horLine = new Rectangle();
+        horLine.setWidth(1200);
+        horLine.setHeight(1);
+        horLine.setLayoutX(0);
+        horLine.setLayoutY(500);
+        horLine.setFill(Color.BLACK);
+
+        Rectangle line1 = new Rectangle();
+        line1.setWidth(1);
+        line1.setHeight(200);
+        line1.setLayoutX(300);
+        line1.setLayoutY(500);
+        line1.setFill(Color.BLACK);
+
+        Rectangle line3 = new Rectangle();
+        line3.setWidth(1);
+        line3.setHeight(200);
+        line3.setLayoutX(900);
+        line3.setLayoutY(500);
+        line3.setFill(Color.BLACK);
+
+        Rectangle subLine1 = new Rectangle();
+        subLine1.setWidth(1);
+        subLine1.setHeight(180);
+        subLine1.setLayoutX(150);
+        subLine1.setLayoutY(510);
+        subLine1.setFill(Color.RED);
+
+        Rectangle subLine2 = new Rectangle();
+        subLine2.setWidth(1);
+        subLine2.setHeight(180);
+        subLine2.setLayoutX(450);
+        subLine2.setLayoutY(510);
+        subLine2.setFill(Color.RED);
+
+        Rectangle subLine3 = new Rectangle();
+        subLine3.setWidth(1);
+        subLine3.setHeight(180);
+        subLine3.setLayoutX(750);
+        subLine3.setLayoutY(510);
+        subLine3.setFill(Color.RED);
+
+        Rectangle subLine4 = new Rectangle();
+        subLine4.setWidth(1);
+        subLine4.setHeight(180);
+        subLine4.setLayoutX(1050);
+        subLine4.setLayoutY(510);
+        subLine4.setFill(Color.RED);
+
+        Rectangle horLine2 = new Rectangle();
+        horLine2.setWidth(1200);
+        horLine2.setHeight(1);
+        horLine2.setLayoutX(0);
+        horLine2.setLayoutY(600);
+        horLine2.setFill(Color.RED);
+
+        group.getChildren().addAll(middleLine, horLine, line1, line3, subLine1, subLine2, subLine3, subLine4, horLine2);
+    }
+
+    private void launchGame() {
         mStage.setTitle("BlackjackFX");
         mStage.getIcons().add(new Image(Constants.blackjackLogo));
         
         Group group = new Group();
         Scene scene = new Scene(group, 1200, 700);
         scene.setFill(Color.DARKGREEN);
-        
-        Button p1HitButton = new Button("Hit");
+        mStage.setScene(scene);
+
+        setLayoutGrid(group);
+
+        ImageView shoePile = new ImageView(Constants.backOfCardImage);
+        shoePile.setX(1050);
+        shoePile.setY(25);
+        Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getCardList().size()));
+        numOfCardsInShoe.setFont(Font.font("Verdana", 13));
+        numOfCardsInShoe.setFill(Color.GHOSTWHITE);
+        numOfCardsInShoe.setX(1080);
+        numOfCardsInShoe.setY(155);
+        group.getChildren().addAll(shoePile, numOfCardsInShoe);
+
+        Button newAccountButton = new Button("Open New\nAccount");
+        newAccountButton.setLayoutX(510);
+        newAccountButton.setLayoutY(25);
+        newAccountButton.setTextAlignment(TextAlignment.CENTER);
+        Button lookupAccountIDButton = new Button("Lookup\nAccount ID");
+        lookupAccountIDButton.setLayoutX(618);
+        lookupAccountIDButton.setLayoutY(25);
+        lookupAccountIDButton.setTextAlignment(TextAlignment.CENTER);
+        Button dealButton = new Button("DEAL");
+        dealButton.setFont(new Font(20));
+        dealButton.setPrefWidth(74);
+        dealButton.setPrefHeight(40);
+        dealButton.setLayoutX(563);
+        dealButton.setLayoutY(580);
+        dealButton.setTextAlignment(TextAlignment.CENTER);
+        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, dealButton);
+
+        TextField p1IDField = new TextField();
+        p1IDField.setPromptText("Enter ID #");
+        p1IDField.setLayoutX(115);
+        p1IDField.setLayoutY(570);
+        p1IDField.setPrefWidth(70);
+        TextField p2IDField = new TextField();
+        p2IDField.setPromptText("Enter ID #");
+        p2IDField.setLayoutX(415);
+        p2IDField.setLayoutY(570);
+        p2IDField.setPrefWidth(70);
+        TextField p3IDField = new TextField();
+        p3IDField.setPromptText("Enter ID #");
+        p3IDField.setLayoutX(715);
+        p3IDField.setLayoutY(570);
+        p3IDField.setPrefWidth(70);
+        TextField p4IDField = new TextField();
+        p4IDField.setPromptText("Enter ID #");
+        p4IDField.setLayoutX(1015);
+        p4IDField.setLayoutY(570);
+        p4IDField.setPrefWidth(70);
+        TextField[] iDTextFields = {p1IDField, p2IDField, p3IDField, p4IDField};
+        for (TextField textField : iDTextFields) {
+            group.getChildren().add(textField);
+        }
+
+        Button p1SubmitButton = new Button("Submit");
+        p1SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p1SubmitButton.setLayoutX(115);
+        p1SubmitButton.setLayoutY(605);
+        p1SubmitButton.setPrefWidth(70);
+        Button p2SubmitButton = new Button("Submit");
+        p2SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p2SubmitButton.setLayoutX(415);
+        p2SubmitButton.setLayoutY(605);
+        p2SubmitButton.setPrefWidth(70);
+        Button p3SubmitButton = new Button("Submit");
+        p3SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p3SubmitButton.setLayoutX(715);
+        p3SubmitButton.setLayoutY(605);
+        p3SubmitButton.setPrefWidth(70);
+        Button p4SubmitButton = new Button("Submit");
+        p4SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p4SubmitButton.setLayoutX(1015);
+        p4SubmitButton.setLayoutY(605);
+        p4SubmitButton.setPrefWidth(70);
+        Button[] submitButtons = {p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton};
+        for (Button button : submitButtons) {
+            group.getChildren().add(button);
+        }
+
+        /*Button p1HitButton = new Button("Hit");
         Button p2HitButton = new Button("Hit");
         Button p3HitButton = new Button("Hit");
         Button p4HitButton = new Button("Hit");
@@ -120,24 +268,14 @@ public class FrontEnd extends Application{
         p4WagerBox.setLayoutX(1020);
         p4WagerBox.setLayoutY(630);
         group.getChildren().addAll(p1WagerBox, p2WagerBox, p3WagerBox, p4WagerBox);
-
         
-        ImageView shoePile = new ImageView(new Image(Constants.cardBackFilePath, 80, 115, true, true));
-        shoePile.setX(1050);
-        shoePile.setY(25);
-        ImageView discardPile = new ImageView(new Image(Constants.cardBackFilePath, 80, 115, true, true));
+        ImageView discardPile = new ImageView(Constants.backOfCardImage);
         discardPile.setX(65);
         discardPile.setY(25);
-        ImageView cutCard = new ImageView(new Image(Constants.cutCardFilePath, 80, 115, true, true));
+        ImageView cutCard = new ImageView(Constants.cutCardImage);
         cutCard.setX(950);
-        cutCard.setY(25);
+        cutCard.setY(25);*/
 
-        group.getChildren().addAll(shoePile, discardPile, cutCard);
-        mStage.setScene(scene);
-    }
-
-    private void launchGame() {
-        startingConfig();
         mStage.show();
 
         // Four TextBox's for possible player ID's

@@ -5,7 +5,7 @@
  */
 public class BackEnd {
     private Dealer dealer;
-    private Decks cards;
+    private Decks decks;
     private DataManager dm;
 
     /**
@@ -20,11 +20,18 @@ public class BackEnd {
 
     /**
      * 
+     */
+    public Decks getDecks() {
+        return decks;
+    }
+
+    /**
+     * 
      * 
      * @param numberOfDecks
      */
     public void createDeck(int numberOfDecks) {
-        cards = new Decks(numberOfDecks);
+        decks = new Decks(numberOfDecks);
     }
 
     /**
@@ -74,8 +81,8 @@ public class BackEnd {
      * @return True if player's hand is bust, else false
      */
     public boolean hitPlayer(int playerID) {
-        dm.playerTable.get(playerID).addCard(cards.getCardList().get(0));
-        cards.getCardList().remove(0);
+        dm.playerTable.get(playerID).addCard(decks.getCardList().get(0));
+        decks.getCardList().remove(0);
 
         if (dm.playerTable.get(playerID).getPossibleHandValues().size() == 0) {
             return true;
@@ -90,8 +97,8 @@ public class BackEnd {
      * @return True if dealer's hand is bust, else false
      */
     public boolean hitDealer() {
-        dealer.addCard(cards.getCardList().get(0));
-        cards.getCardList().remove(0);
+        dealer.addCard(decks.getCardList().get(0));
+        decks.getCardList().remove(0);
 
         if (dealer.getHand().size() == 0) {
             return true;
