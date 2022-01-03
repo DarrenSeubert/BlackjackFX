@@ -62,14 +62,17 @@ public class FrontEnd extends Application{
             
             try {
                 numOfDecks = Integer.parseInt(stringDecks);
-                if (numOfDecks < 1) {
-                    throw new NumberFormatException();
+                if (numOfDecks < 1 || numOfDecks > 100) {
+                    throw new IllegalArgumentException();
                 }
 
                 backEnd.createDeck(numOfDecks);
                 launchGame();
-            } catch (NumberFormatException e) {
-                greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks\nas a Positive Integer:";
+            } catch (NumberFormatException e1) {
+                greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks\nas a Positive Integer";
+                start(mStage);
+            } catch (IllegalArgumentException e2){
+                greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks\nBetween 1-100:";
                 start(mStage);
             }
         });
@@ -169,18 +172,22 @@ public class FrontEnd extends Application{
         Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getCardList().size()));
         numOfCardsInShoe.setFont(Font.font("Verdana", 13));
         numOfCardsInShoe.setFill(Color.GHOSTWHITE);
-        numOfCardsInShoe.setX(1080);
+        numOfCardsInShoe.setX(1078);
         numOfCardsInShoe.setY(155);
         group.getChildren().addAll(shoePile, numOfCardsInShoe);
 
         Button newAccountButton = new Button("Open New\nAccount");
-        newAccountButton.setLayoutX(510);
+        newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
         newAccountButton.setTextAlignment(TextAlignment.CENTER);
         Button lookupAccountIDButton = new Button("Lookup\nAccount ID");
-        lookupAccountIDButton.setLayoutX(618);
+        lookupAccountIDButton.setLayoutX(605);
         lookupAccountIDButton.setLayoutY(25);
         lookupAccountIDButton.setTextAlignment(TextAlignment.CENTER);
+        Button addCashButton = new Button("Add Cash\nto Account");
+        addCashButton.setLayoutX(565);
+        addCashButton.setLayoutY(73);
+        addCashButton.setTextAlignment(TextAlignment.CENTER);
         Button dealButton = new Button("DEAL");
         dealButton.setFont(new Font(20));
         dealButton.setPrefWidth(74);
@@ -188,7 +195,7 @@ public class FrontEnd extends Application{
         dealButton.setLayoutX(563);
         dealButton.setLayoutY(580);
         dealButton.setTextAlignment(TextAlignment.CENTER);
-        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, dealButton);
+        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, addCashButton, dealButton);
 
         TextField p1IDField = new TextField();
         p1IDField.setPromptText("Enter ID #");
