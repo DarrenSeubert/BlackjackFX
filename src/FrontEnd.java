@@ -51,8 +51,8 @@ public class FrontEnd extends Application{
         mStage = stage;
         TextInputDialog deckPrompt = new TextInputDialog(); // Create Window
         deckPrompt.setTitle("BlackjackFX"); // Set Window Title
-        ((Stage) deckPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogo)); // Set Window Image
-        deckPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogo, 80, 115, true, true))); // Set Graphic in Window
+        ((Stage) deckPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
+        deckPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
         deckPrompt.setHeaderText(greetingString); // Set Text in Window
         deckPrompt.getEditor().setPromptText("Card Counting: 4 | Normal Game: 6"); // Set Text in Textbox
         
@@ -149,14 +149,19 @@ public class FrontEnd extends Application{
 
     private void launchGame() {
         mStage.setTitle("BlackjackFX");
-        mStage.getIcons().add(new Image(Constants.blackjackLogo));
+        mStage.getIcons().add(new Image(Constants.blackjackLogoFilePath));
         
         Group group = new Group();
         Scene scene = new Scene(group, 1200, 700);
         scene.setFill(Color.DARKGREEN);
         mStage.setScene(scene);
 
-        setLayoutGrid(group);
+        setLayoutGrid(group); // TO REMOVE IN FINAL CODE
+
+        ImageView tableLogo = new ImageView(new Image(Constants.blackjackLogoFilePath, 250, 250, true, true));
+        tableLogo.setX(475);
+        tableLogo.setY(165);
+        group.getChildren().add(tableLogo);
 
         ImageView shoePile = new ImageView(Constants.backOfCardImage);
         shoePile.setX(1050);

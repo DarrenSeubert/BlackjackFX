@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 public class Constants {
     public static final String playerCSVFilePath = "./src/PlayerFiles/players.csv";
 
-    public static final String blackjackLogo = "./Images/blackjack_logo.png";
+    public static final String blackjackLogoFilePath = "./Images/blackjack_logo.png";
 
     public static final String cardBackFilePath = "./Images/Cards/card_back.png", // Card File Paths
                                cutCardFilePath = "./Images/Cards/cut.png",
