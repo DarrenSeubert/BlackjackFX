@@ -1,27 +1,34 @@
+import java.util.Optional;
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 /**
  * Class that handles the front end UI for Blackjack
  * 
  * @author Darren Seubert
  */
-public class FrontEnd extends Application{
+public class FrontEnd extends Application {
     private static BackEnd backEnd;
     private Stage mStage;
     private String greetingString;
@@ -152,6 +159,9 @@ public class FrontEnd extends Application{
         group.getChildren().addAll(middleLine, horLine, line1, line3, subLine1, subLine2, subLine3, subLine4, horLine2);
     }
 
+    /**
+     * 
+     */
     private void launchGame() {
         mStage.setTitle("BlackjackFX");
         mStage.getIcons().add(new Image(Constants.blackjackLogoFilePath));
@@ -160,8 +170,9 @@ public class FrontEnd extends Application{
         Scene scene = new Scene(group, 1200, 700);
         scene.setFill(Color.DARKGREEN);
         mStage.setScene(scene);
+        mStage.setResizable(false);
 
-        setLayoutGrid(group); // TO REMOVE IN FINAL CODE
+        setLayoutGrid(group); // TODO REMOVE IN FINAL CODE
 
         ImageView tableLogo = new ImageView(new Image(Constants.blackjackLogoFilePath, 250, 250, true, true));
         tableLogo.setX(475);
@@ -182,6 +193,70 @@ public class FrontEnd extends Application{
         newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
         newAccountButton.setTextAlignment(TextAlignment.CENTER);
+        newAccountButton.setOnAction((event) -> {
+            Dialog<Pair<String, Integer>> newAccountPrompt = new Dialog<>();
+            newAccountPrompt.setTitle("BlackjackFX");
+            ((Stage) newAccountPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
+            newAccountPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
+            newAccountPrompt.setHeaderText("Enter Name and Amount of\nCash for the New Account");
+            newAccountPrompt.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField nameField = new TextField();
+            TextField cashField = new TextField();
+
+            grid.add(new Label("Name:"), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(new Label("Cash $:"), 0, 1);
+            grid.add(cashField, 1, 1);
+
+            newAccountPrompt.getDialogPane().setContent(grid);
+            newAccountPrompt.setResultConverter(dialogButton -> {
+                if (dialogButton == ButtonType.OK) {
+                    try {
+                        String nameEntry = nameField.getText().trim();
+                        int cashEntry = Integer.parseInt(cashField.getText());
+
+                        if (nameEntry.equals("") || cashEntry <= 0) {
+                            throw new IllegalArgumentException();
+                        }
+
+                        return new Pair<>(nameEntry, cashEntry);
+                    } catch (NumberFormatException e1) {
+                        Alert e1Alert = new Alert(AlertType.ERROR);
+                        e1Alert.setTitle("BlackjackFX");
+                        ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                        e1Alert.setHeaderText("Error: Integer must be Entered for Cash");
+                        e1Alert.show();
+                    } catch (IllegalArgumentException e2) {
+                        Alert e2Alert = new Alert(AlertType.ERROR);
+                        e2Alert.setTitle("BlackjackFX");
+                        ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                        e2Alert.setHeaderText("Error: Name must not be Blank or Cash must be Greater than 0");
+                        e2Alert.show();
+                    }
+                }
+                return null;
+            });
+
+            Optional<Pair<String, Integer>> result = newAccountPrompt.showAndWait();
+            result.ifPresent(nameCashPair -> {
+                backEnd.addNewPlayerToGame(nameCashPair.getKey(), nameCashPair.getValue());
+
+                int playerIDNumber = backEnd.getDm().getLargestIDNumber();
+                Alert successAlert = new Alert(AlertType.INFORMATION);
+                successAlert.setTitle("BlackjackFX");
+                ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                successAlert.setHeaderText("Account Successfully Opened!\n" +
+                    "Name: " + backEnd.getDm().playerTable.get(playerIDNumber).getName() + "\n" +
+                    "ID Number: " + playerIDNumber + "\n" +
+                    "Cash: $" + backEnd.getDm().playerTable.get(playerIDNumber).getCash());
+                successAlert.show();
+            });
+        });
 
         Button lookupAccountIDButton = new Button("Lookup\nAccount ID");
         lookupAccountIDButton.setLayoutX(605);
@@ -203,7 +278,7 @@ public class FrontEnd extends Application{
                     Alert personDNEAlert = new Alert(AlertType.ERROR);
                     personDNEAlert.setTitle("BlackjackFX");
                     ((Stage) personDNEAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    personDNEAlert.setHeaderText("Player does not Exist, Create a New Account");
+                    personDNEAlert.setHeaderText("Player does not Exist, Open a New Account");
                     personDNEAlert.show();
                 } else {
                     Alert personIDAlert = new Alert(AlertType.INFORMATION);
@@ -326,7 +401,6 @@ public class FrontEnd extends Application{
 
         mStage.show();
 
-        // Four TextBox's for possible player ID's
         // A create new player button (Prompts for name and cash)
     }
 }
