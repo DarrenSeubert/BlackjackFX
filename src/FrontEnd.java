@@ -1,3 +1,4 @@
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import javafx.application.Application;
@@ -32,12 +33,19 @@ public class FrontEnd extends Application {
     private static BackEnd backEnd;
     private Stage mStage;
     private String greetingString;
-    private int numOfDecks;
+    private int p1ID;
+    private int p2ID;
+    private int p3ID;
+    private int p4ID;
 
     /**
      * 
      */
     public FrontEnd() {
+        p1ID = -1;
+        p2ID = -1;
+        p3ID = -1;
+        p4ID = -1;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
@@ -70,7 +78,7 @@ public class FrontEnd extends Application {
             String stringDecks = deckPrompt.getEditor().getText().trim();
             
             try {
-                numOfDecks = Integer.parseInt(stringDecks);
+                int numOfDecks = Integer.parseInt(stringDecks);
                 if (numOfDecks < 1 || numOfDecks > 100) {
                     throw new IllegalArgumentException();
                 }
@@ -405,35 +413,164 @@ public class FrontEnd extends Application {
         p4IDField.setLayoutX(1015);
         p4IDField.setLayoutY(570);
         p4IDField.setPrefWidth(70);
-        TextField[] iDTextFields = {p1IDField, p2IDField, p3IDField, p4IDField};
-        for (TextField textField : iDTextFields) {
-            group.getChildren().add(textField);
-        }
+        group.getChildren().addAll(p1IDField, p2IDField, p3IDField, p4IDField);
 
         Button p1SubmitButton = new Button("Submit");
         p1SubmitButton.setTextAlignment(TextAlignment.CENTER);
         p1SubmitButton.setLayoutX(115);
         p1SubmitButton.setLayoutY(605);
         p1SubmitButton.setPrefWidth(70);
+        p1SubmitButton.setOnAction((event) -> {
+            try {
+                int IDEntry = Integer.parseInt(p1IDField.getText().trim());
+                if (IDEntry <= 0) {
+                    throw new IllegalArgumentException();
+                }
+
+                if (!backEnd.checkIfPlayerExists(IDEntry)) {
+                    throw new NoSuchElementException();
+                }
+
+                p1ID = IDEntry;
+                // START LAYOUT
+            } catch (NumberFormatException e1) {
+                Alert e1Alert = new Alert(AlertType.ERROR);
+                e1Alert.setTitle("BlackjackFX");
+                ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e1Alert.setHeaderText("Error: ID Number must be a Integer");
+                e1Alert.show();
+            } catch (IllegalArgumentException e2) {
+                Alert e2Alert = new Alert(AlertType.ERROR);
+                e2Alert.setTitle("BlackjackFX");
+                ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e2Alert.setHeaderText("Error: ID Number must be Greater than 0");
+                e2Alert.show();
+            } catch (NoSuchElementException e3) {
+                Alert e3Alert = new Alert(AlertType.ERROR);
+                e3Alert.setTitle("BlackjackFX");
+                ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
+                e3Alert.show();
+            }
+        });
+
         Button p2SubmitButton = new Button("Submit");
         p2SubmitButton.setTextAlignment(TextAlignment.CENTER);
         p2SubmitButton.setLayoutX(415);
         p2SubmitButton.setLayoutY(605);
         p2SubmitButton.setPrefWidth(70);
+        p2SubmitButton.setOnAction((event) -> {
+            try {
+                int IDEntry = Integer.parseInt(p2IDField.getText().trim());
+                if (IDEntry <= 0) {
+                    throw new IllegalArgumentException();
+                }
+
+                if (!backEnd.checkIfPlayerExists(IDEntry)) {
+                    throw new NoSuchElementException();
+                }
+
+                p2ID = IDEntry;
+                // START LAYOUT
+            } catch (NumberFormatException e1) {
+                Alert e1Alert = new Alert(AlertType.ERROR);
+                e1Alert.setTitle("BlackjackFX");
+                ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e1Alert.setHeaderText("Error: ID Number must be a Integer");
+                e1Alert.show();
+            } catch (IllegalArgumentException e2) {
+                Alert e2Alert = new Alert(AlertType.ERROR);
+                e2Alert.setTitle("BlackjackFX");
+                ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e2Alert.setHeaderText("Error: ID Number must be Greater than 0");
+                e2Alert.show();
+            } catch (NoSuchElementException e3) {
+                Alert e3Alert = new Alert(AlertType.ERROR);
+                e3Alert.setTitle("BlackjackFX");
+                ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
+                e3Alert.show();
+            }
+        });
+
         Button p3SubmitButton = new Button("Submit");
         p3SubmitButton.setTextAlignment(TextAlignment.CENTER);
         p3SubmitButton.setLayoutX(715);
         p3SubmitButton.setLayoutY(605);
         p3SubmitButton.setPrefWidth(70);
+        p3SubmitButton.setOnAction((event) -> {
+            try {
+                int IDEntry = Integer.parseInt(p3IDField.getText().trim());
+                if (IDEntry <= 0) {
+                    throw new IllegalArgumentException();
+                }
+
+                if (!backEnd.checkIfPlayerExists(IDEntry)) {
+                    throw new NoSuchElementException();
+                }
+
+                p3ID = IDEntry;
+                // START LAYOUT
+            } catch (NumberFormatException e1) {
+                Alert e1Alert = new Alert(AlertType.ERROR);
+                e1Alert.setTitle("BlackjackFX");
+                ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e1Alert.setHeaderText("Error: ID Number must be a Integer");
+                e1Alert.show();
+            } catch (IllegalArgumentException e2) {
+                Alert e2Alert = new Alert(AlertType.ERROR);
+                e2Alert.setTitle("BlackjackFX");
+                ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e2Alert.setHeaderText("Error: ID Number must be Greater than 0");
+                e2Alert.show();
+            } catch (NoSuchElementException e3) {
+                Alert e3Alert = new Alert(AlertType.ERROR);
+                e3Alert.setTitle("BlackjackFX");
+                ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
+                e3Alert.show();
+            }
+        });
+
         Button p4SubmitButton = new Button("Submit");
         p4SubmitButton.setTextAlignment(TextAlignment.CENTER);
         p4SubmitButton.setLayoutX(1015);
         p4SubmitButton.setLayoutY(605);
         p4SubmitButton.setPrefWidth(70);
-        Button[] submitButtons = {p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton};
-        for (Button button : submitButtons) {
-            group.getChildren().add(button);
-        }
+        p4SubmitButton.setOnAction((event) -> {
+            try {
+                int IDEntry = Integer.parseInt(p4IDField.getText().trim());
+                if (IDEntry <= 0) {
+                    throw new IllegalArgumentException();
+                }
+
+                if (!backEnd.checkIfPlayerExists(IDEntry)) {
+                    throw new NoSuchElementException();
+                }
+
+                p4ID = IDEntry;
+                // START LAYOUT
+            } catch (NumberFormatException e1) {
+                Alert e1Alert = new Alert(AlertType.ERROR);
+                e1Alert.setTitle("BlackjackFX");
+                ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e1Alert.setHeaderText("Error: ID Number must be a Integer");
+                e1Alert.show();
+            } catch (IllegalArgumentException e2) {
+                Alert e2Alert = new Alert(AlertType.ERROR);
+                e2Alert.setTitle("BlackjackFX");
+                ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e2Alert.setHeaderText("Error: ID Number must be Greater than 0");
+                e2Alert.show();
+            } catch (NoSuchElementException e3) {
+                Alert e3Alert = new Alert(AlertType.ERROR);
+                e3Alert.setTitle("BlackjackFX");
+                ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
+                e3Alert.show();
+            }
+        });
+        group.getChildren().addAll(p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton);
 
         /*Button p1HitButton = new Button("Hit");
         Button p2HitButton = new Button("Hit");
@@ -481,7 +618,5 @@ public class FrontEnd extends Application {
         cutCard.setY(25);*/
 
         mStage.show();
-
-        // A create new player button (Prompts for name and cash)
     }
 }
