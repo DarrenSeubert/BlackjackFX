@@ -254,7 +254,7 @@ public class FrontEnd extends Application {
                 successAlert.setHeaderText("Account Successfully Opened!\n" +
                     "Name: " + backEnd.getDm().playerTable.get(playerIDNumber).getName() + "\n" +
                     "ID Number: " + playerIDNumber + "\n" +
-                    "Cash: $" + backEnd.getDm().playerTable.get(playerIDNumber).getCash());
+                    "Balance: $" + backEnd.getDm().playerTable.get(playerIDNumber).getCash());
                 successAlert.show();
             });
         });
@@ -295,7 +295,7 @@ public class FrontEnd extends Application {
         manageCashButton.setLayoutX(555);
         manageCashButton.setLayoutY(73);
         manageCashButton.setTextAlignment(TextAlignment.CENTER);
-        manageCashButton.setOnAction((event) -> { // TODO COPIED CODE, UPDATE
+        manageCashButton.setOnAction((event) -> {
             Dialog<Pair<Integer, Integer>> manageCashPrompt = new Dialog<>();
             manageCashPrompt.setTitle("BlackjackFX");
             ((Stage) manageCashPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
@@ -369,7 +369,7 @@ public class FrontEnd extends Application {
                     successAlert.setHeaderText("Transaction Complete!\n" +
                         "Name: " + backEnd.getDm().playerTable.get(IDEntry).getName() + "\n" +
                         "ID Number: " + backEnd.getDm().playerTable.get(IDEntry).getIDNumber() + "\n" +
-                        "Account Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                        "Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
                     successAlert.show();
                 } else {
                     Alert failAlert = new Alert(AlertType.ERROR);
