@@ -227,7 +227,7 @@ public class DataManager {
      * @param nameToSearch
      * @return -1 if name is not on file, else the ID number of the given name
      */
-    public int getPlayerID(String nameToSearch) {
+    public int lookupPlayerID(String nameToSearch) {
         int outputID;
         
         int IDIndex = 0;

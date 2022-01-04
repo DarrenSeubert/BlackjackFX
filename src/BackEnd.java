@@ -60,13 +60,8 @@ public class BackEnd {
      * @return
      */
     public boolean addOrSubtractCashToPlayer(int playerID, int cashAmount) {
-        if (dm.playerTable.get(playerID) == null || cashAmount == 0) {
+        if (!checkIfPlayerExists(playerID) || cashAmount == 0 || (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0)) {
             return false;
-        } else if (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0) {
-            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), 0);
-            dm.playerTable.put(playerID, updatedPlayer);
-            dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
-            return true;
         } else {
             Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + cashAmount);
             dm.playerTable.put(playerID, updatedPlayer);

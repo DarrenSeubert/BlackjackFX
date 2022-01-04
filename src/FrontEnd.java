@@ -274,7 +274,7 @@ public class FrontEnd extends Application {
             Button okButton = (Button) lookupAccountIDPrompt.getDialogPane().lookupButton(ButtonType.OK);
             okButton.setOnAction((okEvent) -> {
                 String lookUpName = lookupAccountIDPrompt.getEditor().getText().trim();
-                int resultID = backEnd.getDm().getPlayerID(lookUpName);
+                int resultID = backEnd.getDm().lookupPlayerID(lookUpName);
                 if (resultID == -1) {
                     Alert personDNEAlert = new Alert(AlertType.ERROR);
                     personDNEAlert.setTitle("BlackjackFX");
@@ -363,7 +363,14 @@ public class FrontEnd extends Application {
                     Alert failAlert = new Alert(AlertType.ERROR);
                     failAlert.setTitle("BlackjackFX");
                     ((Stage) failAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    failAlert.setHeaderText("Error: Account Does not Exist");
+                    if (backEnd.checkIfPlayerExists(IDEntry)) {
+                        failAlert.setHeaderText("Error: Insufficient Funds\n" +
+                        "Name: " + backEnd.getDm().playerTable.get(IDEntry).getName() + "\n" +
+                        "ID Number: " + backEnd.getDm().playerTable.get(IDEntry).getIDNumber() + "\n" +
+                        "Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                    } else {
+                        failAlert.setHeaderText("Error: Account Does not Exist");
+                    }
                     failAlert.show();
                 }
             });
