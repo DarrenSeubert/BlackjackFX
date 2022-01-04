@@ -56,13 +56,41 @@ public class BackEnd {
      * 
      * 
      * @param playerID
-     * @param cash
+     * @param addAmount
+     * @return
      */
-    public void updateExistingPlayerInGame(int playerID, int cash) {
-        Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), cash);
+    public boolean addCashToPlayer(int playerID, int addAmount) {
+        if (dm.playerTable.get(playerID) == null || addAmount <= 0) {
+            return false;
+        } else {
+            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + addAmount);
+            dm.playerTable.put(playerID, updatedPlayer);
+            dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
+            return true;
+        }
+    }
 
-        dm.playerTable.put(playerID, updatedPlayer);
-        dm.updateExistingPlayerInPlayerFile(playerID, cash);
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param subtractAmount Value must be postive number
+     * @return
+     */
+    public boolean subtractCashFromPlayer(int playerID, int subtractAmount) {
+        if (dm.playerTable.get(playerID) == null || subtractAmount <= 0) {
+            return false;
+        } else if (dm.playerTable.get(playerID).getCash() - subtractAmount < 0) {
+            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), 0);
+            dm.playerTable.put(playerID, updatedPlayer);
+            dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
+            return true;
+        } else {
+            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() - subtractAmount);
+            dm.playerTable.put(playerID, updatedPlayer);
+            dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
+            return true;
+        }
     }
 
     /**

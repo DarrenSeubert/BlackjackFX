@@ -207,10 +207,12 @@ public class FrontEnd extends Application {
 
             TextField nameField = new TextField();
             TextField cashField = new TextField();
+            nameField.setPromptText("Enter Name for Account");
+            cashField.setPromptText("Enter Amount to Deposit");
 
             grid.add(new Label("Name:"), 0, 0);
             grid.add(nameField, 1, 0);
-            grid.add(new Label("Cash $:"), 0, 1);
+            grid.add(new Label("Cash: $"), 0, 1);
             grid.add(cashField, 1, 1);
 
             newAccountPrompt.getDialogPane().setContent(grid);
@@ -219,7 +221,6 @@ public class FrontEnd extends Application {
                     try {
                         String nameEntry = nameField.getText().trim();
                         int cashEntry = Integer.parseInt(cashField.getText());
-
                         if (nameEntry.equals("") || cashEntry <= 0) {
                             throw new IllegalArgumentException();
                         }
@@ -278,7 +279,7 @@ public class FrontEnd extends Application {
                     Alert personDNEAlert = new Alert(AlertType.ERROR);
                     personDNEAlert.setTitle("BlackjackFX");
                     ((Stage) personDNEAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    personDNEAlert.setHeaderText("Player does not Exist, Open a New Account");
+                    personDNEAlert.setHeaderText("Player Does not Exist, Open a New Account");
                     personDNEAlert.show();
                 } else {
                     Alert personIDAlert = new Alert(AlertType.INFORMATION);
@@ -290,10 +291,95 @@ public class FrontEnd extends Application {
             });
         });
 
-        Button addCashButton = new Button("Add Cash\nto Account");
-        addCashButton.setLayoutX(565);
-        addCashButton.setLayoutY(73);
-        addCashButton.setTextAlignment(TextAlignment.CENTER);
+        Button manageCashButton = new Button("Manage Cash\nin Account");
+        manageCashButton.setLayoutX(555);
+        manageCashButton.setLayoutY(73);
+        manageCashButton.setTextAlignment(TextAlignment.CENTER);
+        manageCashButton.setOnAction((event) -> { // TODO COPIED CODE, UPDATE
+            Dialog<Pair<Integer, Integer>> manageCashPrompt = new Dialog<>();
+            manageCashPrompt.setTitle("BlackjackFX");
+            ((Stage) manageCashPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
+            manageCashPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
+            manageCashPrompt.setHeaderText("Enter ID Number and Amount of\nCash to Add or Subtract from Account");
+            manageCashPrompt.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(10);
+            grid.setPadding(new Insets(20, 150, 10, 10));
+
+            TextField IDField = new TextField();
+            TextField cashField = new TextField();
+            IDField.setPromptText("Enter ID Number");
+            cashField.setPromptText("+ Deposit | - Withdraw");
+
+            grid.add(new Label("Account ID:"), 0, 0);
+            grid.add(IDField, 1, 0);
+            grid.add(new Label("Cash: $"), 0, 1);
+            grid.add(cashField, 1, 1);
+
+            manageCashPrompt.getDialogPane().setContent(grid);
+            manageCashPrompt.setResultConverter(dialogButton -> {
+                if (dialogButton == ButtonType.OK) {
+                    try {
+                        int IDEntry = Integer.parseInt(IDField.getText().trim());
+                        int cashEntry = Integer.parseInt(cashField.getText().trim());
+                        if (IDEntry <= 0 || cashEntry == 0) {
+                            throw new IllegalArgumentException();
+                        }
+
+                        return new Pair<>(IDEntry, cashEntry);
+                    } catch (NumberFormatException e1) {
+                        Alert e1Alert = new Alert(AlertType.ERROR);
+                        e1Alert.setTitle("BlackjackFX");
+                        ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                        e1Alert.setHeaderText("Error: Integer must be Entered for Both Fields");
+                        e1Alert.show();
+                    } catch (IllegalArgumentException e2) {
+                        Alert e2Alert = new Alert(AlertType.ERROR);
+                        e2Alert.setTitle("BlackjackFX");
+                        ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                        e2Alert.setHeaderText("Error: ID must be Postive and Cash cannot be 0");
+                        e2Alert.show();
+                    }
+                }
+                return null;
+            });
+
+            Optional<Pair<Integer, Integer>> result = manageCashPrompt.showAndWait();
+            result.ifPresent(IDCashPair -> {
+                boolean success = false;
+                int IDEntry = IDCashPair.getKey();
+                int cashEntry = IDCashPair.getValue();
+
+                if (cashEntry < 0) {
+                    cashEntry = Math.abs(cashEntry);
+                    if (backEnd.subtractCashFromPlayer(IDEntry, cashEntry)) {
+                        success = true;
+                    }
+                } else {
+                    if (backEnd.addCashToPlayer(IDEntry, cashEntry)) {
+                        success = true;
+                    }
+                }
+
+                if (success) {
+                    Alert successAlert = new Alert(AlertType.INFORMATION);
+                    successAlert.setTitle("BlackjackFX");
+                    ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                    successAlert.setHeaderText("Transaction Complete!\n" +
+                        "Name: " + backEnd.getDm().playerTable.get(IDEntry).getName() + "\n" +
+                        "ID Number: " + backEnd.getDm().playerTable.get(IDEntry).getIDNumber() + "\n" +
+                        "Account Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                    successAlert.show();
+                } else {
+                    Alert failAlert = new Alert(AlertType.ERROR);
+                    failAlert.setTitle("BlackjackFX");
+                    ((Stage) failAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                    failAlert.setHeaderText("Error: Account Does not Exist");
+                    failAlert.show();
+                }
+            });
+        });
 
         Button dealButton = new Button("DEAL");
         dealButton.setFont(new Font(20));
@@ -302,7 +388,7 @@ public class FrontEnd extends Application {
         dealButton.setLayoutX(563);
         dealButton.setLayoutY(580);
         dealButton.setTextAlignment(TextAlignment.CENTER);
-        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, addCashButton, dealButton);
+        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton, dealButton);
 
         TextField p1IDField = new TextField();
         p1IDField.setPromptText("Enter ID #");
