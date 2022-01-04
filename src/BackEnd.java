@@ -56,37 +56,19 @@ public class BackEnd {
      * 
      * 
      * @param playerID
-     * @param addAmount
+     * @param cashAmount
      * @return
      */
-    public boolean addCashToPlayer(int playerID, int addAmount) {
-        if (dm.playerTable.get(playerID) == null || addAmount <= 0) {
+    public boolean addOrSubtractCashToPlayer(int playerID, int cashAmount) {
+        if (dm.playerTable.get(playerID) == null || cashAmount == 0) {
             return false;
-        } else {
-            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + addAmount);
-            dm.playerTable.put(playerID, updatedPlayer);
-            dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
-            return true;
-        }
-    }
-
-    /**
-     * 
-     * 
-     * @param playerID
-     * @param subtractAmount Value must be postive number
-     * @return
-     */
-    public boolean subtractCashFromPlayer(int playerID, int subtractAmount) {
-        if (dm.playerTable.get(playerID) == null || subtractAmount <= 0) {
-            return false;
-        } else if (dm.playerTable.get(playerID).getCash() - subtractAmount < 0) {
+        } else if (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0) {
             Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), 0);
             dm.playerTable.put(playerID, updatedPlayer);
             dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
             return true;
         } else {
-            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() - subtractAmount);
+            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + cashAmount);
             dm.playerTable.put(playerID, updatedPlayer);
             dm.updateExistingPlayerInPlayerFile(playerID, dm.playerTable.get(playerID).getCash());
             return true;

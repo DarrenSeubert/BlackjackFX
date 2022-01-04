@@ -347,22 +347,10 @@ public class FrontEnd extends Application {
 
             Optional<Pair<Integer, Integer>> result = manageCashPrompt.showAndWait();
             result.ifPresent(IDCashPair -> {
-                boolean success = false;
                 int IDEntry = IDCashPair.getKey();
                 int cashEntry = IDCashPair.getValue();
 
-                if (cashEntry < 0) {
-                    cashEntry = Math.abs(cashEntry);
-                    if (backEnd.subtractCashFromPlayer(IDEntry, cashEntry)) {
-                        success = true;
-                    }
-                } else {
-                    if (backEnd.addCashToPlayer(IDEntry, cashEntry)) {
-                        success = true;
-                    }
-                }
-
-                if (success) {
+                if (backEnd.addOrSubtractCashToPlayer(IDEntry, cashEntry)) {
                     Alert successAlert = new Alert(AlertType.INFORMATION);
                     successAlert.setTitle("BlackjackFX");
                     ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
