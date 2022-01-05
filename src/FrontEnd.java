@@ -37,6 +37,10 @@ public class FrontEnd extends Application {
     private int p2ID;
     private int p3ID;
     private int p4ID;
+    private boolean p1InUse;
+    private boolean p2InUse;
+    private boolean p3InUse;
+    private boolean p4InUse;
 
     /**
      * 
@@ -46,6 +50,10 @@ public class FrontEnd extends Application {
         p2ID = -1;
         p3ID = -1;
         p4ID = -1;
+        p1InUse = false;
+        p2InUse = false;
+        p3InUse = false;
+        p4InUse = false;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
@@ -781,8 +789,8 @@ public class FrontEnd extends Application {
                 p4IDField.requestFocus();
             }
         });
-
         p1LeaveButton.setOnAction((event) -> {
+            p1InUse = false;
             p1ID = -1;
             p1WagerField.setVisible(false);
             p1LeaveButton.setVisible(false);
@@ -797,6 +805,7 @@ public class FrontEnd extends Application {
             p1SubmitButton.setVisible(true);
         });
         p2LeaveButton.setOnAction((event) -> {
+            p2InUse = false;
             p2ID = -1;
             p2WagerField.setVisible(false);
             p2LeaveButton.setVisible(false);
@@ -811,6 +820,7 @@ public class FrontEnd extends Application {
             p2SubmitButton.setVisible(true);
         });
         p3LeaveButton.setOnAction((event) -> {
+            p3InUse = false;
             p3ID = -1;
             p3WagerField.setVisible(false);
             p3LeaveButton.setVisible(false);
@@ -825,6 +835,7 @@ public class FrontEnd extends Application {
             p3SubmitButton.setVisible(true);
         });
         p4LeaveButton.setOnAction((event) -> {
+            p4InUse = false;
             p4ID = -1;
             p4WagerField.setVisible(false);
             p4LeaveButton.setVisible(false);
@@ -841,10 +852,6 @@ public class FrontEnd extends Application {
 
         dealButton.setOnAction((event) -> {
             try {
-                boolean p1InUse = false;
-                boolean p2InUse = false;
-                boolean p3InUse = false;
-                boolean p4InUse = false;
                 int p1WagerEntry = 0;
                 int p2WagerEntry = 0;
                 int p3WagerEntry = 0;
@@ -878,22 +885,25 @@ public class FrontEnd extends Application {
                     } catch (NumberFormatException e) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
                         throw new NumberFormatException(backEnd.getDm().playerTable.get(p2ID).getName());
                     }
                     if (p2WagerEntry <= 0) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
                         throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p2ID).getName());
                     }
                     if (!backEnd.addOrSubtractCashToPlayer(p2ID, -p2WagerEntry)) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
                         throw new ArithmeticException(backEnd.getDm().playerTable.get(p2ID).getName());
                     }
 
@@ -905,28 +915,34 @@ public class FrontEnd extends Application {
                     } catch (NumberFormatException e) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
                         throw new NumberFormatException(backEnd.getDm().playerTable.get(p3ID).getName());
                     }
                     if (p3WagerEntry <= 0) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
                         throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p3ID).getName());
                     }
                     if (!backEnd.addOrSubtractCashToPlayer(p3ID, -p3WagerEntry)) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
                         throw new ArithmeticException(backEnd.getDm().playerTable.get(p3ID).getName());
                     }
 
@@ -938,34 +954,43 @@ public class FrontEnd extends Application {
                     } catch (NumberFormatException e) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
-                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
+                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        }
                         throw new NumberFormatException(backEnd.getDm().playerTable.get(p4ID).getName());
                     }
                     if (p4WagerEntry <= 0) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
-                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
+                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        }
                         throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p4ID).getName());
                     }
                     if (!backEnd.addOrSubtractCashToPlayer(p4ID, -p4WagerEntry)) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
-                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
-                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
-                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
+                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
+                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        }
+                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
+                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        }
                         throw new ArithmeticException(backEnd.getDm().playerTable.get(p4ID).getName());
                     }
 
