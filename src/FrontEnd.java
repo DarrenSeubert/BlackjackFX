@@ -95,9 +95,6 @@ public class FrontEnd extends Application {
         });
         
         deckPrompt.show();
-
-        //backEnd.createDeck(-1); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
-        //launchGame(); // REMOVE THIS WHEN WANT TO TEST FULL PROJECT
     }
 
     private void setLayoutGrid(Group group) { // TODO REMOVE FOR FINAL PROJECT
@@ -287,6 +284,7 @@ public class FrontEnd extends Application {
             ((Stage) lookupAccountIDPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
             lookupAccountIDPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
             lookupAccountIDPrompt.setHeaderText("Type in Name\nto Lookup"); // Set Text in Window
+            lookupAccountIDPrompt.getEditor().setPromptText("Lookup Name");
             lookupAccountIDPrompt.show();
 
             Button okButton = (Button) lookupAccountIDPrompt.getDialogPane().lookupButton(ButtonType.OK);
@@ -440,31 +438,31 @@ public class FrontEnd extends Application {
         p4SubmitButton.setPrefWidth(70);
         group.getChildren().addAll(p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton);
 
-        TextField p1WagerBox = new TextField();
-        p1WagerBox.setPromptText("Wager $");
-        p1WagerBox.setPrefWidth(70);
-        p1WagerBox.setLayoutX(115);
-        p1WagerBox.setLayoutY(570);
-        p1WagerBox.setVisible(false);
-        TextField p2WagerBox = new TextField();
-        p2WagerBox.setPromptText("Wager $");
-        p2WagerBox.setPrefWidth(70);
-        p2WagerBox.setLayoutX(415);
-        p2WagerBox.setLayoutY(570);
-        p2WagerBox.setVisible(false);
-        TextField p3WagerBox = new TextField();
-        p3WagerBox.setPromptText("Wager $");
-        p3WagerBox.setPrefWidth(70);
-        p3WagerBox.setLayoutX(715);
-        p3WagerBox.setLayoutY(570);
-        p3WagerBox.setVisible(false);
-        TextField p4WagerBox = new TextField();
-        p4WagerBox.setPromptText("Wager $");
-        p4WagerBox.setPrefWidth(70);
-        p4WagerBox.setLayoutX(1015);
-        p4WagerBox.setLayoutY(570);
-        p4WagerBox.setVisible(false);
-        group.getChildren().addAll(p1WagerBox, p2WagerBox, p3WagerBox, p4WagerBox);
+        TextField p1WagerField = new TextField();
+        p1WagerField.setPromptText("Wager $");
+        p1WagerField.setPrefWidth(70);
+        p1WagerField.setLayoutX(115);
+        p1WagerField.setLayoutY(570);
+        p1WagerField.setVisible(false);
+        TextField p2WagerField = new TextField();
+        p2WagerField.setPromptText("Wager $");
+        p2WagerField.setPrefWidth(70);
+        p2WagerField.setLayoutX(415);
+        p2WagerField.setLayoutY(570);
+        p2WagerField.setVisible(false);
+        TextField p3WagerField = new TextField();
+        p3WagerField.setPromptText("Wager $");
+        p3WagerField.setPrefWidth(70);
+        p3WagerField.setLayoutX(715);
+        p3WagerField.setLayoutY(570);
+        p3WagerField.setVisible(false);
+        TextField p4WagerField = new TextField();
+        p4WagerField.setPromptText("Wager $");
+        p4WagerField.setPrefWidth(70);
+        p4WagerField.setLayoutX(1015);
+        p4WagerField.setLayoutY(570);
+        p4WagerField.setVisible(false);
+        group.getChildren().addAll(p1WagerField, p2WagerField, p3WagerField, p4WagerField);
 
         Button p1LeaveButton = new Button("Leave");
         p1LeaveButton.setTextAlignment(TextAlignment.CENTER);
@@ -554,6 +552,32 @@ public class FrontEnd extends Application {
         dealButton.setVisible(false);
         group.getChildren().add(dealButton);
 
+        Text p1WagerText = new Text();
+        p1WagerText.setFont(Font.font("Verdana", 12));
+        p1WagerText.setFill(Color.GHOSTWHITE);
+        p1WagerText.setX(155);
+        p1WagerText.setY(695);
+        p1WagerText.setVisible(false);
+        Text p2WagerText = new Text();
+        p2WagerText.setFont(Font.font("Verdana", 12));
+        p2WagerText.setFill(Color.GHOSTWHITE);
+        p2WagerText.setX(455);
+        p2WagerText.setY(695);
+        p2WagerText.setVisible(false);
+        Text p3WagerText = new Text();
+        p3WagerText.setFont(Font.font("Verdana", 12));
+        p3WagerText.setFill(Color.GHOSTWHITE);
+        p3WagerText.setX(755);
+        p3WagerText.setY(695);
+        p3WagerText.setVisible(false);
+        Text p4WagerText = new Text();
+        p4WagerText.setFont(Font.font("Verdana", 12));
+        p4WagerText.setFill(Color.GHOSTWHITE);
+        p4WagerText.setX(1055);
+        p4WagerText.setY(695);
+        p4WagerText.setVisible(false);
+        group.getChildren().addAll(p1WagerText, p2WagerText, p3WagerText, p4WagerText);
+
         // Button p1HitButton = new Button("Hit");
         // p1HitButton.setLayoutX(100);
         // p1HitButton.setLayoutY(570);
@@ -588,7 +612,8 @@ public class FrontEnd extends Application {
                 p1IDField.setVisible(false);
                 p1SubmitButton.setVisible(false);
 
-                p1WagerBox.setVisible(true);
+                p1WagerField.clear();
+                p1WagerField.setVisible(true);
                 p1LeaveButton.setVisible(true);
                 p1IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
                 p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
@@ -613,6 +638,9 @@ public class FrontEnd extends Application {
                 ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                 e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
                 e3Alert.show();
+            } finally {
+                p1IDField.clear();
+                p1IDField.requestFocus();
             }
         });
         p2SubmitButton.setOnAction((event) -> {
@@ -630,7 +658,8 @@ public class FrontEnd extends Application {
                 p2IDField.setVisible(false);
                 p2SubmitButton.setVisible(false);
 
-                p2WagerBox.setVisible(true);
+                p2WagerField.clear();
+                p2WagerField.setVisible(true);
                 p2LeaveButton.setVisible(true);
                 p2IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
                 p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
@@ -655,6 +684,9 @@ public class FrontEnd extends Application {
                 ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                 e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
                 e3Alert.show();
+            } finally {
+                p2IDField.clear();
+                p2IDField.requestFocus();
             }
         });
         p3SubmitButton.setOnAction((event) -> {
@@ -672,7 +704,8 @@ public class FrontEnd extends Application {
                 p3IDField.setVisible(false);
                 p3SubmitButton.setVisible(false);
 
-                p3WagerBox.setVisible(true);
+                p3WagerField.clear();
+                p3WagerField.setVisible(true);
                 p3LeaveButton.setVisible(true);
                 p3IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
                 p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
@@ -697,6 +730,9 @@ public class FrontEnd extends Application {
                 ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                 e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
                 e3Alert.show();
+            } finally {
+                p3IDField.clear();
+                p3IDField.requestFocus();
             }
         });
         p4SubmitButton.setOnAction((event) -> {
@@ -714,7 +750,8 @@ public class FrontEnd extends Application {
                 p4IDField.setVisible(false);
                 p4SubmitButton.setVisible(false);
 
-                p4WagerBox.setVisible(true);
+                p4WagerField.clear();
+                p4WagerField.setVisible(true);
                 p4LeaveButton.setVisible(true);
                 p4IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
                 p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
@@ -739,12 +776,15 @@ public class FrontEnd extends Application {
                 ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                 e3Alert.setHeaderText("Error: Account Does not Exist, Open a New Account");
                 e3Alert.show();
+            } finally {
+                p4IDField.clear();
+                p4IDField.requestFocus();
             }
         });
 
         p1LeaveButton.setOnAction((event) -> {
             p1ID = -1;
-            p1WagerBox.setVisible(false);
+            p1WagerField.setVisible(false);
             p1LeaveButton.setVisible(false);
             p1IDAndNameText.setVisible(false);
             p1CashText.setVisible(false);
@@ -758,7 +798,7 @@ public class FrontEnd extends Application {
         });
         p2LeaveButton.setOnAction((event) -> {
             p2ID = -1;
-            p2WagerBox.setVisible(false);
+            p2WagerField.setVisible(false);
             p2LeaveButton.setVisible(false);
             p2IDAndNameText.setVisible(false);
             p2CashText.setVisible(false);
@@ -772,7 +812,7 @@ public class FrontEnd extends Application {
         });
         p3LeaveButton.setOnAction((event) -> {
             p3ID = -1;
-            p3WagerBox.setVisible(false);
+            p3WagerField.setVisible(false);
             p3LeaveButton.setVisible(false);
             p3IDAndNameText.setVisible(false);
             p3CashText.setVisible(false);
@@ -786,7 +826,7 @@ public class FrontEnd extends Application {
         });
         p4LeaveButton.setOnAction((event) -> {
             p4ID = -1;
-            p4WagerBox.setVisible(false);
+            p4WagerField.setVisible(false);
             p4LeaveButton.setVisible(false);
             p4IDAndNameText.setVisible(false);
             p4CashText.setVisible(false);
@@ -799,6 +839,201 @@ public class FrontEnd extends Application {
             p4SubmitButton.setVisible(true);
         });
 
+        dealButton.setOnAction((event) -> {
+            try {
+                boolean p1InUse = false;
+                boolean p2InUse = false;
+                boolean p3InUse = false;
+                boolean p4InUse = false;
+                int p1WagerEntry = 0;
+                int p2WagerEntry = 0;
+                int p3WagerEntry = 0;
+                int p4WagerEntry = 0;
+
+                // Checks for Valid Input
+                if (p1WagerField.isVisible()) {
+                    try {
+                        p1WagerEntry = Integer.parseInt(p1WagerField.getText().trim());
+                    } catch (NumberFormatException e) {
+                        p1WagerField.clear();
+                        p1WagerField.requestFocus();
+                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p1ID).getName());
+                    }
+                    if (p1WagerEntry <= 0) {
+                        p1WagerField.clear();
+                        p1WagerField.requestFocus();
+                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p1ID).getName());
+                    }
+                    if (!backEnd.addOrSubtractCashToPlayer(p1ID, -p1WagerEntry)) {
+                        p1WagerField.clear();
+                        p1WagerField.requestFocus();
+                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p1ID).getName());
+                    }
+
+                    p1InUse = true;
+                }
+                if (p2WagerField.isVisible()) {
+                    try {
+                        p2WagerEntry = Integer.parseInt(p2WagerField.getText().trim());
+                    } catch (NumberFormatException e) {
+                        p2WagerField.clear();
+                        p2WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p2ID).getName());
+                    }
+                    if (p2WagerEntry <= 0) {
+                        p2WagerField.clear();
+                        p2WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p2ID).getName());
+                    }
+                    if (!backEnd.addOrSubtractCashToPlayer(p2ID, -p2WagerEntry)) {
+                        p2WagerField.clear();
+                        p2WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p2ID).getName());
+                    }
+
+                    p2InUse = true;
+                }
+                if (p3WagerField.isVisible()) {
+                    try {
+                        p3WagerEntry = Integer.parseInt(p3WagerField.getText().trim());
+                    } catch (NumberFormatException e) {
+                        p3WagerField.clear();
+                        p3WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p3ID).getName());
+                    }
+                    if (p3WagerEntry <= 0) {
+                        p3WagerField.clear();
+                        p3WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p3ID).getName());
+                    }
+                    if (!backEnd.addOrSubtractCashToPlayer(p3ID, -p3WagerEntry)) {
+                        p3WagerField.clear();
+                        p3WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p3ID).getName());
+                    }
+
+                    p3InUse = true;
+                }
+                if (p4WagerField.isVisible()) {
+                    try {
+                        p4WagerEntry = Integer.parseInt(p4WagerField.getText().trim());
+                    } catch (NumberFormatException e) {
+                        p4WagerField.clear();
+                        p4WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p4ID).getName());
+                    }
+                    if (p4WagerEntry <= 0) {
+                        p4WagerField.clear();
+                        p4WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p4ID).getName());
+                    }
+                    if (!backEnd.addOrSubtractCashToPlayer(p4ID, -p4WagerEntry)) {
+                        p4WagerField.clear();
+                        p4WagerField.requestFocus();
+                        backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry);
+                        backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry);
+                        p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p4ID).getName());
+                    }
+
+                    p4InUse = true;
+                }
+                dealButton.setVisible(false);
+
+                // Blackjack Time!
+                newAccountButton.setDisable(true);
+                lookupAccountIDButton.setDisable(true);
+                manageCashButton.setDisable(true);
+                p1IDField.setVisible(false);
+                p1SubmitButton.setVisible(false);
+                p2IDField.setVisible(false);
+                p2SubmitButton.setVisible(false);
+                p3IDField.setVisible(false);
+                p3SubmitButton.setVisible(false);
+                p4IDField.setVisible(false);
+                p4SubmitButton.setVisible(false);
+
+                if (p1InUse) {
+                    p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                    p1WagerField.setVisible(false);
+                    p1LeaveButton.setVisible(false);
+                    p1WagerText.setText("Wager: $" + p1WagerEntry);
+                    p1WagerText.setVisible(true);
+                }
+                if (p2InUse) {
+                    p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                    p2WagerField.setVisible(false);
+                    p2LeaveButton.setVisible(false);
+                    p2WagerText.setText("Wager: $" + p2WagerEntry);
+                    p2WagerText.setVisible(true);
+                }
+                if (p3InUse) {
+                    p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                    p3WagerField.setVisible(false);
+                    p3LeaveButton.setVisible(false);
+                    p3WagerText.setText("Wager: $" + p3WagerEntry);
+                    p3WagerText.setVisible(true);
+                }
+                if (p4InUse) {
+                    p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p4ID).getCash());
+                    p4WagerField.setVisible(false);
+                    p4LeaveButton.setVisible(false);
+                    p4WagerText.setText("Wager: $" + p4WagerEntry);
+                    p4WagerText.setVisible(true);
+                }
+            } catch (NumberFormatException e1) {
+                Alert e1Alert = new Alert(AlertType.ERROR);
+                e1Alert.setTitle("BlackjackFX");
+                ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e1Alert.setHeaderText("Error: " + e1.getMessage() + "'s Wager must be a Integer");
+                e1Alert.show();
+            } catch (IllegalArgumentException e2) {
+                Alert e2Alert = new Alert(AlertType.ERROR);
+                e2Alert.setTitle("BlackjackFX");
+                ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e2Alert.setHeaderText("Error: " + e2.getMessage() +"'s Wager must be Greater than 0");
+                e2Alert.show();
+            } catch (ArithmeticException e3){
+                Alert e3Alert = new Alert(AlertType.ERROR);
+                e3Alert.setTitle("BlackjackFX");
+                ((Stage) e3Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
+                e3Alert.setHeaderText("Error: " + e3.getMessage() + " has Insufficient Funds");
+                e3Alert.show();
+            }
+        });
 
         mStage.show();
     }
