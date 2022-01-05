@@ -188,9 +188,9 @@ public class FrontEnd extends Application {
         group.getChildren().add(tableLogo);
 
         ImageView shoePile = new ImageView(Constants.backOfCardImage);
-        shoePile.setX(1050);
-        shoePile.setY(25);
-        Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getCardList().size()));
+        shoePile.setX(Constants.shoePileXPos);
+        shoePile.setY(Constants.shoePileYPos);
+        Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getNumberOfCards()));
         numOfCardsInShoe.setFont(Font.font("Verdana", 13));
         numOfCardsInShoe.setFill(Color.GHOSTWHITE);
         numOfCardsInShoe.setX(1078);
@@ -391,7 +391,98 @@ public class FrontEnd extends Application {
         dealButton.setLayoutX(563);
         dealButton.setLayoutY(580);
         dealButton.setTextAlignment(TextAlignment.CENTER);
+        dealButton.setVisible(false);
         group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton, dealButton);
+
+        // Button p1HitButton = new Button("Hit");
+        // p1HitButton.setLayoutX(100);
+        // p1HitButton.setLayoutY(570);
+        // p1HitButton.setVisible(false);
+
+        // Button p2HitButton = new Button("Hit");
+        // p2HitButton.setLayoutX(400);
+        // p2HitButton.setLayoutY(570);
+        // p2HitButton.setVisible(false);
+
+        // Button p3HitButton = new Button("Hit");
+        // p3HitButton.setLayoutX(700);
+        // p3HitButton.setLayoutY(570);
+        // p3HitButton.setVisible(false);
+
+        // Button p4HitButton = new Button("Hit");
+        // p4HitButton.setLayoutX(1000);
+        // p4HitButton.setLayoutY(570);
+        // p4HitButton.setVisible(false);
+
+        // group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
+
+        // Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+        // numOfCardsInShoe.setFont(Font.font("Verdana", 13));
+        // numOfCardsInShoe.setFill(Color.GHOSTWHITE);
+        // numOfCardsInShoe.setX(1078);
+        // numOfCardsInShoe.setY(155);
+
+        TextField p1WagerBox = new TextField();
+        p1WagerBox.setPromptText("Wager $");
+        p1WagerBox.setPrefWidth(70);
+        p1WagerBox.setLayoutX(115);
+        p1WagerBox.setLayoutY(570);
+        p1WagerBox.setVisible(false);
+        TextField p2WagerBox = new TextField();
+        p2WagerBox.setPromptText("Wager $");
+        p2WagerBox.setPrefWidth(70);
+        p2WagerBox.setLayoutX(415);
+        p2WagerBox.setLayoutY(570);
+        p2WagerBox.setVisible(false);
+        TextField p3WagerBox = new TextField();
+        p3WagerBox.setPromptText("Wager $");
+        p3WagerBox.setPrefWidth(70);
+        p3WagerBox.setLayoutX(715);
+        p3WagerBox.setLayoutY(570);
+        p3WagerBox.setVisible(false);
+        TextField p4WagerBox = new TextField();
+        p4WagerBox.setPromptText("Wager $");
+        p4WagerBox.setPrefWidth(70);
+        p4WagerBox.setLayoutX(1015);
+        p4WagerBox.setLayoutY(570);
+        p4WagerBox.setVisible(false);
+        group.getChildren().addAll(p1WagerBox, p2WagerBox, p3WagerBox, p4WagerBox);
+
+        Button p1LeaveButton = new Button("Leave");
+        p1LeaveButton.setTextAlignment(TextAlignment.CENTER);
+        p1LeaveButton.setLayoutX(115);
+        p1LeaveButton.setLayoutY(605);
+        p1LeaveButton.setPrefWidth(70);
+        p1LeaveButton.setVisible(false);
+        p1LeaveButton.setOnAction((event) -> {
+            p1ID = -1;
+            p1WagerBox.setVisible(false);
+            p1LeaveButton.setVisible(false);
+
+            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+                dealButton.setVisible(false);
+            }
+        });
+
+        Button p2LeaveButton = new Button("Leave");
+        p2LeaveButton.setTextAlignment(TextAlignment.CENTER);
+        p2LeaveButton.setLayoutX(115);
+        p2LeaveButton.setLayoutY(605);
+        p2LeaveButton.setPrefWidth(70);
+        p2LeaveButton.setVisible(false);
+        Button p3LeaveButton = new Button("Leave");
+        p3LeaveButton.setTextAlignment(TextAlignment.CENTER);
+        p3LeaveButton.setLayoutX(115);
+        p3LeaveButton.setLayoutY(605);
+        p3LeaveButton.setPrefWidth(70);
+        p3LeaveButton.setVisible(false);
+        Button p4LeaveButton = new Button("Leave");
+        p4LeaveButton.setTextAlignment(TextAlignment.CENTER);
+        p4LeaveButton.setLayoutX(115);
+        p4LeaveButton.setLayoutY(605);
+        p4LeaveButton.setPrefWidth(70);
+        p4LeaveButton.setVisible(false);
+        group.getChildren().addAll(p1LeaveButton, p2LeaveButton, p3LeaveButton, p4LeaveButton);
 
         TextField p1IDField = new TextField();
         p1IDField.setPromptText("Enter ID #");
@@ -432,7 +523,11 @@ public class FrontEnd extends Application {
                 }
 
                 p1ID = IDEntry;
-                // START LAYOUT
+                p1IDField.setVisible(false);
+                p1SubmitButton.setVisible(false);
+                p1WagerBox.setVisible(true);
+                p1LeaveButton.setVisible(true);
+                dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
@@ -571,51 +666,16 @@ public class FrontEnd extends Application {
             }
         });
         group.getChildren().addAll(p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton);
-
-        /*Button p1HitButton = new Button("Hit");
-        Button p2HitButton = new Button("Hit");
-        Button p3HitButton = new Button("Hit");
-        Button p4HitButton = new Button("Hit");
-
-        p1HitButton.setLayoutX(120);
-        p1HitButton.setLayoutY(600);
-        p2HitButton.setLayoutX(420);
-        p2HitButton.setLayoutY(600);
-        p3HitButton.setLayoutX(720);
-        p3HitButton.setLayoutY(600);
-        p4HitButton.setLayoutX(1020);
-        p4HitButton.setLayoutY(600);
-        group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
-
-        TextField p1WagerBox = new TextField();
-        TextField p2WagerBox = new TextField();
-        TextField p3WagerBox = new TextField();
-        TextField p4WagerBox = new TextField();
-        p1WagerBox.setPromptText("Wager $");
-        p2WagerBox.setPromptText("Wager $");
-        p3WagerBox.setPromptText("Wager $");
-        p4WagerBox.setPromptText("Wager $");
-
-        p1WagerBox.setPrefWidth(60);
-        p1WagerBox.setLayoutX(120);
-        p1WagerBox.setLayoutY(630);
-        p2WagerBox.setPrefWidth(60);
-        p2WagerBox.setLayoutX(420);
-        p2WagerBox.setLayoutY(630);
-        p3WagerBox.setPrefWidth(60);
-        p3WagerBox.setLayoutX(720);
-        p3WagerBox.setLayoutY(630);
-        p4WagerBox.setPrefWidth(60);
-        p4WagerBox.setLayoutX(1020);
-        p4WagerBox.setLayoutY(630);
-        group.getChildren().addAll(p1WagerBox, p2WagerBox, p3WagerBox, p4WagerBox);
         
         ImageView discardPile = new ImageView(Constants.backOfCardImage);
         discardPile.setX(65);
         discardPile.setY(25);
+        discardPile.setVisible(false);
         ImageView cutCard = new ImageView(Constants.cutCardImage);
-        cutCard.setX(950);
-        cutCard.setY(25);*/
+        cutCard.setX(Constants.shoePileXPos);
+        cutCard.setY(Constants.shoePileYPos);
+        cutCard.setVisible(false);
+        group.getChildren().addAll(discardPile, cutCard);
 
         mStage.show();
     }

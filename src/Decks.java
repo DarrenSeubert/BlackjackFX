@@ -14,6 +14,7 @@ public class Decks {
     private List<Card> usedCardList;
     private int numberOfShuffles;
     private int cutCardIndex;
+    private boolean cutCardInDeck;
     private final int MIN_SHUFFLES = 5;
     private final int MAX_SHUFFLES = 100;
     private final int CUT_MIN_OFFSET = 60;
@@ -42,6 +43,9 @@ public class Decks {
                 CUT_MIN_OFFSET);
             
             cardList.add(cutCardIndex, new Card(Card.Suit.Cut, Card.Value.Cut));
+            cutCardInDeck = true;
+        } else {
+            cutCardInDeck = false;
         }
     }
 
@@ -52,6 +56,14 @@ public class Decks {
      */
     public List<Card> getCardList() {
         return cardList;
+    }
+
+    public int getNumberOfCards() {
+        if (cutCardInDeck) {
+            return cardList.size() - 1;
+        } else {
+            return cardList.size();
+        }
     }
 
     /**

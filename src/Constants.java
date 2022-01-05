@@ -70,7 +70,9 @@ public class Constants {
                                spadeKingFilePath = "./Images/Cards/Spades/king.png";
 
     public static int cardPixelWidth = 80,
-                      cardPixelHeight = 115;
+                      cardPixelHeight = 115,
+                      shoePileXPos = 1050,
+                      shoePileYPos = 25;
 
     public static Image backOfCardImage = new Image(cardBackFilePath, cardPixelWidth, cardPixelHeight, true, true),
                         cutCardImage = new Image(cutCardFilePath, cardPixelWidth, cardPixelHeight, true, true),
