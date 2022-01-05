@@ -206,7 +206,7 @@ public class FrontEnd extends Application {
         numOfCardsInShoe.setY(155);
         group.getChildren().addAll(shoePile, discardPile, cutCard, numOfCardsInShoe);
 
-        // Start of Interactive Elements
+        // TODO Start of Interactive Elements
         Button newAccountButton = new Button("Open New\nAccount");
         newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
@@ -395,7 +395,7 @@ public class FrontEnd extends Application {
         });
         group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton);
 
-        // Start of player elements
+        // TODO Start of player elements
         TextField p1IDField = new TextField();
         p1IDField.setPromptText("Enter ID #");
         p1IDField.setLayoutX(115);
@@ -474,23 +474,75 @@ public class FrontEnd extends Application {
         p1LeaveButton.setVisible(false);
         Button p2LeaveButton = new Button("Leave");
         p2LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p2LeaveButton.setLayoutX(115);
+        p2LeaveButton.setLayoutX(415);
         p2LeaveButton.setLayoutY(605);
         p2LeaveButton.setPrefWidth(70);
         p2LeaveButton.setVisible(false);
         Button p3LeaveButton = new Button("Leave");
         p3LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p3LeaveButton.setLayoutX(115);
+        p3LeaveButton.setLayoutX(715);
         p3LeaveButton.setLayoutY(605);
         p3LeaveButton.setPrefWidth(70);
         p3LeaveButton.setVisible(false);
         Button p4LeaveButton = new Button("Leave");
         p4LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p4LeaveButton.setLayoutX(115);
+        p4LeaveButton.setLayoutX(1015);
         p4LeaveButton.setLayoutY(605);
         p4LeaveButton.setPrefWidth(70);
         p4LeaveButton.setVisible(false);
         group.getChildren().addAll(p1LeaveButton, p2LeaveButton, p3LeaveButton, p4LeaveButton);
+
+        Text p1IDAndNameText = new Text();
+        p1IDAndNameText.setFont(Font.font("Verdana", 12));
+        p1IDAndNameText.setFill(Color.GHOSTWHITE);
+        p1IDAndNameText.setX(5);
+        p1IDAndNameText.setY(666);
+        p1IDAndNameText.setVisible(false);
+        Text p2IDAndNameText = new Text();
+        p2IDAndNameText.setFont(Font.font("Verdana", 12));
+        p2IDAndNameText.setFill(Color.GHOSTWHITE);
+        p2IDAndNameText.setX(305);
+        p2IDAndNameText.setY(666);
+        p2IDAndNameText.setVisible(false);
+        Text p3IDAndNameText = new Text();
+        p3IDAndNameText.setFont(Font.font("Verdana", 12));
+        p3IDAndNameText.setFill(Color.GHOSTWHITE);
+        p3IDAndNameText.setX(605);
+        p3IDAndNameText.setY(666);
+        p3IDAndNameText.setVisible(false);
+        Text p4IDAndNameText = new Text();
+        p4IDAndNameText.setFont(Font.font("Verdana", 12));
+        p4IDAndNameText.setFill(Color.GHOSTWHITE);
+        p4IDAndNameText.setX(905);
+        p4IDAndNameText.setY(666);
+        p4IDAndNameText.setVisible(false);
+        group.getChildren().addAll(p1IDAndNameText, p2IDAndNameText, p3IDAndNameText, p4IDAndNameText);
+
+        Text p1CashText = new Text();
+        p1CashText.setFont(Font.font("Verdana", 12));
+        p1CashText.setFill(Color.GHOSTWHITE);
+        p1CashText.setX(5);
+        p1CashText.setY(695);
+        p1CashText.setVisible(false);
+        Text p2CashText = new Text();
+        p2CashText.setFont(Font.font("Verdana", 12));
+        p2CashText.setFill(Color.GHOSTWHITE);
+        p2CashText.setX(305);
+        p2CashText.setY(695);
+        p2CashText.setVisible(false);
+        Text p3CashText = new Text();
+        p3CashText.setFont(Font.font("Verdana", 12));
+        p3CashText.setFill(Color.GHOSTWHITE);
+        p3CashText.setX(605);
+        p3CashText.setY(695);
+        p3CashText.setVisible(false);
+        Text p4CashText = new Text();
+        p4CashText.setFont(Font.font("Verdana", 12));
+        p4CashText.setFill(Color.GHOSTWHITE);
+        p4CashText.setX(905);
+        p4CashText.setY(695);
+        p4CashText.setVisible(false);
+        group.getChildren().addAll(p1CashText, p2CashText, p3CashText, p4CashText);
 
         Button dealButton = new Button("DEAL");
         dealButton.setFont(new Font(20));
@@ -520,7 +572,7 @@ public class FrontEnd extends Application {
         // p4HitButton.setVisible(false);
         // group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
         
-        // Start of Button Actions
+        // TODO Start of Button Actions
         p1SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p1IDField.getText().trim());
@@ -535,8 +587,13 @@ public class FrontEnd extends Application {
                 p1ID = IDEntry;
                 p1IDField.setVisible(false);
                 p1SubmitButton.setVisible(false);
+
                 p1WagerBox.setVisible(true);
                 p1LeaveButton.setVisible(true);
+                p1IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
+                p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p1IDAndNameText.setVisible(true);
+                p1CashText.setVisible(true);
                 dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
@@ -558,7 +615,6 @@ public class FrontEnd extends Application {
                 e3Alert.show();
             }
         });
-
         p2SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p2IDField.getText().trim());
@@ -571,7 +627,16 @@ public class FrontEnd extends Application {
                 }
 
                 p2ID = IDEntry;
-                // START LAYOUT
+                p2IDField.setVisible(false);
+                p2SubmitButton.setVisible(false);
+
+                p2WagerBox.setVisible(true);
+                p2LeaveButton.setVisible(true);
+                p2IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
+                p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p2IDAndNameText.setVisible(true);
+                p2CashText.setVisible(true);
+                dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
@@ -592,7 +657,6 @@ public class FrontEnd extends Application {
                 e3Alert.show();
             }
         });
-
         p3SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p3IDField.getText().trim());
@@ -605,7 +669,16 @@ public class FrontEnd extends Application {
                 }
 
                 p3ID = IDEntry;
-                // START LAYOUT
+                p3IDField.setVisible(false);
+                p3SubmitButton.setVisible(false);
+
+                p3WagerBox.setVisible(true);
+                p3LeaveButton.setVisible(true);
+                p3IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
+                p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p3IDAndNameText.setVisible(true);
+                p3CashText.setVisible(true);
+                dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
@@ -626,7 +699,6 @@ public class FrontEnd extends Application {
                 e3Alert.show();
             }
         });
-
         p4SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p4IDField.getText().trim());
@@ -639,7 +711,16 @@ public class FrontEnd extends Application {
                 }
 
                 p4ID = IDEntry;
-                // START LAYOUT
+                p4IDField.setVisible(false);
+                p4SubmitButton.setVisible(false);
+
+                p4WagerBox.setVisible(true);
+                p4LeaveButton.setVisible(true);
+                p4IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
+                p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p4IDAndNameText.setVisible(true);
+                p4CashText.setVisible(true);
+                dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
@@ -665,11 +746,59 @@ public class FrontEnd extends Application {
             p1ID = -1;
             p1WagerBox.setVisible(false);
             p1LeaveButton.setVisible(false);
-
+            p1IDAndNameText.setVisible(false);
+            p1CashText.setVisible(false);
             if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
                 dealButton.setVisible(false);
             }
+
+            p1IDField.clear();
+            p1IDField.setVisible(true);
+            p1SubmitButton.setVisible(true);
         });
+        p2LeaveButton.setOnAction((event) -> {
+            p2ID = -1;
+            p2WagerBox.setVisible(false);
+            p2LeaveButton.setVisible(false);
+            p2IDAndNameText.setVisible(false);
+            p2CashText.setVisible(false);
+            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+                dealButton.setVisible(false);
+            }
+
+            p2IDField.clear();
+            p2IDField.setVisible(true);
+            p2SubmitButton.setVisible(true);
+        });
+        p3LeaveButton.setOnAction((event) -> {
+            p3ID = -1;
+            p3WagerBox.setVisible(false);
+            p3LeaveButton.setVisible(false);
+            p3IDAndNameText.setVisible(false);
+            p3CashText.setVisible(false);
+            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+                dealButton.setVisible(false);
+            }
+
+            p3IDField.clear();
+            p3IDField.setVisible(true);
+            p3SubmitButton.setVisible(true);
+        });
+        p4LeaveButton.setOnAction((event) -> {
+            p4ID = -1;
+            p4WagerBox.setVisible(false);
+            p4LeaveButton.setVisible(false);
+            p4IDAndNameText.setVisible(false);
+            p4CashText.setVisible(false);
+            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+                dealButton.setVisible(false);
+            }
+
+            p4IDField.clear();
+            p4IDField.setVisible(true);
+            p4SubmitButton.setVisible(true);
+        });
+
 
         mStage.show();
     }
