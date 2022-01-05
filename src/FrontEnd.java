@@ -190,13 +190,23 @@ public class FrontEnd extends Application {
         ImageView shoePile = new ImageView(Constants.backOfCardImage);
         shoePile.setX(Constants.shoePileXPos);
         shoePile.setY(Constants.shoePileYPos);
+        ImageView discardPile = new ImageView(Constants.backOfCardImage);
+        discardPile.setX(65);
+        discardPile.setY(25);
+        discardPile.setVisible(false);
+        ImageView cutCard = new ImageView(Constants.cutCardImage);
+        cutCard.setX(Constants.shoePileXPos);
+        cutCard.setY(Constants.shoePileYPos);
+        cutCard.setVisible(false);
+
         Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getNumberOfCards()));
         numOfCardsInShoe.setFont(Font.font("Verdana", 13));
         numOfCardsInShoe.setFill(Color.GHOSTWHITE);
         numOfCardsInShoe.setX(1078);
         numOfCardsInShoe.setY(155);
-        group.getChildren().addAll(shoePile, numOfCardsInShoe);
+        group.getChildren().addAll(shoePile, discardPile, cutCard, numOfCardsInShoe);
 
+        // Start of Interactive Elements
         Button newAccountButton = new Button("Open New\nAccount");
         newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
@@ -383,44 +393,52 @@ public class FrontEnd extends Application {
                 }
             });
         });
+        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton);
 
-        Button dealButton = new Button("DEAL");
-        dealButton.setFont(new Font(20));
-        dealButton.setPrefWidth(74);
-        dealButton.setPrefHeight(40);
-        dealButton.setLayoutX(563);
-        dealButton.setLayoutY(580);
-        dealButton.setTextAlignment(TextAlignment.CENTER);
-        dealButton.setVisible(false);
-        group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton, dealButton);
+        // Start of player elements
+        TextField p1IDField = new TextField();
+        p1IDField.setPromptText("Enter ID #");
+        p1IDField.setLayoutX(115);
+        p1IDField.setLayoutY(570);
+        p1IDField.setPrefWidth(70);
+        TextField p2IDField = new TextField();
+        p2IDField.setPromptText("Enter ID #");
+        p2IDField.setLayoutX(415);
+        p2IDField.setLayoutY(570);
+        p2IDField.setPrefWidth(70);
+        TextField p3IDField = new TextField();
+        p3IDField.setPromptText("Enter ID #");
+        p3IDField.setLayoutX(715);
+        p3IDField.setLayoutY(570);
+        p3IDField.setPrefWidth(70);
+        TextField p4IDField = new TextField();
+        p4IDField.setPromptText("Enter ID #");
+        p4IDField.setLayoutX(1015);
+        p4IDField.setLayoutY(570);
+        p4IDField.setPrefWidth(70);
+        group.getChildren().addAll(p1IDField, p2IDField, p3IDField, p4IDField);
 
-        // Button p1HitButton = new Button("Hit");
-        // p1HitButton.setLayoutX(100);
-        // p1HitButton.setLayoutY(570);
-        // p1HitButton.setVisible(false);
-
-        // Button p2HitButton = new Button("Hit");
-        // p2HitButton.setLayoutX(400);
-        // p2HitButton.setLayoutY(570);
-        // p2HitButton.setVisible(false);
-
-        // Button p3HitButton = new Button("Hit");
-        // p3HitButton.setLayoutX(700);
-        // p3HitButton.setLayoutY(570);
-        // p3HitButton.setVisible(false);
-
-        // Button p4HitButton = new Button("Hit");
-        // p4HitButton.setLayoutX(1000);
-        // p4HitButton.setLayoutY(570);
-        // p4HitButton.setVisible(false);
-
-        // group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
-
-        // Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getNumberOfCards()));
-        // numOfCardsInShoe.setFont(Font.font("Verdana", 13));
-        // numOfCardsInShoe.setFill(Color.GHOSTWHITE);
-        // numOfCardsInShoe.setX(1078);
-        // numOfCardsInShoe.setY(155);
+        Button p1SubmitButton = new Button("Submit");
+        p1SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p1SubmitButton.setLayoutX(115);
+        p1SubmitButton.setLayoutY(605);
+        p1SubmitButton.setPrefWidth(70);
+        Button p2SubmitButton = new Button("Submit");
+        p2SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p2SubmitButton.setLayoutX(415);
+        p2SubmitButton.setLayoutY(605);
+        p2SubmitButton.setPrefWidth(70);
+        Button p3SubmitButton = new Button("Submit");
+        p3SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p3SubmitButton.setLayoutX(715);
+        p3SubmitButton.setLayoutY(605);
+        p3SubmitButton.setPrefWidth(70);
+        Button p4SubmitButton = new Button("Submit");
+        p4SubmitButton.setTextAlignment(TextAlignment.CENTER);
+        p4SubmitButton.setLayoutX(1015);
+        p4SubmitButton.setLayoutY(605);
+        p4SubmitButton.setPrefWidth(70);
+        group.getChildren().addAll(p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton);
 
         TextField p1WagerBox = new TextField();
         p1WagerBox.setPromptText("Wager $");
@@ -454,16 +472,6 @@ public class FrontEnd extends Application {
         p1LeaveButton.setLayoutY(605);
         p1LeaveButton.setPrefWidth(70);
         p1LeaveButton.setVisible(false);
-        p1LeaveButton.setOnAction((event) -> {
-            p1ID = -1;
-            p1WagerBox.setVisible(false);
-            p1LeaveButton.setVisible(false);
-
-            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
-                dealButton.setVisible(false);
-            }
-        });
-
         Button p2LeaveButton = new Button("Leave");
         p2LeaveButton.setTextAlignment(TextAlignment.CENTER);
         p2LeaveButton.setLayoutX(115);
@@ -484,33 +492,35 @@ public class FrontEnd extends Application {
         p4LeaveButton.setVisible(false);
         group.getChildren().addAll(p1LeaveButton, p2LeaveButton, p3LeaveButton, p4LeaveButton);
 
-        TextField p1IDField = new TextField();
-        p1IDField.setPromptText("Enter ID #");
-        p1IDField.setLayoutX(115);
-        p1IDField.setLayoutY(570);
-        p1IDField.setPrefWidth(70);
-        TextField p2IDField = new TextField();
-        p2IDField.setPromptText("Enter ID #");
-        p2IDField.setLayoutX(415);
-        p2IDField.setLayoutY(570);
-        p2IDField.setPrefWidth(70);
-        TextField p3IDField = new TextField();
-        p3IDField.setPromptText("Enter ID #");
-        p3IDField.setLayoutX(715);
-        p3IDField.setLayoutY(570);
-        p3IDField.setPrefWidth(70);
-        TextField p4IDField = new TextField();
-        p4IDField.setPromptText("Enter ID #");
-        p4IDField.setLayoutX(1015);
-        p4IDField.setLayoutY(570);
-        p4IDField.setPrefWidth(70);
-        group.getChildren().addAll(p1IDField, p2IDField, p3IDField, p4IDField);
+        Button dealButton = new Button("DEAL");
+        dealButton.setFont(new Font(20));
+        dealButton.setPrefWidth(74);
+        dealButton.setPrefHeight(40);
+        dealButton.setLayoutX(563);
+        dealButton.setLayoutY(580);
+        dealButton.setTextAlignment(TextAlignment.CENTER);
+        dealButton.setVisible(false);
+        group.getChildren().add(dealButton);
 
-        Button p1SubmitButton = new Button("Submit");
-        p1SubmitButton.setTextAlignment(TextAlignment.CENTER);
-        p1SubmitButton.setLayoutX(115);
-        p1SubmitButton.setLayoutY(605);
-        p1SubmitButton.setPrefWidth(70);
+        // Button p1HitButton = new Button("Hit");
+        // p1HitButton.setLayoutX(100);
+        // p1HitButton.setLayoutY(570);
+        // p1HitButton.setVisible(false);
+        // Button p2HitButton = new Button("Hit");
+        // p2HitButton.setLayoutX(400);
+        // p2HitButton.setLayoutY(570);
+        // p2HitButton.setVisible(false);
+        // Button p3HitButton = new Button("Hit");
+        // p3HitButton.setLayoutX(700);
+        // p3HitButton.setLayoutY(570);
+        // p3HitButton.setVisible(false);
+        // Button p4HitButton = new Button("Hit");
+        // p4HitButton.setLayoutX(1000);
+        // p4HitButton.setLayoutY(570);
+        // p4HitButton.setVisible(false);
+        // group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
+        
+        // Start of Button Actions
         p1SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p1IDField.getText().trim());
@@ -549,11 +559,6 @@ public class FrontEnd extends Application {
             }
         });
 
-        Button p2SubmitButton = new Button("Submit");
-        p2SubmitButton.setTextAlignment(TextAlignment.CENTER);
-        p2SubmitButton.setLayoutX(415);
-        p2SubmitButton.setLayoutY(605);
-        p2SubmitButton.setPrefWidth(70);
         p2SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p2IDField.getText().trim());
@@ -588,11 +593,6 @@ public class FrontEnd extends Application {
             }
         });
 
-        Button p3SubmitButton = new Button("Submit");
-        p3SubmitButton.setTextAlignment(TextAlignment.CENTER);
-        p3SubmitButton.setLayoutX(715);
-        p3SubmitButton.setLayoutY(605);
-        p3SubmitButton.setPrefWidth(70);
         p3SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p3IDField.getText().trim());
@@ -627,11 +627,6 @@ public class FrontEnd extends Application {
             }
         });
 
-        Button p4SubmitButton = new Button("Submit");
-        p4SubmitButton.setTextAlignment(TextAlignment.CENTER);
-        p4SubmitButton.setLayoutX(1015);
-        p4SubmitButton.setLayoutY(605);
-        p4SubmitButton.setPrefWidth(70);
         p4SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p4IDField.getText().trim());
@@ -665,17 +660,16 @@ public class FrontEnd extends Application {
                 e3Alert.show();
             }
         });
-        group.getChildren().addAll(p1SubmitButton, p2SubmitButton, p3SubmitButton, p4SubmitButton);
-        
-        ImageView discardPile = new ImageView(Constants.backOfCardImage);
-        discardPile.setX(65);
-        discardPile.setY(25);
-        discardPile.setVisible(false);
-        ImageView cutCard = new ImageView(Constants.cutCardImage);
-        cutCard.setX(Constants.shoePileXPos);
-        cutCard.setY(Constants.shoePileYPos);
-        cutCard.setVisible(false);
-        group.getChildren().addAll(discardPile, cutCard);
+
+        p1LeaveButton.setOnAction((event) -> {
+            p1ID = -1;
+            p1WagerBox.setVisible(false);
+            p1LeaveButton.setVisible(false);
+
+            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+                dealButton.setVisible(false);
+            }
+        });
 
         mStage.show();
     }
