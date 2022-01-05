@@ -97,7 +97,7 @@ public class FrontEnd extends Application {
         deckPrompt.show();
     }
 
-    private void setLayoutGrid(Group group) { // TODO REMOVE FOR FINAL PROJECT
+    private void setLayoutGrid(Group group) { // TODO EDIT FOR FINAL PROJECT
         Rectangle middleLine = new Rectangle();
         middleLine.setWidth(1);
         middleLine.setHeight(700);
@@ -177,7 +177,7 @@ public class FrontEnd extends Application {
         mStage.setScene(scene);
         mStage.setResizable(false);
 
-        setLayoutGrid(group); // TODO REMOVE IN FINAL CODE
+        setLayoutGrid(group); // TODO EDIT FOR FINAL PROJECT
 
         ImageView tableLogo = new ImageView(new Image(Constants.blackjackLogoFilePath, 250, 250, true, true));
         tableLogo.setX(475);
@@ -203,7 +203,7 @@ public class FrontEnd extends Application {
         numOfCardsInShoe.setY(155);
         group.getChildren().addAll(shoePile, discardPile, cutCard, numOfCardsInShoe);
 
-        // TODO Start of Interactive Elements
+        // Start of Interactive Elements
         Button newAccountButton = new Button("Open New\nAccount");
         newAccountButton.setLayoutX(524);
         newAccountButton.setLayoutY(25);
@@ -393,7 +393,7 @@ public class FrontEnd extends Application {
         });
         group.getChildren().addAll(newAccountButton, lookupAccountIDButton, manageCashButton);
 
-        // TODO Start of player elements
+        // Start of player elements
         TextField p1IDField = new TextField();
         p1IDField.setPromptText("Enter ID #");
         p1IDField.setLayoutX(115);
@@ -596,7 +596,7 @@ public class FrontEnd extends Application {
         // p4HitButton.setVisible(false);
         // group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
         
-        // TODO Start of Button Actions
+        // Start of Button Actions
         p1SubmitButton.setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(p1IDField.getText().trim());
