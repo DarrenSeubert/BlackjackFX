@@ -9,7 +9,7 @@ public class Constants {
     public static final String playerCSVFilePath = "./src/PlayerFiles/players.csv";
 
     public static final String blackjackLogoFilePath = "./Images/blackjack_logo.png";
-    public static final String cardBackFilePath = "./Images/Cards/card_back.png", // Card File Paths
+    private static final String cardBackFilePath = "./Images/Cards/card_back.png", // Card File Paths
                                cutCardFilePath = "./Images/Cards/cut.png",
 
                                clubAceFilePath = "./Images/Cards/Clubs/ace.png",
@@ -71,7 +71,17 @@ public class Constants {
     public static int cardPixelWidth = 80,
                       cardPixelHeight = 115,
                       shoePileXPos = 1050,
-                      shoePileYPos = 25;
+                      shoePileYPos = 25,
+                      layeredCardOffset = 20,
+                      dealerCardFrontYPos = 190,
+                      dealerCardBackYPos = 191,
+                      playerCardFrontYPos = 410,
+                      playerCardBackYPos = 411,
+                      dealerCardStartingXPos = 520,
+                      p1CardStartingXPos = 70,
+                      p2CardStartingXPos = 370,
+                      p3CardStartingXPos = 670,
+                      p4CardStartingXPos = 970;
 
     public static Image backOfCardImage = new Image(cardBackFilePath, cardPixelWidth, cardPixelHeight, true, true),
                         cutCardImage = new Image(cutCardFilePath, cardPixelWidth, cardPixelHeight, true, true),

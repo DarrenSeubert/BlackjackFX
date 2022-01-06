@@ -1,6 +1,7 @@
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -22,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 /**
@@ -768,6 +770,25 @@ public class FrontEnd extends Application {
         p4SurrenderButton.setVisible(false);
         group.getChildren().addAll(p1SurrenderButton, p2SurrenderButton, p3SurrenderButton, p4SurrenderButton);
 
+        ImageView p1BackCard = new ImageView(Constants.backOfCardImage);
+        ImageView p1FrontCard = new ImageView(Constants.clubAceImage);
+        TranslateTransition animation = new TranslateTransition(Duration.seconds(1));
+        animation.setNode(p1FrontCard);
+        animation.setFromX(Constants.shoePileXPos);
+        animation.setFromY(Constants.shoePileYPos);
+        animation.setToY(Constants.playerCardFrontYPos);
+        animation.setToX(Constants.p1CardStartingXPos);
+        animation.play();
+        TranslateTransition animation1 = new TranslateTransition(Duration.seconds(1));
+        animation1.setNode(p1BackCard);
+        animation1.setFromX(Constants.shoePileXPos);
+        animation1.setFromY(Constants.shoePileYPos);
+        animation1.setToY(Constants.playerCardFrontYPos);
+        animation1.setToX(Constants.p1CardStartingXPos + Constants.layeredCardOffset);
+        animation1.play();
+
+        group.getChildren().addAll(p1FrontCard, p1BackCard);
+
         // Start of Button Actions
         p1SubmitButton.setOnAction((event) -> {
             try {
@@ -1163,6 +1184,8 @@ public class FrontEnd extends Application {
                 dealButton.setVisible(false);
 
                 // Blackjack Time!
+                boolean firstInUse;
+
                 newAccountButton.setDisable(true);
                 lookupAccountIDButton.setDisable(true);
                 manageCashButton.setDisable(true);
@@ -1175,63 +1198,82 @@ public class FrontEnd extends Application {
                 p4IDField.setVisible(false);
                 p4SubmitButton.setVisible(false);
 
-                p1YesButton.setVisible(true);
-                p2YesButton.setVisible(true);
-                p3YesButton.setVisible(true);
-                p4YesButton.setVisible(true);
-                p1NoButton.setVisible(true);
-                p2NoButton.setVisible(true);
-                p3NoButton.setVisible(true);
-                p4NoButton.setVisible(true);
-                p1HitButton.setVisible(true);
-                p2HitButton.setVisible(true);
-                p3HitButton.setVisible(true);
-                p4HitButton.setVisible(true);
-                p1StandButton.setVisible(true);
-                p2StandButton.setVisible(true);
-                p3StandButton.setVisible(true);
-                p4StandButton.setVisible(true);
-                p1DoubleButton.setVisible(true);
-                p2DoubleButton.setVisible(true);
-                p3DoubleButton.setVisible(true);
-                p4DoubleButton.setVisible(true);
-                p1SplitButton.setVisible(true);
-                p2SplitButton.setVisible(true);
-                p3SplitButton.setVisible(true);
-                p4SplitButton.setVisible(true);
-                p1SurrenderButton.setVisible(true);
-                p2SurrenderButton.setVisible(true);
-                p3SurrenderButton.setVisible(true);
-                p4SurrenderButton.setVisible(true);
-
                 if (p1InUse) {
-                    p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
                     p1WagerField.setVisible(false);
                     p1LeaveButton.setVisible(false);
+                    p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
                     p1WagerText.setText("Wager: $" + p1WagerEntry);
                     p1WagerText.setVisible(true);
+
+                    p1HitButton.setVisible(true);
+                    p1HitButton.setDisable(true);
+                    p1StandButton.setVisible(true);
+                    p1StandButton.setDisable(true);
+                    p1DoubleButton.setVisible(true);
+                    p1DoubleButton.setDisable(true);
+                    p1SplitButton.setVisible(true);
+                    p1SplitButton.setDisable(true);
+                    p1SurrenderButton.setVisible(true);
+                    p1SurrenderButton.setDisable(true);
                 }
                 if (p2InUse) {
-                    p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
                     p2WagerField.setVisible(false);
                     p2LeaveButton.setVisible(false);
+                    p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
                     p2WagerText.setText("Wager: $" + p2WagerEntry);
                     p2WagerText.setVisible(true);
+
+                    p2HitButton.setVisible(true);
+                    p2HitButton.setDisable(true);
+                    p2StandButton.setVisible(true);
+                    p2StandButton.setDisable(true);
+                    p2DoubleButton.setVisible(true);
+                    p2DoubleButton.setDisable(true);
+                    p2SplitButton.setVisible(true);
+                    p2SplitButton.setDisable(true);
+                    p2SurrenderButton.setVisible(true);
+                    p2SurrenderButton.setDisable(true);
                 }
                 if (p3InUse) {
-                    p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
                     p3WagerField.setVisible(false);
                     p3LeaveButton.setVisible(false);
+                    p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
                     p3WagerText.setText("Wager: $" + p3WagerEntry);
                     p3WagerText.setVisible(true);
+
+                    p3HitButton.setVisible(true);
+                    p3HitButton.setDisable(true);
+                    p3StandButton.setVisible(true);
+                    p3StandButton.setDisable(true);
+                    p3DoubleButton.setVisible(true);
+                    p3DoubleButton.setDisable(true);
+                    p3SplitButton.setVisible(true);
+                    p3SplitButton.setDisable(true);
+                    p3SurrenderButton.setVisible(true);
+                    p3SurrenderButton.setDisable(true);
                 }
                 if (p4InUse) {
-                    p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p4ID).getCash());
                     p4WagerField.setVisible(false);
                     p4LeaveButton.setVisible(false);
+                    p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p4ID).getCash());
                     p4WagerText.setText("Wager: $" + p4WagerEntry);
                     p4WagerText.setVisible(true);
+
+                    p4HitButton.setVisible(true);
+                    p4HitButton.setDisable(true);
+                    p4StandButton.setVisible(true);
+                    p4StandButton.setDisable(true);
+                    p4DoubleButton.setVisible(true);
+                    p4DoubleButton.setDisable(true);
+                    p4SplitButton.setVisible(true);
+                    p4SplitButton.setDisable(true);
+                    p4SurrenderButton.setVisible(true);
+                    p4SurrenderButton.setDisable(true);
                 }
+
+                // backEnd.hitDealer();
+                // backEnd.hitDealer();
+                // numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
