@@ -1248,7 +1248,7 @@ public class FrontEnd extends Application {
                     p4SurrenderButton.setDisable(true);
                 }
 
-                // Deal Starting Cards
+                // Deal Starting Cards // TODO Deal with Cut Card
                 int p1HandIndex = 0;
                 int p2HandIndex = 0;
                 int p3HandIndex = 0;
