@@ -7,10 +7,10 @@ import java.util.List;
  * @author Darren Seubert
  */
 public class Player {
-    private String name;
     private int IDNumber;
+    private String name;
     private int cash;
-    private List<Card> hand;
+    private List<Hand> handList;
 
     /**
      * 
@@ -20,10 +20,11 @@ public class Player {
      * @param cash
      */
     public Player(int IDNumber, String name, int cash) {
-        this.name = name;
         this.IDNumber = IDNumber;
+        this.name = name;
         this.cash = cash;
-        hand = new ArrayList<>();
+        handList = new ArrayList<>();
+        handList.add(new Hand());
     }
 
     /**
@@ -54,15 +55,6 @@ public class Player {
     }
 
     /**
-     * Getter method for the player's hand of cards
-     * 
-     * @return 
-     */
-    public List<Card> getHand() {
-        return hand;
-    }
-
-    /**
      * 
      * 
      * @param amount
@@ -74,49 +66,20 @@ public class Player {
     /**
      * 
      * 
-     * @param card
-     */
-    public void addCard(Card card) {
-        hand.add(card);
-    }
-
-    /**
-     * 
-     * 
      * @return
      */
-    public List<Integer> getPossibleHandValues() {
-        List<Integer> possibleHandValues = new ArrayList<>();
-        int numberOfAces = 0;
-        int handValue = 0;
-
-        for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getValue() == Card.Value.Ace) {
-                numberOfAces++;
-            }
-
-            handValue += hand.get(i).getValueInt();
-        }
-
-        if (handValue <= 21) {
-            possibleHandValues.add(handValue);
-        }
-
-        for (int i = 0; i < numberOfAces; i++) {
-            handValue += 10;
-
-            if (handValue <= 21) {
-                possibleHandValues.add(handValue);
-            }
-        }
-
-        return possibleHandValues;
+    public List<Hand> getHands() {
+        return handList;
     }
 
     /**
+     * Method that creates a new hand for the given player
      * 
+     * @return Index of the new hand
      */
-    public void clearHand() {
-        hand.removeAll(hand);
+    public int addNewHand() {
+        handList.add(new Hand());
+
+        return handList.size() - 1;
     }
 }

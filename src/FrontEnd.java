@@ -1249,56 +1249,77 @@ public class FrontEnd extends Application {
                 }
 
                 // Deal Starting Cards
+                int p1HandIndex = 0;
+                int p2HandIndex = 0;
+                int p3HandIndex = 0;
+                int p4HandIndex = 0;
                 int currentPlayer = -1;
-                for (int i = 0; i < 2; i++) {
-                    if (p4InUse) {
-                        if (currentPlayer == -1) {
-                            currentPlayer = 4;
-                        }
-    
-                        backEnd.hitPlayer(p4ID);
-                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
-                    }
-                    if (p3InUse) {
-                        if (currentPlayer == -1) {
-                            currentPlayer = 3;
-                        }
-                        backEnd.hitPlayer(p3ID);
-                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
-                    }
-                    if (p2InUse) {
-                        if (currentPlayer == -1) {
-                            currentPlayer = 2;
-                        }
-                        backEnd.hitPlayer(p2ID);
-                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
-                    }
-                    if (p1InUse) {
-                        if (currentPlayer == -1) {
-                            currentPlayer = 1;
-                        }
-                        backEnd.hitPlayer(p1ID);
-                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
-                    }
-                    backEnd.hitDealer();
-                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));  
-                }
 
-                //TODO DEBUG CODE
-                System.out.println("Dealer: " + backEnd.getDealer().getHand().toString());
-                if (p1InUse) {
-                    System.out.println("P1: " + backEnd.getDm().playerTable.get(p1ID).getHand().toString());
-                }
-                if (p2InUse) {
-                    System.out.println("P2: " + backEnd.getDm().playerTable.get(p2ID).getHand().toString());
+                if (p4InUse) {
+                    if (currentPlayer == -1) {
+                        currentPlayer = 4;
+                    }
+    
+                    backEnd.hitPlayer(p4ID, p4HandIndex);
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
-                    System.out.println("P3: " + backEnd.getDm().playerTable.get(p3ID).getHand().toString());
+                    if (currentPlayer == -1) {
+                        currentPlayer = 3;
+                    }
+
+                    if (p3ID == p4ID) {
+                        p3HandIndex = backEnd.getDm().playerTable.get(p3ID).addNewHand();
+                    }
+                    backEnd.hitPlayer(p3ID, p3HandIndex);
+                        
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
+                if (p2InUse) {
+                    if (currentPlayer == -1) {
+                        currentPlayer = 2;
+                    }
+
+                    if (p2ID == p3ID || p2ID == p4ID) {
+                        p2HandIndex = backEnd.getDm().playerTable.get(p2ID).addNewHand();
+                    }
+                    backEnd.hitPlayer(p2ID, p2HandIndex);
+
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                }
+                if (p1InUse) {
+                    if (currentPlayer == -1) {
+                        currentPlayer = 1;
+                    }
+
+                    if (p1ID == p2ID || p1ID == p3ID || p1ID == p4ID) {
+                        p1HandIndex = backEnd.getDm().playerTable.get(p1ID).addNewHand();
+                    }
+                    backEnd.hitPlayer(p1ID, p1HandIndex);
+
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
+                }
+                backEnd.hitDealer();
+                numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                
                 if (p4InUse) {
-                    System.out.println("P4: " + backEnd.getDm().playerTable.get(p4ID).getHand().toString());
+                    backEnd.hitPlayer(p4ID, p4HandIndex);
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
-                //TODO END OF DEBUG CODE
+                if (p3InUse) {
+                    backEnd.hitPlayer(p3ID, p3HandIndex);
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
+                }
+                if (p2InUse) {
+                    backEnd.hitPlayer(p2ID, p2HandIndex);
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                }
+                if (p1InUse) {
+                    backEnd.hitPlayer(p1ID, p1HandIndex);
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
+                }
+                backEnd.hitDealer();
+                numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
                 if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
                     if (p1InUse) {
@@ -1319,7 +1340,7 @@ public class FrontEnd extends Application {
                     }
                 } else {
                     if (currentPlayer == 4) {
-                        if (backEnd.isPlayerBlackjack(p4ID)) { // BLACKJACK
+                        if (backEnd.isPlayerBlackjack(p4ID, 0)) { // BLACKJACK
                             currentPlayer--;
                         } else {
                             p4HitButton.setDisable(false);
@@ -1327,13 +1348,13 @@ public class FrontEnd extends Application {
                             p4DoubleButton.setDisable(false);
                             p4SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p4ID)) {
+                            if (backEnd.canSplit(p4ID, 0)) {
                                 p4SplitButton.setDisable(false);
                             }
                         }
                     } 
                     if (currentPlayer == 3) {
-                        if (backEnd.isPlayerBlackjack(p3ID)) {
+                        if (backEnd.isPlayerBlackjack(p3ID, 0)) {
                             currentPlayer--;
                         } else {
                             p3HitButton.setDisable(false);
@@ -1341,13 +1362,13 @@ public class FrontEnd extends Application {
                             p3DoubleButton.setDisable(false);
                             p3SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p3ID)) {
+                            if (backEnd.canSplit(p3ID, 0)) {
                                 p4SplitButton.setDisable(false);
                             }
                         }
                     }
                     if (currentPlayer == 2) {
-                        if (backEnd.isPlayerBlackjack(p2ID)) {
+                        if (backEnd.isPlayerBlackjack(p2ID, 0)) {
                             currentPlayer--;
                         } else {
                             p2HitButton.setDisable(false);
@@ -1355,13 +1376,13 @@ public class FrontEnd extends Application {
                             p2DoubleButton.setDisable(false);
                             p2SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p2ID)) {
+                            if (backEnd.canSplit(p2ID, 0)) {
                                 p4SplitButton.setDisable(false);
                             }
                         }
                     } 
                     if (currentPlayer == 1) {
-                        if (backEnd.isPlayerBlackjack(p1ID)) {
+                        if (backEnd.isPlayerBlackjack(p1ID, 0)) {
                             currentPlayer--;
                         } else {
                             p1HitButton.setDisable(false);
@@ -1369,7 +1390,7 @@ public class FrontEnd extends Application {
                             p1DoubleButton.setDisable(false);
                             p1SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p1ID)) {
+                            if (backEnd.canSplit(p1ID, 0)) {
                                 p4SplitButton.setDisable(false);
                             }
                         }

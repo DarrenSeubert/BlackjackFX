@@ -1,3 +1,5 @@
+import java.util.List;
+
 /**
  * Class that handles the back end engine for Blackjack
  * 
@@ -105,11 +107,11 @@ public class BackEnd {
      * @param playerID
      * @return True if player's hand is bust, else false
      */
-    public boolean hitPlayer(int playerID) {
-        dm.playerTable.get(playerID).addCard(decks.getCardList().get(0));
+    public boolean hitPlayer(int playerID, int handIndex) {
+        dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
         decks.getCardList().remove(0);
 
-        if (dm.playerTable.get(playerID).getPossibleHandValues().size() == 0) {
+        if (dm.playerTable.get(playerID).getHands().get(handIndex).getPossibleHandValues().size() == 0) {
             return true;
         } else {
             return false;
@@ -122,10 +124,10 @@ public class BackEnd {
      * @return True if dealer's hand is bust, else false
      */
     public boolean hitDealer() {
-        dealer.addCard(decks.getCardList().get(0));
+        dealer.getHand().getCardList().add(decks.getCardList().get(0));
         decks.getCardList().remove(0);
 
-        if (dealer.getHand().size() == 0) {
+        if (dealer.getHand().getCardList().size() == 0) {
             return true;
         } else {
             return false;
@@ -138,7 +140,7 @@ public class BackEnd {
      * @return
      */
     public boolean possibleDealerBlackjack() {
-        if (dealer.getHand().get(0).getValue() == Card.Value.Ace) {
+        if (dealer.getHand().getCardList().get(0).getValue() == Card.Value.Ace) {
             return true;
         } else {
             return false;
@@ -151,11 +153,11 @@ public class BackEnd {
      * @return True if dealer has Blackjack, else false
      */
     public boolean isDealerBlackjack() {
-        if (dealer.getHand().size() != 2) {
+        if (dealer.getHand().getCardList().size() != 2) {
             return false;
         } else {
-            for (int i = 0; i < dealer.getPossibleHandValues().size(); i++) {
-                if (dealer.getPossibleHandValues().get(i) == 21) {
+            for (int i = 0; i < dealer.getHand().getPossibleHandValues().size(); i++) {
+                if (dealer.getHand().getPossibleHandValues().get(i) == 21) {
                     return true;
                 }
             }
@@ -170,14 +172,14 @@ public class BackEnd {
      * @param playerID
      * @return True if given player has Blackjack, else false
      */
-    public boolean isPlayerBlackjack(int playerID) {
-        Player player = dm.playerTable.get(playerID);
+    public boolean isPlayerBlackjack(int playerID, int handIndex) {
+        List<Hand> playerHands = dm.playerTable.get(playerID).getHands();
 
-        if (player.getHand().size() != 2) {
+        if (playerHands.get(handIndex).getCardList().size() != 2) {
             return false;
         } else {
-            for (int i = 0; i < player.getPossibleHandValues().size(); i++) {
-                if (player.getPossibleHandValues().get(i) == 21) {
+            for (int i = 0; i < playerHands.get(handIndex).getPossibleHandValues().size(); i++) {
+                if (playerHands.get(handIndex).getPossibleHandValues().get(i) == 21) {
                     return true;
                 }
             }
@@ -186,10 +188,10 @@ public class BackEnd {
         }
     }
 
-    public boolean canSplit(int playerID) {
-        Player player = dm.playerTable.get(playerID);
+    public boolean canSplit(int playerID, int handIndex) {
+        List<Hand> playerHands = dm.playerTable.get(playerID).getHands();
 
-        if (player.getHand().get(0).getValue() == player.getHand().get(1).getValue()) {
+        if (playerHands.get(handIndex).getCardList().get(0).getValue() == playerHands.get(handIndex).getCardList().get(1).getValue()) {
             return true;
         } else {
             return false;
