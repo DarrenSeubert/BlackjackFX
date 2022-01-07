@@ -115,4 +115,12 @@ public class Card {
     public void setIsFaceUp(boolean isFaceUp) {
         this.isFaceUp = isFaceUp;
     }
+
+    /**
+     * 
+     */
+    @Override
+    public String toString() {
+        return value + " of " + suit;
+    }
 }

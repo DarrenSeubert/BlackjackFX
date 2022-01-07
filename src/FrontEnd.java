@@ -1,19 +1,18 @@
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -23,7 +22,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
 /**
@@ -175,7 +173,7 @@ public class FrontEnd extends Application {
     }
 
     /**
-     * 
+     * Method that runs the main UI of Blackjack
      */
     private void launchGame() {
         mStage.setTitle("BlackjackFX");
@@ -770,25 +768,6 @@ public class FrontEnd extends Application {
         p4SurrenderButton.setVisible(false);
         group.getChildren().addAll(p1SurrenderButton, p2SurrenderButton, p3SurrenderButton, p4SurrenderButton);
 
-        ImageView p1BackCard = new ImageView(Constants.backOfCardImage);
-        ImageView p1FrontCard = new ImageView(Constants.clubAceImage);
-        TranslateTransition animation = new TranslateTransition(Duration.seconds(1));
-        animation.setNode(p1FrontCard);
-        animation.setFromX(Constants.shoePileXPos);
-        animation.setFromY(Constants.shoePileYPos);
-        animation.setToY(Constants.playerCardFrontYPos);
-        animation.setToX(Constants.p1CardStartingXPos);
-        animation.play();
-        TranslateTransition animation1 = new TranslateTransition(Duration.seconds(1));
-        animation1.setNode(p1BackCard);
-        animation1.setFromX(Constants.shoePileXPos);
-        animation1.setFromY(Constants.shoePileYPos);
-        animation1.setToY(Constants.playerCardFrontYPos);
-        animation1.setToX(Constants.p1CardStartingXPos + Constants.layeredCardOffset);
-        animation1.play();
-
-        group.getChildren().addAll(p1FrontCard, p1BackCard);
-
         // Start of Button Actions
         p1SubmitButton.setOnAction((event) -> {
             try {
@@ -1184,8 +1163,6 @@ public class FrontEnd extends Application {
                 dealButton.setVisible(false);
 
                 // Blackjack Time!
-                boolean firstInUse;
-
                 newAccountButton.setDisable(true);
                 lookupAccountIDButton.setDisable(true);
                 manageCashButton.setDisable(true);
@@ -1271,9 +1248,142 @@ public class FrontEnd extends Application {
                     p4SurrenderButton.setDisable(true);
                 }
 
-                // backEnd.hitDealer();
-                // backEnd.hitDealer();
-                // numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                // Deal Starting Cards
+                int currentPlayer = -1;
+                for (int i = 0; i < 2; i++) {
+                    if (p4InUse) {
+                        if (currentPlayer == -1) {
+                            currentPlayer = 4;
+                        }
+    
+                        backEnd.hitPlayer(p4ID);
+                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                    }
+                    if (p3InUse) {
+                        if (currentPlayer == -1) {
+                            currentPlayer = 3;
+                        }
+                        backEnd.hitPlayer(p3ID);
+                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
+                    }
+                    if (p2InUse) {
+                        if (currentPlayer == -1) {
+                            currentPlayer = 2;
+                        }
+                        backEnd.hitPlayer(p2ID);
+                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
+                    }
+                    if (p1InUse) {
+                        if (currentPlayer == -1) {
+                            currentPlayer = 1;
+                        }
+                        backEnd.hitPlayer(p1ID);
+                        numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
+                    }
+                    backEnd.hitDealer();
+                    numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));  
+                }
+
+                //TODO DEBUG CODE
+                System.out.println("Dealer: " + backEnd.getDealer().getHand().toString());
+                if (p1InUse) {
+                    System.out.println("P1: " + backEnd.getDm().playerTable.get(p1ID).getHand().toString());
+                }
+                if (p2InUse) {
+                    System.out.println("P2: " + backEnd.getDm().playerTable.get(p2ID).getHand().toString());
+                }
+                if (p3InUse) {
+                    System.out.println("P3: " + backEnd.getDm().playerTable.get(p3ID).getHand().toString());
+                }
+                if (p4InUse) {
+                    System.out.println("P4: " + backEnd.getDm().playerTable.get(p4ID).getHand().toString());
+                }
+                //TODO END OF DEBUG CODE
+
+                if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
+                    if (p1InUse) {
+                        p1YesButton.setVisible(true);
+                        p1NoButton.setVisible(true);
+                    }
+                    if (p2InUse) {
+                        p2YesButton.setVisible(true);
+                        p2NoButton.setVisible(true);
+                    }
+                    if (p3InUse) {
+                        p3YesButton.setVisible(true);
+                        p3NoButton.setVisible(true);
+                    }
+                    if (p4InUse) {
+                        p4YesButton.setVisible(true);
+                        p4NoButton.setVisible(true);
+                    }
+                } else {
+                    if (currentPlayer == 4) {
+                        if (backEnd.isPlayerBlackjack(p4ID)) { // BLACKJACK
+                            currentPlayer--;
+                        } else {
+                            p4HitButton.setDisable(false);
+                            p4StandButton.setDisable(false);
+                            p4DoubleButton.setDisable(false);
+                            p4SurrenderButton.setDisable(false);
+
+                            if (backEnd.canSplit(p4ID)) {
+                                p4SplitButton.setDisable(false);
+                            }
+                        }
+                    } 
+                    if (currentPlayer == 3) {
+                        if (backEnd.isPlayerBlackjack(p3ID)) {
+                            currentPlayer--;
+                        } else {
+                            p3HitButton.setDisable(false);
+                            p3StandButton.setDisable(false);
+                            p3DoubleButton.setDisable(false);
+                            p3SurrenderButton.setDisable(false);
+
+                            if (backEnd.canSplit(p3ID)) {
+                                p4SplitButton.setDisable(false);
+                            }
+                        }
+                    }
+                    if (currentPlayer == 2) {
+                        if (backEnd.isPlayerBlackjack(p2ID)) {
+                            currentPlayer--;
+                        } else {
+                            p2HitButton.setDisable(false);
+                            p2StandButton.setDisable(false);
+                            p2DoubleButton.setDisable(false);
+                            p2SurrenderButton.setDisable(false);
+
+                            if (backEnd.canSplit(p2ID)) {
+                                p4SplitButton.setDisable(false);
+                            }
+                        }
+                    } 
+                    if (currentPlayer == 1) {
+                        if (backEnd.isPlayerBlackjack(p1ID)) {
+                            currentPlayer--;
+                        } else {
+                            p1HitButton.setDisable(false);
+                            p1StandButton.setDisable(false);
+                            p1DoubleButton.setDisable(false);
+                            p1SurrenderButton.setDisable(false);
+
+                            if (backEnd.canSplit(p1ID)) {
+                                p4SplitButton.setDisable(false);
+                            }
+                        }
+                    }
+
+                    if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
+                        if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
+                            // PUSH
+                        } else {
+                            // PLAYERS IN GAME WIN
+                        }
+                    }
+                }
+
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");

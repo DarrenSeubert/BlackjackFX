@@ -20,13 +20,29 @@ public class BackEnd {
 
     /**
      * 
+     * 
+     * @return
      */
     public Decks getDecks() {
         return decks;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
     public DataManager getDm() {
         return dm;
+    }
+
+    /**
+     * 
+     * 
+     * @return
+     */
+    public Dealer getDealer() {
+        return dealer;
     }
 
     /**
@@ -115,4 +131,69 @@ public class BackEnd {
             return false;
         }
     }
+
+    /**
+     * 
+     * 
+     * @return
+     */
+    public boolean possibleDealerBlackjack() {
+        if (dealer.getHand().get(0).getValue() == Card.Value.Ace) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @return True if dealer has Blackjack, else false
+     */
+    public boolean isDealerBlackjack() {
+        if (dealer.getHand().size() != 2) {
+            return false;
+        } else {
+            for (int i = 0; i < dealer.getPossibleHandValues().size(); i++) {
+                if (dealer.getPossibleHandValues().get(i) == 21) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @param playerID
+     * @return True if given player has Blackjack, else false
+     */
+    public boolean isPlayerBlackjack(int playerID) {
+        Player player = dm.playerTable.get(playerID);
+
+        if (player.getHand().size() != 2) {
+            return false;
+        } else {
+            for (int i = 0; i < player.getPossibleHandValues().size(); i++) {
+                if (player.getPossibleHandValues().get(i) == 21) {
+                    return true;
+                }
+            }
+    
+            return false;
+        }
+    }
+
+    public boolean canSplit(int playerID) {
+        Player player = dm.playerTable.get(playerID);
+
+        if (player.getHand().get(0).getValue() == player.getHand().get(1).getValue()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
