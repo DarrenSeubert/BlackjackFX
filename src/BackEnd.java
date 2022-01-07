@@ -188,10 +188,35 @@ public class BackEnd {
         }
     }
 
-    public boolean canSplit(int playerID, int handIndex) {
-        List<Hand> playerHands = dm.playerTable.get(playerID).getHands();
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param wager
+     * @param handIndex
+     * @return
+     */
+    public boolean canSplit(int playerID, int wager, int handIndex) {
+        Player player = dm.playerTable.get(playerID);
 
-        if (playerHands.get(handIndex).getCardList().get(0).getValue() == playerHands.get(handIndex).getCardList().get(1).getValue()) {
+        if (player.getHands().get(handIndex).getCardList().get(0).getValue() == 
+            player.getHands().get(handIndex).getCardList().get(1).getValue() && 
+            player.getCash() >= wager) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param wager
+     * @return
+     */
+    public boolean canDouble(int playerID, int wager) {
+        if (dm.playerTable.get(playerID).getCash() >= wager) {
             return true;
         } else {
             return false;

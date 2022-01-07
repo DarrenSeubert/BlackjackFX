@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class that represents a hand of cards in Blackjack
  * 
  * @author Darren Seubert
  */

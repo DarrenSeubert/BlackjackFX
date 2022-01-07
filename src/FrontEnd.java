@@ -1340,35 +1340,39 @@ public class FrontEnd extends Application {
                     }
                 } else {
                     if (currentPlayer == 4) {
-                        if (backEnd.isPlayerBlackjack(p4ID, 0)) { // BLACKJACK
+                        if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
                             currentPlayer--;
                         } else {
                             p4HitButton.setDisable(false);
                             p4StandButton.setDisable(false);
-                            p4DoubleButton.setDisable(false);
                             p4SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p4ID, 0)) {
+                            if (backEnd.canDouble(p4ID, p4WagerEntry)) {
+                                p4DoubleButton.setDisable(false);
+                            }
+                            if (backEnd.canSplit(p4ID, p4WagerEntry, p4HandIndex)) {
                                 p4SplitButton.setDisable(false);
                             }
                         }
                     } 
                     if (currentPlayer == 3) {
-                        if (backEnd.isPlayerBlackjack(p3ID, 0)) {
+                        if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
                             currentPlayer--;
                         } else {
                             p3HitButton.setDisable(false);
                             p3StandButton.setDisable(false);
-                            p3DoubleButton.setDisable(false);
                             p3SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p3ID, 0)) {
-                                p4SplitButton.setDisable(false);
+                            if (backEnd.canDouble(p3ID, p3WagerEntry)) {
+                                p3DoubleButton.setDisable(false);
+                            }
+                            if (backEnd.canSplit(p3ID, p3WagerEntry, p3HandIndex)) {
+                                p3SplitButton.setDisable(false);
                             }
                         }
                     }
                     if (currentPlayer == 2) {
-                        if (backEnd.isPlayerBlackjack(p2ID, 0)) {
+                        if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
                             currentPlayer--;
                         } else {
                             p2HitButton.setDisable(false);
@@ -1376,13 +1380,16 @@ public class FrontEnd extends Application {
                             p2DoubleButton.setDisable(false);
                             p2SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p2ID, 0)) {
-                                p4SplitButton.setDisable(false);
+                            if (backEnd.canDouble(p2ID, p2WagerEntry)) {
+                                p2DoubleButton.setDisable(false);
+                            }
+                            if (backEnd.canSplit(p2ID, p2WagerEntry, p2HandIndex)) {
+                                p2SplitButton.setDisable(false);
                             }
                         }
                     } 
                     if (currentPlayer == 1) {
-                        if (backEnd.isPlayerBlackjack(p1ID, 0)) {
+                        if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
                             currentPlayer--;
                         } else {
                             p1HitButton.setDisable(false);
@@ -1390,8 +1397,11 @@ public class FrontEnd extends Application {
                             p1DoubleButton.setDisable(false);
                             p1SurrenderButton.setDisable(false);
 
-                            if (backEnd.canSplit(p1ID, 0)) {
-                                p4SplitButton.setDisable(false);
+                            if (backEnd.canDouble(p1ID, p1WagerEntry)) {
+                                p1DoubleButton.setDisable(false);
+                            }
+                            if (backEnd.canSplit(p1ID, p1WagerEntry, p1HandIndex)) {
+                                p1SplitButton.setDisable(false);
                             }
                         }
                     }
