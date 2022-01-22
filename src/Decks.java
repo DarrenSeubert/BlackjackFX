@@ -58,6 +58,20 @@ public class Decks {
         return cardList;
     }
 
+    /**
+     * 
+     * 
+     * @return
+     */
+    public List<Card> getUsedCardList() {
+        return usedCardList;
+    }
+
+    /**
+     * 
+     * 
+     * @return
+     */
     public int getNumberOfCards() {
         if (cutCardInDeck) {
             return cardList.size() - 1;

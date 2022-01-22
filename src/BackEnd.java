@@ -105,13 +105,49 @@ public class BackEnd {
      * 
      * 
      * @param playerID
-     * @return True if player's hand is bust, else false
+     * @param handIndex
+     * @return True if reshuffle is needed, else false
      */
     public boolean hitPlayer(int playerID, int handIndex) {
-        dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
-        decks.getCardList().remove(0);
+        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            return true;
+        } else {
+            dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            return false;
+        }
+    }
 
-        if (dm.playerTable.get(playerID).getHands().get(handIndex).getPossibleHandValues().size() == 0) {
+    /**
+     * 
+     * 
+     * @return True if reshuffle is needed, else false
+     */
+    public boolean hitDealer() {
+        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            dealer.getHand().getCardList().add(decks.getCardList().get(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            return true;
+        } else {
+            dealer.getHand().getCardList().add(decks.getCardList().get(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param handIndex
+     * @return True is hand is a bust, else false
+     */
+    public boolean isPlayerHandBust(int playerID, int handIndex) {
+         if (dm.playerTable.get(playerID).getHands().get(handIndex).getPossibleHandValues().size() == 0) {
             return true;
         } else {
             return false;
@@ -121,13 +157,10 @@ public class BackEnd {
     /**
      * 
      * 
-     * @return True if dealer's hand is bust, else false
+     * @return True is hand is a bust, else false
      */
-    public boolean hitDealer() {
-        dealer.getHand().getCardList().add(decks.getCardList().get(0));
-        decks.getCardList().remove(0);
-
-        if (dealer.getHand().getCardList().size() == 0) {
+    public boolean isDealerHandBust() {
+        if (dealer.getHand().getPossibleHandValues().size() == 0) {
             return true;
         } else {
             return false;

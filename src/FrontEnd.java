@@ -41,6 +41,7 @@ public class FrontEnd extends Application {
     private boolean p2InUse;
     private boolean p3InUse;
     private boolean p4InUse;
+    private boolean reshuffleNeeded;
 
     /**
      * 
@@ -54,6 +55,7 @@ public class FrontEnd extends Application {
         p2InUse = false;
         p3InUse = false;
         p4InUse = false;
+        reshuffleNeeded = false;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
@@ -1248,7 +1250,7 @@ public class FrontEnd extends Application {
                     p4SurrenderButton.setDisable(true);
                 }
 
-                // Deal Starting Cards // TODO Deal with Cut Card
+                // Deal Starting Cards
                 int p1HandIndex = 0;
                 int p2HandIndex = 0;
                 int p3HandIndex = 0;
@@ -1260,7 +1262,9 @@ public class FrontEnd extends Application {
                         currentPlayer = 4;
                     }
     
-                    backEnd.hitPlayer(p4ID, p4HandIndex);
+                    if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
@@ -1271,8 +1275,10 @@ public class FrontEnd extends Application {
                     if (p3ID == p4ID) {
                         p3HandIndex = backEnd.getDm().playerTable.get(p3ID).addNewHand();
                     }
-                    backEnd.hitPlayer(p3ID, p3HandIndex);
-                        
+                    
+                    if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
@@ -1283,8 +1289,10 @@ public class FrontEnd extends Application {
                     if (p2ID == p3ID || p2ID == p4ID) {
                         p2HandIndex = backEnd.getDm().playerTable.get(p2ID).addNewHand();
                     }
-                    backEnd.hitPlayer(p2ID, p2HandIndex);
 
+                    if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
@@ -1295,30 +1303,46 @@ public class FrontEnd extends Application {
                     if (p1ID == p2ID || p1ID == p3ID || p1ID == p4ID) {
                         p1HandIndex = backEnd.getDm().playerTable.get(p1ID).addNewHand();
                     }
-                    backEnd.hitPlayer(p1ID, p1HandIndex);
 
+                    if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-                backEnd.hitDealer();
+
+                if (backEnd.hitDealer()) {
+                    reshuffleNeeded = true;
+                }
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 
                 if (p4InUse) {
-                    backEnd.hitPlayer(p4ID, p4HandIndex);
+                    if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
-                    backEnd.hitPlayer(p3ID, p3HandIndex);
+                    if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
-                    backEnd.hitPlayer(p2ID, p2HandIndex);
+                    if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
-                    backEnd.hitPlayer(p1ID, p1HandIndex);
+                    if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
+                        reshuffleNeeded = true;
+                    }
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-                backEnd.hitDealer();
+                
+                if (backEnd.hitDealer()) {
+                    reshuffleNeeded = true;
+                }
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
                 if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
