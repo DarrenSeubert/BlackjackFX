@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -33,35 +34,44 @@ public class FrontEnd extends Application {
     private static BackEnd backEnd;
     private Stage mStage;
     private String greetingString;
-    private int p1ID;
-    private int p2ID;
-    private int p3ID;
-    private int p4ID;
     private boolean p1InUse;
     private boolean p2InUse;
     private boolean p3InUse;
     private boolean p4InUse;
+    private int p1ID;
+    private int p2ID;
+    private int p3ID;
+    private int p4ID;
+    private int p1HandIndex;
+    private int p2HandIndex;
+    private int p3HandIndex;
+    private int p4HandIndex;
     private boolean reshuffleNeeded;
 
     /**
-     * 
+     * Constructor for the front end
      */
     public FrontEnd() {
-        p1ID = -1;
-        p2ID = -1;
-        p3ID = -1;
-        p4ID = -1;
         p1InUse = false;
         p2InUse = false;
         p3InUse = false;
         p4InUse = false;
+        p1ID = -1;
+        p2ID = -1;
+        p3ID = -1;
+        p4ID = -1;
+        p1HandIndex = 0;
+        p2HandIndex = 0;
+        p3HandIndex = 0;
+        p4HandIndex = 0;
         reshuffleNeeded = false;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
     /**
+     * "Main" method for the front end application
      * 
-     * @param engine
+     * @param engine A instance of the back end to use in the front end
      */
     public void run(BackEnd engine) {
         backEnd = engine;
@@ -71,7 +81,7 @@ public class FrontEnd extends Application {
     /**
      * Method that prompts user to enter number of decks, then launches rest of the game
      * 
-     * @param stage
+     * @param stage Stage to be used for the front end
      */
     @Override
     public void start(final Stage stage) {
@@ -107,6 +117,11 @@ public class FrontEnd extends Application {
         deckPrompt.show();
     }
 
+    /**
+     * Method that sets up the layout grids
+     * 
+     * @param group The group for the front end
+     */
     private void setLayoutGrid(Group group) { // TODO EDIT FOR FINAL PROJECT
         Rectangle middleLine = new Rectangle();
         middleLine.setWidth(1);
@@ -1251,10 +1266,10 @@ public class FrontEnd extends Application {
                 }
 
                 // Deal Starting Cards
-                int p1HandIndex = 0;
-                int p2HandIndex = 0;
-                int p3HandIndex = 0;
-                int p4HandIndex = 0;
+                p1HandIndex = 0;
+                p2HandIndex = 0;
+                p3HandIndex = 0;
+                p4HandIndex = 0;
                 int currentPlayer = -1;
 
                 if (p4InUse) {
@@ -1264,7 +1279,9 @@ public class FrontEnd extends Application {
     
                     if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p4ID, p4HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
@@ -1278,7 +1295,9 @@ public class FrontEnd extends Application {
                     
                     if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p3ID, p3HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
@@ -1292,7 +1311,9 @@ public class FrontEnd extends Application {
 
                     if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p2ID, p2HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
@@ -1306,43 +1327,55 @@ public class FrontEnd extends Application {
 
                     if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p1ID, p1HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-
                 if (backEnd.hitDealer()) {
                     reshuffleNeeded = true;
+                    displayCutCard(group);
                 }
+                displayCard(-1, -1, group);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 
                 if (p4InUse) {
                     if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p4ID, p4HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
                     if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p3ID, p3HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
                     if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p2ID, p2HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
                     if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
                         reshuffleNeeded = true;
+                        displayCutCard(group);
                     }
+                    displayCard(p1ID, p1HandIndex, group);
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-                
                 if (backEnd.hitDealer()) {
                     reshuffleNeeded = true;
+                    displayCutCard(group);
                 }
+                displayCard(-1, -1, group);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
                 if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
@@ -1439,6 +1472,20 @@ public class FrontEnd extends Application {
                     }
                 }
 
+                // TODO Remove these, temp prints
+                List<Card> p1CardList = backEnd.getDm().playerTable.get(p1ID).getHands().get(p1HandIndex).getCardList();
+                List<Card> p2CardList = backEnd.getDm().playerTable.get(p2ID).getHands().get(p2HandIndex).getCardList();
+                List<Card> p3CardList = backEnd.getDm().playerTable.get(p3ID).getHands().get(p3HandIndex).getCardList();
+                // List<Card> p4CardList = backEnd.getDm().playerTable.get(p4ID).getHands().get(p4HandIndex).getCardList();
+
+                System.out.println("P1 HAND: " + p1CardList);
+                System.out.println("P2 HAND: " + p2CardList);
+                System.out.println("P3 HAND: " + p3CardList);
+                // System.out.println("P4 HAND: " + p4CardList);
+                System.out.println("DEALER HAND: " + backEnd.getDealer().getHand());
+                System.out.println("CARD LIST SIZE: " + backEnd.getDecks().getCardList().size());
+                System.out.println("USED LIST: " + backEnd.getDecks().getUsedCardList());
+
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
@@ -1461,5 +1508,212 @@ public class FrontEnd extends Application {
         });
 
         mStage.show();
+    }
+
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param handIndex
+     * @param group
+     */
+    private void displayCard(int playerID, int handIndex, Group group) {
+        List<Card> handCardList;
+        int cardXPos;
+        int cardYPos;
+
+        if (playerID == -1 && handIndex == -1) {
+            handCardList = backEnd.getDealer().getHand().getCardList();
+            cardXPos = Constants.dealerCardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
+            cardYPos = Constants.dealerCardFrontYPos;
+        } else {
+            handCardList = backEnd.getDm().playerTable.get(playerID).getHands().get(handIndex).getCardList();
+
+            if (playerID == p4ID && handIndex == p4HandIndex) {
+                cardXPos = Constants.p4CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
+            } else if (playerID == p3ID && handIndex == p3HandIndex) {
+                cardXPos = Constants.p3CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
+            } else if (playerID == p2ID && handIndex == p2HandIndex) {
+                cardXPos = Constants.p2CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
+            } else {
+                cardXPos = Constants.p1CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);  
+            }
+            cardYPos = Constants.playerCardFrontYPos;
+        }
+
+        Card cardToAdd = handCardList.get(handCardList.size() - 1);
+        Image cardImage = null;
+
+        switch (cardToAdd.getValue()) {
+            case Ace:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubAceImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeAceImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondAceImage;
+                } else {
+                    cardImage = Constants.heartAceImage;
+                }
+                break;
+            case Two:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubTwoImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeTwoImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondTwoImage;
+                } else {
+                    cardImage = Constants.heartTwoImage;
+                }
+                break;
+            case Three:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubThreeImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeThreeImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondThreeImage;
+                } else {
+                    cardImage = Constants.heartThreeImage;
+                }
+                break;
+            case Four:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubFourImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeFourImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondFourImage;
+                } else {
+                    cardImage = Constants.heartFourImage;
+                }
+                break;
+            case Five:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubFiveImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeFiveImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondFiveImage;
+                } else {
+                    cardImage = Constants.heartFiveImage;
+                }
+                break;
+            case Six:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubSixImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeSixImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondSixImage;
+                } else {
+                    cardImage = Constants.heartSixImage;
+                }
+                break;
+            case Seven:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubSevenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeSevenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondSevenImage;
+                } else {
+                    cardImage = Constants.heartSevenImage;
+                }
+                break;
+            case Eight:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubEightImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeEightImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondEightImage;
+                } else {
+                    cardImage = Constants.heartEightImage;
+                }
+                break;
+            case Nine:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubNineImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeNineImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondNineImage;
+                } else {
+                    cardImage = Constants.heartNineImage;
+                }
+                break;
+            case Ten:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubTenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeTenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondTenImage;
+                } else {
+                    cardImage = Constants.heartTenImage;
+                }
+                break;
+            case Jack:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubJackImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeJackImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondJackImage;
+                } else {
+                    cardImage = Constants.heartJackImage;
+                }
+                break;
+            case Queen:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubQueenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeQueenImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondQueenImage;
+                } else {
+                    cardImage = Constants.heartQueenImage;
+                }
+                break;
+            case King:
+                if (cardToAdd.getSuit().equals(Card.Suit.Club)) {
+                    cardImage = Constants.clubKingImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Spade)) {
+                    cardImage = Constants.spadeKingImage;
+                } else if (cardToAdd.getSuit().equals(Card.Suit.Diamond)) {
+                    cardImage = Constants.diamondKingImage;
+                } else {
+                    cardImage = Constants.heartKingImage;
+                }
+                break;
+            default:
+                break;
+        }
+        
+        if (cardXPos == Constants.dealerCardStartingXPos) {
+            cardImage = Constants.backOfCardImage;
+            cardYPos = Constants.dealerCardBackYPos;
+        }
+
+        ImageView card = new ImageView(cardImage);
+        card.setX(cardXPos);
+        card.setY(cardYPos);
+        card.setVisible(true);
+        group.getChildren().add(card);
+    }
+
+    /**
+     * 
+     * 
+     * @param group
+     */
+    private void displayCutCard(Group group) {
+        ImageView cutCard = new ImageView(Constants.cutCardImage);
+        cutCard.setX(150); // TODO Set discard pile location and then put cut card next to discard
+        cutCard.setY(Constants.shoePileYPos);
+        cutCard.setVisible(true);
+        group.getChildren().add(cutCard);
     }
 }

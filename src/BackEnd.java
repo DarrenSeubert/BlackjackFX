@@ -110,13 +110,13 @@ public class BackEnd {
      */
     public boolean hitPlayer(int playerID, int handIndex) {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return true;
         } else {
             dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return false;
         }
     }
@@ -128,13 +128,13 @@ public class BackEnd {
      */
     public boolean hitDealer() {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return true;
         } else {
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0));
+            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return false;
         }
     }
@@ -173,7 +173,7 @@ public class BackEnd {
      * @return
      */
     public boolean possibleDealerBlackjack() {
-        if (dealer.getHand().getCardList().get(0).getValue() == Card.Value.Ace) {
+        if (dealer.getHand().getCardList().get(1).getValue() == Card.Value.Ace) {
             return true;
         } else {
             return false;
