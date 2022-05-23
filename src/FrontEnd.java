@@ -1434,6 +1434,14 @@ public class FrontEnd extends Application {
                     } else if (p1InUse && backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
                         currentPlayer--;
                     }
+                    
+                    if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
+                        if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
+                            // PUSH
+                        } else {
+                            // PLAYERS IN GAME WIN
+                        }
+                    }
                 } else {
                     if (p4InUse && currentPlayer == 4) {
                         if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
