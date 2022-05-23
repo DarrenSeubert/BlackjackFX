@@ -1378,22 +1378,61 @@ public class FrontEnd extends Application {
                 displayCard(-2, -2, group);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
-                if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
-                    if (p1InUse) {
-                        p1YesButton.setVisible(true);
-                        p1NoButton.setVisible(true);
-                    }
-                    if (p2InUse) {
-                        p2YesButton.setVisible(true);
-                        p2NoButton.setVisible(true);
-                    }
-                    if (p3InUse) {
-                        p3YesButton.setVisible(true);
-                        p3NoButton.setVisible(true);
-                    }
-                    if (p4InUse) {
+                if (backEnd.possibleDealerBlackjack()) {
+                    if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
                         p4YesButton.setVisible(true);
                         p4NoButton.setVisible(true);
+                        if (currentPlayer == 4) {
+                            p4YesButton.setDisable(false);
+                            p4NoButton.setDisable(false);
+                        } else {
+                            p4YesButton.setDisable(true);
+                            p4NoButton.setDisable(true);
+                        }
+                    } else if (p4InUse && backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
+                        currentPlayer--;
+                    }
+
+                    if (p3InUse && !backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                        p3YesButton.setVisible(true);
+                        p3NoButton.setVisible(true);
+                        if (currentPlayer == 3) {
+                            p3YesButton.setDisable(false);
+                            p3NoButton.setDisable(false);
+                        } else {
+                            p3YesButton.setDisable(true);
+                            p3NoButton.setDisable(true);
+                        }
+                    } else if (p3InUse && backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                        currentPlayer--;
+                    }
+
+                    if (p2InUse && !backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                        p2YesButton.setVisible(true);
+                        p2NoButton.setVisible(true);
+                        if (currentPlayer == 2) {
+                            p2YesButton.setDisable(false);
+                            p2NoButton.setDisable(false);
+                        } else {
+                            p2YesButton.setDisable(true);
+                            p2NoButton.setDisable(true);
+                        }
+                    } else if (p2InUse && backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                        currentPlayer--;
+                    }
+
+                    if (p1InUse && !backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                        p1YesButton.setVisible(true);
+                        p1NoButton.setVisible(true);
+                        if (currentPlayer == 1) {
+                            p1YesButton.setDisable(false);
+                            p1NoButton.setDisable(false);
+                        } else {
+                            p1YesButton.setDisable(true);
+                            p1NoButton.setDisable(true);
+                        }
+                    } else if (p1InUse && backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                        currentPlayer--;
                     }
                 } else {
                     if (p4InUse && currentPlayer == 4) {
@@ -1473,11 +1512,11 @@ public class FrontEnd extends Application {
                 }
 
                 // TODO Remove these, temp prints
-                List<Card> p1CardList = backEnd.getDm().playerTable.get(p1ID).getHands().get(p1HandIndex).getCardList();
+                // List<Card> p1CardList = backEnd.getDm().playerTable.get(p1ID).getHands().get(p1HandIndex).getCardList();
                 // List<Card> p2CardList = backEnd.getDm().playerTable.get(p2ID).getHands().get(p2HandIndex).getCardList();
                 // List<Card> p3CardList = backEnd.getDm().playerTable.get(p3ID).getHands().get(p3HandIndex).getCardList();
                 // List<Card> p4CardList = backEnd.getDm().playerTable.get(p4ID).getHands().get(p4HandIndex).getCardList();
-                System.out.println("P1 HAND: " + p1CardList);
+                // System.out.println("P1 HAND: " + p1CardList);
                 // System.out.println("P2 HAND: " + p2CardList);
                 // System.out.println("P3 HAND: " + p3CardList);
                 // System.out.println("P4 HAND: " + p4CardList);

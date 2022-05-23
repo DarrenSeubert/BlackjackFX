@@ -109,7 +109,7 @@ public class BackEnd {
      * @return True if reshuffle is needed, else false
      */
     public boolean hitPlayer(int playerID, int handIndex) {
-        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
+        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
@@ -127,7 +127,7 @@ public class BackEnd {
      * @return True if reshuffle is needed, else false
      */
     public boolean hitDealer() {
-        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be delt
+        if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
