@@ -91,7 +91,7 @@ public class FrontEnd extends Application {
         ((Stage) deckPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
         deckPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
         deckPrompt.setHeaderText(greetingString); // Set Text in Window
-        deckPrompt.getEditor().setPromptText("Card Counting: 4 | Normal Game: 6"); // Set Text in Textbox
+        deckPrompt.getEditor().setPromptText("Card Counting: 4 | Normal Game: 6"); // Set Text in Text Box
         
         Button okButton = (Button) deckPrompt.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setOnAction((event) -> {
@@ -211,14 +211,14 @@ public class FrontEnd extends Application {
 
         ImageView shoePile = new ImageView(Constants.backOfCardImage);
         shoePile.setX(Constants.shoePileXPos);
-        shoePile.setY(Constants.shoePileYPos);
+        shoePile.setY(Constants.topCardsYPos);
         ImageView discardPile = new ImageView(Constants.backOfCardImage);
         discardPile.setX(65);
         discardPile.setY(25);
         discardPile.setVisible(false);
         ImageView cutCard = new ImageView(Constants.cutCardImage);
         cutCard.setX(Constants.shoePileXPos);
-        cutCard.setY(Constants.shoePileYPos);
+        cutCard.setY(Constants.topCardsYPos);
         cutCard.setVisible(false);
 
         Text numOfCardsInShoe = new Text(Integer.toString(backEnd.getDecks().getNumberOfCards()));
@@ -379,7 +379,7 @@ public class FrontEnd extends Application {
                         Alert e2Alert = new Alert(AlertType.ERROR);
                         e2Alert.setTitle("BlackjackFX");
                         ((Stage) e2Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                        e2Alert.setHeaderText("Error: ID must be Postive and Cash cannot be 0");
+                        e2Alert.setHeaderText("Error: ID must be Positive and Cash cannot be 0");
                         e2Alert.show();
                     }
                 }
@@ -1336,7 +1336,7 @@ public class FrontEnd extends Application {
                     reshuffleNeeded = true;
                     displayCutCard(group);
                 }
-                displayCard(-1, -1, group);
+                displayCard(-2, -2, group);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 
                 if (p4InUse) {
@@ -1375,7 +1375,7 @@ public class FrontEnd extends Application {
                     reshuffleNeeded = true;
                     displayCutCard(group);
                 }
-                displayCard(-1, -1, group);
+                displayCard(-2, -2, group);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
                 if (backEnd.possibleDealerBlackjack()) { // TODO Figure out how insurance buttons will work
@@ -1396,7 +1396,7 @@ public class FrontEnd extends Application {
                         p4NoButton.setVisible(true);
                     }
                 } else {
-                    if (currentPlayer == 4) {
+                    if (p4InUse && currentPlayer == 4) {
                         if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
                             currentPlayer--;
                         } else {
@@ -1412,7 +1412,7 @@ public class FrontEnd extends Application {
                             }
                         }
                     } 
-                    if (currentPlayer == 3) {
+                    if (p3InUse && currentPlayer == 3) {
                         if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
                             currentPlayer--;
                         } else {
@@ -1428,7 +1428,7 @@ public class FrontEnd extends Application {
                             }
                         }
                     }
-                    if (currentPlayer == 2) {
+                    if (p2InUse && currentPlayer == 2) {
                         if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
                             currentPlayer--;
                         } else {
@@ -1445,7 +1445,7 @@ public class FrontEnd extends Application {
                             }
                         }
                     } 
-                    if (currentPlayer == 1) {
+                    if (p1InUse && currentPlayer == 1) {
                         if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
                             currentPlayer--;
                         } else {
@@ -1474,13 +1474,12 @@ public class FrontEnd extends Application {
 
                 // TODO Remove these, temp prints
                 List<Card> p1CardList = backEnd.getDm().playerTable.get(p1ID).getHands().get(p1HandIndex).getCardList();
-                List<Card> p2CardList = backEnd.getDm().playerTable.get(p2ID).getHands().get(p2HandIndex).getCardList();
-                List<Card> p3CardList = backEnd.getDm().playerTable.get(p3ID).getHands().get(p3HandIndex).getCardList();
+                // List<Card> p2CardList = backEnd.getDm().playerTable.get(p2ID).getHands().get(p2HandIndex).getCardList();
+                // List<Card> p3CardList = backEnd.getDm().playerTable.get(p3ID).getHands().get(p3HandIndex).getCardList();
                 // List<Card> p4CardList = backEnd.getDm().playerTable.get(p4ID).getHands().get(p4HandIndex).getCardList();
-
                 System.out.println("P1 HAND: " + p1CardList);
-                System.out.println("P2 HAND: " + p2CardList);
-                System.out.println("P3 HAND: " + p3CardList);
+                // System.out.println("P2 HAND: " + p2CardList);
+                // System.out.println("P3 HAND: " + p3CardList);
                 // System.out.println("P4 HAND: " + p4CardList);
                 System.out.println("DEALER HAND: " + backEnd.getDealer().getHand());
                 System.out.println("CARD LIST SIZE: " + backEnd.getDecks().getCardList().size());
@@ -1513,16 +1512,16 @@ public class FrontEnd extends Application {
     /**
      * 
      * 
-     * @param playerID
-     * @param handIndex
-     * @param group
+     * @param playerID ID of the player to display the card to, use -2 for the dealer
+     * @param handIndex Hand Index to display the card to, used -2 for the dealer
+     * @param group The group for the front end
      */
     private void displayCard(int playerID, int handIndex, Group group) {
         List<Card> handCardList;
         int cardXPos;
         int cardYPos;
 
-        if (playerID == -1 && handIndex == -1) {
+        if (playerID == -2 && handIndex == -2) {
             handCardList = backEnd.getDealer().getHand().getCardList();
             cardXPos = Constants.dealerCardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
             cardYPos = Constants.dealerCardFrontYPos;
@@ -1711,8 +1710,8 @@ public class FrontEnd extends Application {
      */
     private void displayCutCard(Group group) {
         ImageView cutCard = new ImageView(Constants.cutCardImage);
-        cutCard.setX(150); // TODO Set discard pile location and then put cut card next to discard
-        cutCard.setY(Constants.shoePileYPos);
+        cutCard.setX(Constants.cutCardXPos);
+        cutCard.setY(Constants.topCardsYPos);
         cutCard.setVisible(true);
         group.getChildren().add(cutCard);
     }
