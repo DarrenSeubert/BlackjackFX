@@ -68,7 +68,7 @@ public class DataManager {
             String[] val;
             int ID;
             String name;
-            int cash;
+            double cash;
             Player player;
             while ((line = br.readLine()) != null) {
                 val = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -79,7 +79,7 @@ public class DataManager {
                 }
 
                 name = val[nameIndex].replaceAll("\"","").trim();
-                cash = Integer.parseInt(val[cashIndex].replaceAll("\"",""));
+                cash = Double.parseDouble(val[cashIndex].replaceAll("\"",""));
 
                 player = new Player(ID, name, cash);
                 playerTable.put(player.getIDNumber(), player);
@@ -98,7 +98,7 @@ public class DataManager {
      * 
      * @param player
      */
-    public void updateExistingPlayerInPlayerFile(int playerID, int cash) {
+    public void updateExistingPlayerInPlayerFile(int playerID, double cash) {
         String readLine = "";
 
         try {
@@ -173,7 +173,7 @@ public class DataManager {
     public void writeNewPlayerToFile(Player player) {
         int ID = player.getIDNumber();
         String name = player.getName();
-        int cash = player.getCash();
+        double cash = player.getCash();
 
         String readLine = "";
 

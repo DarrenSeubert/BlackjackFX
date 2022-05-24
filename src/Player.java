@@ -9,7 +9,7 @@ import java.util.List;
 public class Player {
     private int IDNumber;
     private String name;
-    private int cash;
+    private double cash;
     private List<Hand> handList;
 
     /**
@@ -19,7 +19,7 @@ public class Player {
      * @param name
      * @param cash
      */
-    public Player(int IDNumber, String name, int cash) {
+    public Player(int IDNumber, String name, double cash) {
         this.IDNumber = IDNumber;
         this.name = name;
         this.cash = cash;
@@ -50,17 +50,8 @@ public class Player {
      * 
      * @return Amount of cash the player has
      */
-    public int getCash() {
+    public double getCash() {
         return cash;
-    }
-
-    /**
-     * 
-     * 
-     * @param amount
-     */
-    public void setCash(int amount) {
-        cash += amount;
     }
 
     /**

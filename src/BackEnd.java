@@ -77,7 +77,7 @@ public class BackEnd {
      * @param cashAmount
      * @return
      */
-    public boolean addOrSubtractCashToPlayer(int playerID, int cashAmount) {
+    public boolean addOrSubtractCashToPlayer(int playerID, double cashAmount) {
         if (!checkIfPlayerExists(playerID) || cashAmount == 0 || (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0)) {
             return false;
         } else {
@@ -94,7 +94,7 @@ public class BackEnd {
      * @param name
      * @param cash
      */
-    public void addNewPlayerToGame(String name, int cash) {
+    public void addNewPlayerToGame(String name, double cash) {
         dm.incrementLargestIDNumber();
         Player newPlayer = new Player(dm.getLargestIDNumber(), name, cash);
         dm.playerTable.put(newPlayer.getIDNumber(), newPlayer);
@@ -229,7 +229,7 @@ public class BackEnd {
      * @param handIndex
      * @return
      */
-    public boolean canSplit(int playerID, int wager, int handIndex) {
+    public boolean canSplit(int playerID, double wager, int handIndex) {
         Player player = dm.playerTable.get(playerID);
 
         if (player.getHands().get(handIndex).getCardList().get(0).getValue() == 
@@ -248,7 +248,7 @@ public class BackEnd {
      * @param wager
      * @return
      */
-    public boolean canDouble(int playerID, int wager) {
+    public boolean canDouble(int playerID, double wager) {
         if (dm.playerTable.get(playerID).getCash() >= wager) {
             return true;
         } else {
@@ -256,7 +256,29 @@ public class BackEnd {
         }
     }
 
-    public void payPlayers() {
-        
+    /**
+     * Method that pays a player based on the option passed in
+     * 
+     * @param playerID The ID of the player to edit
+     * @param wager Original wager amount by the player
+     * @param option Option that determines how much the player is paid
+     *               1: Win
+     *               2: Push
+     *               3: Blackjack
+     *               4: Surrender
+     * @return True on success, else false
+     */
+    public boolean payPlayer(int playerID, double wager, int option) {
+        if (option == 1) {
+            return addOrSubtractCashToPlayer(playerID, wager * 2);
+        } else if (option == 2) {
+            return addOrSubtractCashToPlayer(playerID, wager);
+        } else if (option == 3) {
+            return addOrSubtractCashToPlayer(playerID, wager * 2.5);
+        } else if (option == 4) {
+            return addOrSubtractCashToPlayer(playerID, wager * 0.5);
+        } else {
+            return false;
+        }
     }
 }

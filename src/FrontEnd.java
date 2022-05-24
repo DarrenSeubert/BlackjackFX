@@ -46,6 +46,10 @@ public class FrontEnd extends Application {
     private int p2HandIndex;
     private int p3HandIndex;
     private int p4HandIndex;
+    private double p1WagerEntry;
+    private double p2WagerEntry;
+    private double p3WagerEntry;
+    private double p4WagerEntry;
     private boolean reshuffleNeeded;
 
     /**
@@ -64,6 +68,10 @@ public class FrontEnd extends Application {
         p2HandIndex = 0;
         p3HandIndex = 0;
         p4HandIndex = 0;
+        p1WagerEntry = 0;
+        p2WagerEntry = 0;
+        p3WagerEntry = 0;
+        p4WagerEntry = 0;
         reshuffleNeeded = false;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
@@ -234,7 +242,7 @@ public class FrontEnd extends Application {
         newAccountButton.setLayoutY(25);
         newAccountButton.setTextAlignment(TextAlignment.CENTER);
         newAccountButton.setOnAction((event) -> {
-            Dialog<Pair<String, Integer>> newAccountPrompt = new Dialog<>();
+            Dialog<Pair<String, Double>> newAccountPrompt = new Dialog<>();
             newAccountPrompt.setTitle("BlackjackFX");
             ((Stage) newAccountPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
             newAccountPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
@@ -260,7 +268,7 @@ public class FrontEnd extends Application {
                 if (dialogButton == ButtonType.OK) {
                     try {
                         String nameEntry = nameField.getText().trim();
-                        int cashEntry = Integer.parseInt(cashField.getText());
+                        double cashEntry = Double.parseDouble(cashField.getText());
                         if (nameEntry.equals("") || cashEntry <= 0) {
                             throw new IllegalArgumentException();
                         }
@@ -270,7 +278,7 @@ public class FrontEnd extends Application {
                         Alert e1Alert = new Alert(AlertType.ERROR);
                         e1Alert.setTitle("BlackjackFX");
                         ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                        e1Alert.setHeaderText("Error: Integer must be Entered for Cash");
+                        e1Alert.setHeaderText("Error: Double must be Entered for Cash");
                         e1Alert.show();
                     } catch (IllegalArgumentException e2) {
                         Alert e2Alert = new Alert(AlertType.ERROR);
@@ -283,7 +291,7 @@ public class FrontEnd extends Application {
                 return null;
             });
 
-            Optional<Pair<String, Integer>> result = newAccountPrompt.showAndWait();
+            Optional<Pair<String, Double>> result = newAccountPrompt.showAndWait();
             result.ifPresent(nameCashPair -> {
                 backEnd.addNewPlayerToGame(nameCashPair.getKey(), nameCashPair.getValue());
 
@@ -337,7 +345,7 @@ public class FrontEnd extends Application {
         manageCashButton.setLayoutY(73);
         manageCashButton.setTextAlignment(TextAlignment.CENTER);
         manageCashButton.setOnAction((event) -> {
-            Dialog<Pair<Integer, Integer>> manageCashPrompt = new Dialog<>();
+            Dialog<Pair<Integer, Double>> manageCashPrompt = new Dialog<>();
             manageCashPrompt.setTitle("BlackjackFX");
             ((Stage) manageCashPrompt.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath)); // Set Window Image
             manageCashPrompt.setGraphic(new ImageView(new Image(Constants.blackjackLogoFilePath, 80, 115, true, true))); // Set Graphic in Window
@@ -363,7 +371,7 @@ public class FrontEnd extends Application {
                 if (dialogButton == ButtonType.OK) {
                     try {
                         int IDEntry = Integer.parseInt(IDField.getText().trim());
-                        int cashEntry = Integer.parseInt(cashField.getText().trim());
+                        double cashEntry = Double.parseDouble(cashField.getText().trim());
                         if (IDEntry <= 0 || cashEntry == 0) {
                             throw new IllegalArgumentException();
                         }
@@ -373,7 +381,7 @@ public class FrontEnd extends Application {
                         Alert e1Alert = new Alert(AlertType.ERROR);
                         e1Alert.setTitle("BlackjackFX");
                         ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                        e1Alert.setHeaderText("Error: Integer must be Entered for Both Fields");
+                        e1Alert.setHeaderText("Error: A Integer then a Double must be Entered in Fields");
                         e1Alert.show();
                     } catch (IllegalArgumentException e2) {
                         Alert e2Alert = new Alert(AlertType.ERROR);
@@ -386,10 +394,10 @@ public class FrontEnd extends Application {
                 return null;
             });
 
-            Optional<Pair<Integer, Integer>> result = manageCashPrompt.showAndWait();
+            Optional<Pair<Integer, Double>> result = manageCashPrompt.showAndWait();
             result.ifPresent(IDCashPair -> {
                 int IDEntry = IDCashPair.getKey();
-                int cashEntry = IDCashPair.getValue();
+                double cashEntry = IDCashPair.getValue();
 
                 if (backEnd.addOrSubtractCashToPlayer(IDEntry, cashEntry)) {
                     Alert successAlert = new Alert(AlertType.INFORMATION);
@@ -541,7 +549,7 @@ public class FrontEnd extends Application {
         p4IDAndNameText.setVisible(false);
         group.getChildren().addAll(p1IDAndNameText, p2IDAndNameText, p3IDAndNameText, p4IDAndNameText);
 
-        Text p1CashText = new Text();
+        Text p1CashText = new Text(); // TODO: Figure out decimal formatting
         p1CashText.setFont(Font.font("Verdana", 12));
         p1CashText.setFill(Color.GHOSTWHITE);
         p1CashText.setX(5);
@@ -1033,15 +1041,10 @@ public class FrontEnd extends Application {
 
         dealButton.setOnAction((event) -> {
             try {
-                int p1WagerEntry = 0;
-                int p2WagerEntry = 0;
-                int p3WagerEntry = 0;
-                int p4WagerEntry = 0;
-
                 // Checks for Valid Input
                 if (p1WagerField.isVisible()) {
                     try {
-                        p1WagerEntry = Integer.parseInt(p1WagerField.getText().trim());
+                        p1WagerEntry = Double.parseDouble(p1WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p1WagerField.clear();
                         p1WagerField.requestFocus();
@@ -1062,7 +1065,7 @@ public class FrontEnd extends Application {
                 }
                 if (p2WagerField.isVisible()) {
                     try {
-                        p2WagerEntry = Integer.parseInt(p2WagerField.getText().trim());
+                        p2WagerEntry = Double.parseDouble(p2WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
@@ -1092,7 +1095,7 @@ public class FrontEnd extends Application {
                 }
                 if (p3WagerField.isVisible()) {
                     try {
-                        p3WagerEntry = Integer.parseInt(p3WagerField.getText().trim());
+                        p3WagerEntry = Double.parseDouble(p3WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
@@ -1131,7 +1134,7 @@ public class FrontEnd extends Application {
                 }
                 if (p4WagerField.isVisible()) {
                     try {
-                        p4WagerEntry = Integer.parseInt(p4WagerField.getText().trim());
+                        p4WagerEntry = Double.parseDouble(p4WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
@@ -1434,17 +1437,42 @@ public class FrontEnd extends Application {
                     } else if (p1InUse && backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
                         currentPlayer--;
                     }
-                    
+
                     if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            // PUSH
+                            if (p4InUse) { // Push TODO UPDATE TEXT?
+                                backEnd.payPlayer(p4ID, p4WagerEntry, 2);
+                            }
+                            if (p3InUse) {
+                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            }
+                            if (p2InUse) {
+                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            }
+                            if (p1InUse) {
+                                backEnd.payPlayer(p1ID, p1WagerEntry, 2);
+                            }
+                            
+                            // Terminate round
                         } else {
-                            // PLAYERS IN GAME WIN
+                            if (p4InUse) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
+                                backEnd.payPlayer(p4ID, p4WagerEntry, 3);
+                            }
+                            if (p3InUse) {
+                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            }
+                            if (p2InUse) {
+                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            }
+                            if (p1InUse) {
+                                backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                            }
                         }
                     }
                 } else {
                     if (p4InUse && currentPlayer == 4) {
                         if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
+                            backEnd.payPlayer(p4ID, p4WagerEntry, 3);
                             currentPlayer--;
                         } else {
                             p4HitButton.setDisable(false);
@@ -1461,6 +1489,7 @@ public class FrontEnd extends Application {
                     } 
                     if (p3InUse && currentPlayer == 3) {
                         if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                            backEnd.payPlayer(p3ID, p3WagerEntry, 3);
                             currentPlayer--;
                         } else {
                             p3HitButton.setDisable(false);
@@ -1477,6 +1506,7 @@ public class FrontEnd extends Application {
                     }
                     if (p2InUse && currentPlayer == 2) {
                         if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                            backEnd.payPlayer(p2ID, p2WagerEntry, 3);
                             currentPlayer--;
                         } else {
                             p2HitButton.setDisable(false);
@@ -1494,6 +1524,7 @@ public class FrontEnd extends Application {
                     } 
                     if (p1InUse && currentPlayer == 1) {
                         if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                            backEnd.payPlayer(p1ID, p1WagerEntry, 3);
                             currentPlayer--;
                         } else {
                             p1HitButton.setDisable(false);
@@ -1512,6 +1543,7 @@ public class FrontEnd extends Application {
 
                     if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
+                            // START HERE TOMORROW :)
                             // PUSH
                         } else {
                             // PLAYERS IN GAME WIN
@@ -1536,7 +1568,7 @@ public class FrontEnd extends Application {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
                 ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                e1Alert.setHeaderText("Error: " + e1.getMessage() + "'s Wager must be a Integer");
+                e1Alert.setHeaderText("Error: " + e1.getMessage() + "'s Wager must be a Double");
                 e1Alert.show();
             } catch (IllegalArgumentException e2) {
                 Alert e2Alert = new Alert(AlertType.ERROR);
