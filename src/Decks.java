@@ -47,6 +47,15 @@ public class Decks {
         } else {
             cutCardInDeck = false;
         }
+
+        // TODO TEMP
+        cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ten));
+        cardList.add(0, new Card(Card.Suit.Club, Card.Value.Nine));
+        cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ace));
+        cardList.add(0, new Card(Card.Suit.Heart, Card.Value.Ace));
+        cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.Five));
+        //cardList.add(0, new Card(Card.Suit.Cut, Card.Value.Cut));
+        cardList.add(0, new Card(Card.Suit.Spade, Card.Value.Ten));
     }
 
     /**
@@ -78,6 +87,15 @@ public class Decks {
         } else {
             return cardList.size();
         }
+    }
+
+    /**
+     * 
+     * 
+     * @param inDeck
+     */
+    public void setCutCardInDeck(boolean inDeck) {
+        cutCardInDeck = inDeck;
     }
 
     /**

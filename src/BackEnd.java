@@ -110,7 +110,8 @@ public class BackEnd {
      */
     public boolean hitPlayer(int playerID, int handIndex) {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getCardList().remove(0);
+            decks.setCutCardInDeck(false);
             dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return true;
@@ -173,7 +174,21 @@ public class BackEnd {
      * @return
      */
     public boolean possibleDealerBlackjack() {
-        if (dealer.getHand().getCardList().get(1).getValue() == Card.Value.Ace) {
+        if (dealer.getHand().getCardList().get(0).getValueInt() == 10 || 
+                dealer.getHand().getCardList().get(0).getValueInt() == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @return
+     */
+    public boolean askForInsurance() {
+        if (dealer.getHand().getCardList().get(0).getValue() == Card.Value.Ace) {
             return true;
         } else {
             return false;

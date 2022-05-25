@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -52,6 +53,9 @@ public class FrontEnd extends Application {
     private double p4WagerEntry;
     private boolean reshuffleNeeded;
 
+    private ArrayList<ImageView> inPlayCards;
+    private ImageView dealerHiddenCard;
+
     /**
      * Constructor for the front end
      */
@@ -73,6 +77,8 @@ public class FrontEnd extends Application {
         p3WagerEntry = 0;
         p4WagerEntry = 0;
         reshuffleNeeded = false;
+        inPlayCards = new ArrayList<>();
+        dealerHiddenCard = null;
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
@@ -1284,7 +1290,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p4ID, p4HandIndex, group);
+                    inPlayCards.add(displayCard(p4ID, p4HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
@@ -1300,7 +1306,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p3ID, p3HandIndex, group);
+                    inPlayCards.add(displayCard(p3ID, p3HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
@@ -1316,7 +1322,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p2ID, p2HandIndex, group);
+                    inPlayCards.add(displayCard(p2ID, p2HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
@@ -1332,14 +1338,14 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p1ID, p1HandIndex, group);
+                    inPlayCards.add(displayCard(p1ID, p1HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
                     reshuffleNeeded = true;
                     displayCutCard(group);
                 }
-                displayCard(-2, -2, group);
+                inPlayCards.add(displayCard(-2, -2, group));
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 
                 if (p4InUse) {
@@ -1347,7 +1353,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p4ID, p4HandIndex, group);
+                    inPlayCards.add(displayCard(p4ID, p4HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p3InUse) {
@@ -1355,7 +1361,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p3ID, p3HandIndex, group);
+                    inPlayCards.add(displayCard(p3ID, p3HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (p2InUse) {
@@ -1363,7 +1369,7 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p2ID, p2HandIndex, group);
+                    inPlayCards.add(displayCard(p2ID, p2HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
                 if (p1InUse) {
@@ -1371,17 +1377,18 @@ public class FrontEnd extends Application {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    displayCard(p1ID, p1HandIndex, group);
+                    inPlayCards.add(displayCard(p1ID, p1HandIndex, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
                     reshuffleNeeded = true;
                     displayCutCard(group);
                 }
-                displayCard(-2, -2, group);
+                dealerHiddenCard = displayCard(-2, -2, group);
+                inPlayCards.add(dealerHiddenCard);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
-                if (backEnd.possibleDealerBlackjack()) {
+                if (backEnd.askForInsurance()) { // Insurance
                     if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
                         p4YesButton.setVisible(true);
                         p4NoButton.setVisible(true);
@@ -1466,13 +1473,14 @@ public class FrontEnd extends Application {
                             }
                             if (p1InUse) {
                                 backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                                showDealerHiddenCard(group); // TODO REMOVE
                             }
                         }
                     }
-                } else {
+                } else { // No Insurance
                     if (p4InUse && currentPlayer == 4) {
                         if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
-                            backEnd.payPlayer(p4ID, p4WagerEntry, 3);
+                            // backEnd.payPlayer(p4ID, p4WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p4HitButton.setDisable(false);
@@ -1489,7 +1497,7 @@ public class FrontEnd extends Application {
                     } 
                     if (p3InUse && currentPlayer == 3) {
                         if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
-                            backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            // backEnd.payPlayer(p3ID, p3WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p3HitButton.setDisable(false);
@@ -1506,7 +1514,7 @@ public class FrontEnd extends Application {
                     }
                     if (p2InUse && currentPlayer == 2) {
                         if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
-                            backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            // backEnd.payPlayer(p2ID, p2WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p2HitButton.setDisable(false);
@@ -1524,7 +1532,7 @@ public class FrontEnd extends Application {
                     } 
                     if (p1InUse && currentPlayer == 1) {
                         if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
-                            backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                            // backEnd.payPlayer(p1ID, p1WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p1HitButton.setDisable(false);
@@ -1543,10 +1551,33 @@ public class FrontEnd extends Application {
 
                     if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            // START HERE TOMORROW :)
-                            // PUSH
+                            if (p4InUse) { // Push TODO UPDATE TEXT?
+                                backEnd.payPlayer(p4ID, p4WagerEntry, 2);
+                            }
+                            if (p3InUse) {
+                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            }
+                            if (p2InUse) {
+                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            }
+                            if (p1InUse) {
+                                backEnd.payPlayer(p1ID, p1WagerEntry, 2);
+                            }
+                            
+                            // Terminate round
                         } else {
-                            // PLAYERS IN GAME WIN
+                            if (p4InUse) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
+                                backEnd.payPlayer(p4ID, p4WagerEntry, 3);
+                            }
+                            if (p3InUse) {
+                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            }
+                            if (p2InUse) {
+                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            }
+                            if (p1InUse) {
+                                backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                            }
                         }
                     }
                 }
@@ -1594,8 +1625,9 @@ public class FrontEnd extends Application {
      * @param playerID ID of the player to display the card to, use -2 for the dealer
      * @param handIndex Hand Index to display the card to, used -2 for the dealer
      * @param group The group for the front end
+     * @return Index of image in children list
      */
-    private void displayCard(int playerID, int handIndex, Group group) {
+    private ImageView displayCard(int playerID, int handIndex, Group group) {
         List<Card> handCardList;
         int cardXPos;
         int cardYPos;
@@ -1618,8 +1650,52 @@ public class FrontEnd extends Application {
             }
             cardYPos = Constants.playerCardFrontYPos;
         }
+        
+        Image cardImage;
+        if (cardXPos == Constants.dealerCardStartingXPos + Constants.layeredCardOffset) {
+            cardImage = Constants.backOfCardImage;
+            cardYPos = Constants.dealerCardBackYPos;
+        } else {
+            Card cardToAdd = handCardList.get(handCardList.size() - 1);
+            cardImage = determineCardImage(cardToAdd);
+        }
 
-        Card cardToAdd = handCardList.get(handCardList.size() - 1);
+        ImageView card = new ImageView(cardImage);
+        card.setX(cardXPos);
+        card.setY(cardYPos);
+        card.setVisible(true);
+        group.getChildren().add(card);
+        
+        return card;
+    }
+
+    /**
+     * 
+     * 
+     * @param group
+     */
+    private void showDealerHiddenCard(Group group) {
+        group.getChildren().remove(dealerHiddenCard);
+        inPlayCards.remove(dealerHiddenCard);
+
+        Card cardToAdd = backEnd.getDealer().getHand().getCardList().get(0);
+        Image cardImage = determineCardImage(cardToAdd);
+
+        ImageView card = new ImageView(cardImage);
+        card.setX(Constants.dealerCardStartingXPos + Constants.layeredCardOffset);
+        card.setY(Constants.dealerCardFrontYPos);
+        card.setVisible(true);
+        group.getChildren().add(card);
+        inPlayCards.add((ImageView) group.getChildren().get(group.getChildren().size() - 1));
+    }
+
+    /**
+     * 
+     * 
+     * @param cardToAdd
+     * @return
+     */
+    private Image determineCardImage(Card cardToAdd) {
         Image cardImage = null;
 
         switch (cardToAdd.getValue()) {
@@ -1769,19 +1845,10 @@ public class FrontEnd extends Application {
             default:
                 break;
         }
-        
-        if (cardXPos == Constants.dealerCardStartingXPos) {
-            cardImage = Constants.backOfCardImage;
-            cardYPos = Constants.dealerCardBackYPos;
-        }
 
-        ImageView card = new ImageView(cardImage);
-        card.setX(cardXPos);
-        card.setY(cardYPos);
-        card.setVisible(true);
-        group.getChildren().add(card);
+        return cardImage;
     }
-
+    
     /**
      * 
      * 
