@@ -35,24 +35,13 @@ public class FrontEnd extends Application {
     private static BackEnd backEnd;
     private Stage mStage;
     private String greetingString;
-    private boolean p1InUse;
-    private boolean p2InUse;
-    private boolean p3InUse;
-    private boolean p4InUse;
-    private int p1ID;
-    private int p2ID;
-    private int p3ID;
-    private int p4ID;
-    private int p1HandIndex;
-    private int p2HandIndex;
-    private int p3HandIndex;
-    private int p4HandIndex;
-    private double p1WagerEntry;
-    private double p2WagerEntry;
-    private double p3WagerEntry;
-    private double p4WagerEntry;
-    private boolean reshuffleNeeded;
 
+    private boolean p1InUse, p2InUse, p3InUse, p4InUse;
+    private int p1ID, p2ID, p3ID, p4ID;
+    private int p1HandIndex, p2HandIndex, p3HandIndex, p4HandIndex;
+    private double p1WagerEntry, p2WagerEntry, p3WagerEntry, p4WagerEntry;
+    
+    private boolean reshuffleNeeded;
     private ArrayList<ImageView> inPlayCards;
     private ImageView dealerHiddenCard;
 
@@ -60,6 +49,8 @@ public class FrontEnd extends Application {
      * Constructor for the front end
      */
     public FrontEnd() {
+        greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
+
         p1InUse = false;
         p2InUse = false;
         p3InUse = false;
@@ -76,10 +67,10 @@ public class FrontEnd extends Application {
         p2WagerEntry = 0;
         p3WagerEntry = 0;
         p4WagerEntry = 0;
+
         reshuffleNeeded = false;
         inPlayCards = new ArrayList<>();
         dealerHiddenCard = null;
-        greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
     }
 
     /**
@@ -1388,81 +1379,66 @@ public class FrontEnd extends Application {
                 inPlayCards.add(dealerHiddenCard);
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
 
-                if (backEnd.askForInsurance()) { // Insurance
+                // Checks to make sure insurance isn't needed and dealer doesn't have Blackjack
+                if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
+                    // FIXME: Following code is very ugly
+                    // Checks what buttons should be visible and makes sure they are disabled
                     if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
                         p4YesButton.setVisible(true);
                         p4NoButton.setVisible(true);
-                        if (currentPlayer == 4) {
-                            p4YesButton.setDisable(false);
-                            p4NoButton.setDisable(false);
-                        } else {
-                            p4YesButton.setDisable(true);
-                            p4NoButton.setDisable(true);
-                        }
-                    } else if (p4InUse && backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
-                        currentPlayer--;
+                        p4YesButton.setDisable(true);
+                        p4NoButton.setDisable(true);
                     }
-
                     if (p3InUse && !backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
                         p3YesButton.setVisible(true);
                         p3NoButton.setVisible(true);
-                        if (currentPlayer == 3) {
-                            p3YesButton.setDisable(false);
-                            p3NoButton.setDisable(false);
-                        } else {
-                            p3YesButton.setDisable(true);
-                            p3NoButton.setDisable(true);
-                        }
-                    } else if (p3InUse && backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
-                        currentPlayer--;
+                        p3YesButton.setDisable(true);
+                        p3NoButton.setDisable(true);
                     }
-
                     if (p2InUse && !backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
                         p2YesButton.setVisible(true);
                         p2NoButton.setVisible(true);
-                        if (currentPlayer == 2) {
-                            p2YesButton.setDisable(false);
-                            p2NoButton.setDisable(false);
-                        } else {
-                            p2YesButton.setDisable(true);
-                            p2NoButton.setDisable(true);
-                        }
-                    } else if (p2InUse && backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
-                        currentPlayer--;
+                        p2YesButton.setDisable(true);
+                        p2NoButton.setDisable(true);
                     }
-
                     if (p1InUse && !backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
                         p1YesButton.setVisible(true);
                         p1NoButton.setVisible(true);
-                        if (currentPlayer == 1) {
-                            p1YesButton.setDisable(false);
-                            p1NoButton.setDisable(false);
-                        } else {
-                            p1YesButton.setDisable(true);
-                            p1NoButton.setDisable(true);
-                        }
-                    } else if (p1InUse && backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
-                        currentPlayer--;
+                        p1YesButton.setDisable(true);
+                        p1NoButton.setDisable(true);
                     }
 
-                    if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
+                    // Finds the first player without Blackjack and enables their buttons
+                    if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
+                        p4YesButton.setDisable(false);
+                        p4NoButton.setDisable(false);
+                    } else if (p3InUse && !backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                        p3YesButton.setDisable(false);
+                        p3NoButton.setDisable(false);
+                    } else if (p2InUse && !backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                        p2YesButton.setDisable(false);
+                        p2NoButton.setDisable(false);
+                    } else if (p1InUse && !backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                        p1YesButton.setDisable(false);
+                        p1NoButton.setDisable(false);
+                    } else { // EVERYONE HAS BLACKJACK
+                        showDealerHiddenCard(group);
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            if (p4InUse) { // Push TODO UPDATE TEXT?
+                            if (p4InUse) { // Push TODO UPDATE TEXT
                                 backEnd.payPlayer(p4ID, p4WagerEntry, 2);
                             }
                             if (p3InUse) {
-                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                                backEnd.payPlayer(p3ID, p3WagerEntry, 2);
                             }
                             if (p2InUse) {
-                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                                backEnd.payPlayer(p2ID, p2WagerEntry, 2);
                             }
                             if (p1InUse) {
                                 backEnd.payPlayer(p1ID, p1WagerEntry, 2);
                             }
-                            
                             // Terminate round
                         } else {
-                            if (p4InUse) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
+                            if (p4InUse) { // Players win TODO UPDATE TEXT, SHOW BLACKJACK CELEBRATION?
                                 backEnd.payPlayer(p4ID, p4WagerEntry, 3);
                             }
                             if (p3InUse) {
@@ -1473,14 +1449,12 @@ public class FrontEnd extends Application {
                             }
                             if (p1InUse) {
                                 backEnd.payPlayer(p1ID, p1WagerEntry, 3);
-                                showDealerHiddenCard(group); // TODO REMOVE
                             }
                         }
                     }
-                } else { // No Insurance
+                } else { // No Insurance FIXME START HERE!
                     if (p4InUse && currentPlayer == 4) {
                         if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
-                            // backEnd.payPlayer(p4ID, p4WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p4HitButton.setDisable(false);
@@ -1497,7 +1471,6 @@ public class FrontEnd extends Application {
                     } 
                     if (p3InUse && currentPlayer == 3) {
                         if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
-                            // backEnd.payPlayer(p3ID, p3WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p3HitButton.setDisable(false);
@@ -1514,7 +1487,6 @@ public class FrontEnd extends Application {
                     }
                     if (p2InUse && currentPlayer == 2) {
                         if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
-                            // backEnd.payPlayer(p2ID, p2WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p2HitButton.setDisable(false);
@@ -1532,7 +1504,6 @@ public class FrontEnd extends Application {
                     } 
                     if (p1InUse && currentPlayer == 1) {
                         if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
-                            // backEnd.payPlayer(p1ID, p1WagerEntry, 3); TODO Behavior not right
                             currentPlayer--;
                         } else {
                             p1HitButton.setDisable(false);
@@ -1625,7 +1596,7 @@ public class FrontEnd extends Application {
      * @param playerID ID of the player to display the card to, use -2 for the dealer
      * @param handIndex Hand Index to display the card to, used -2 for the dealer
      * @param group The group for the front end
-     * @return Index of image in children list
+     * @return The ImageView of the card in children list
      */
     private ImageView displayCard(int playerID, int handIndex, Group group) {
         List<Card> handCardList;
@@ -1672,13 +1643,13 @@ public class FrontEnd extends Application {
     /**
      * 
      * 
-     * @param group
+     * @param group The group for the front end
      */
     private void showDealerHiddenCard(Group group) {
         group.getChildren().remove(dealerHiddenCard);
         inPlayCards.remove(dealerHiddenCard);
 
-        Card cardToAdd = backEnd.getDealer().getHand().getCardList().get(0);
+        Card cardToAdd = backEnd.getDealer().getHand().getCardList().get(1);
         Image cardImage = determineCardImage(cardToAdd);
 
         ImageView card = new ImageView(cardImage);
@@ -1852,7 +1823,7 @@ public class FrontEnd extends Application {
     /**
      * 
      * 
-     * @param group
+     * @param group The group for the front end
      */
     private void displayCutCard(Group group) {
         ImageView cutCard = new ImageView(Constants.cutCardImage);

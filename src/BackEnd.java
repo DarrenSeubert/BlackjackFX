@@ -187,7 +187,7 @@ public class BackEnd {
      * 
      * @return
      */
-    public boolean askForInsurance() {
+    public boolean insuranceNeeded() {
         if (dealer.getHand().getCardList().get(0).getValue() == Card.Value.Ace) {
             return true;
         } else {
