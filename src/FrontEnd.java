@@ -202,7 +202,7 @@ public class FrontEnd extends Application {
         mStage.setScene(scene);
         mStage.setResizable(false);
 
-        setLayoutGrid(group); // TODO EDIT FOR FINAL PROJECT
+        setLayoutGrid(group);
 
         ImageView tableLogo = new ImageView(new Image(Constants.blackjackLogoFilePath, 250, 250, true, true));
         tableLogo.setX(475);
@@ -423,26 +423,20 @@ public class FrontEnd extends Application {
         for (int i = 0; i < pIDFields.length; i++) {
             pIDFields[i] = new TextField();
             pIDFields[i].setPromptText("Enter ID #");
+            pIDFields[i].setLayoutX((i * 300) + 115);
             pIDFields[i].setLayoutY(570);
             pIDFields[i].setPrefWidth(70);
         }
-        pIDFields[0].setLayoutX(115);
-        pIDFields[1].setLayoutX(415);
-        pIDFields[2].setLayoutX(715);
-        pIDFields[3].setLayoutX(1015);
         group.getChildren().addAll(pIDFields);
 
         Button[] pSubmitButtons = new Button[4];
         for (int i = 0; i < pSubmitButtons.length; i++) {
             pSubmitButtons[i] = new Button("Submit");
             pSubmitButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pSubmitButtons[i].setLayoutX((i * 300) + 115);
             pSubmitButtons[i].setLayoutY(605);
             pSubmitButtons[i].setPrefWidth(70);
         }
-        pSubmitButtons[0].setLayoutX(115);
-        pSubmitButtons[1].setLayoutX(415);
-        pSubmitButtons[2].setLayoutX(715);
-        pSubmitButtons[3].setLayoutX(1015);
         group.getChildren().addAll(pSubmitButtons);
 
         TextField[] pWagerFields = new TextField[4];
@@ -450,93 +444,44 @@ public class FrontEnd extends Application {
             pWagerFields[i] = new TextField();
             pWagerFields[i].setPromptText("Wager $");
             pWagerFields[i].setPrefWidth(70);
+            pWagerFields[i].setLayoutX((i * 300) + 115);
             pWagerFields[i].setLayoutY(570);
             pWagerFields[i].setVisible(false);
         }
-        pWagerFields[0].setLayoutX(115);
-        pWagerFields[1].setLayoutX(415);
-        pWagerFields[2].setLayoutX(715);
-        pWagerFields[3].setLayoutX(1015);
         group.getChildren().addAll(pWagerFields);
 
-        // START HERE
-        Button p1LeaveButton = new Button("Leave");
-        p1LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p1LeaveButton.setLayoutX(115);
-        p1LeaveButton.setLayoutY(605);
-        p1LeaveButton.setPrefWidth(70);
-        p1LeaveButton.setVisible(false);
-        Button p2LeaveButton = new Button("Leave");
-        p2LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p2LeaveButton.setLayoutX(415);
-        p2LeaveButton.setLayoutY(605);
-        p2LeaveButton.setPrefWidth(70);
-        p2LeaveButton.setVisible(false);
-        Button p3LeaveButton = new Button("Leave");
-        p3LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p3LeaveButton.setLayoutX(715);
-        p3LeaveButton.setLayoutY(605);
-        p3LeaveButton.setPrefWidth(70);
-        p3LeaveButton.setVisible(false);
-        Button p4LeaveButton = new Button("Leave");
-        p4LeaveButton.setTextAlignment(TextAlignment.CENTER);
-        p4LeaveButton.setLayoutX(1015);
-        p4LeaveButton.setLayoutY(605);
-        p4LeaveButton.setPrefWidth(70);
-        p4LeaveButton.setVisible(false);
-        group.getChildren().addAll(p1LeaveButton, p2LeaveButton, p3LeaveButton, p4LeaveButton);
+        Button[] pLeaveButtons = new Button[4];
+        for (int i = 0; i < pLeaveButtons.length; i++) {
+            pLeaveButtons[i] = new Button("Leave");
+            pLeaveButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pLeaveButtons[i].setLayoutX((i * 300) + 115);
+            pLeaveButtons[i].setLayoutY(605);
+            pLeaveButtons[i].setPrefWidth(70);
+            pLeaveButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pLeaveButtons);
 
-        Text p1IDAndNameText = new Text();
-        p1IDAndNameText.setFont(Font.font("Verdana", 12));
-        p1IDAndNameText.setFill(Color.GHOSTWHITE);
-        p1IDAndNameText.setX(5);
-        p1IDAndNameText.setY(666);
-        p1IDAndNameText.setVisible(false);
-        Text p2IDAndNameText = new Text();
-        p2IDAndNameText.setFont(Font.font("Verdana", 12));
-        p2IDAndNameText.setFill(Color.GHOSTWHITE);
-        p2IDAndNameText.setX(305);
-        p2IDAndNameText.setY(666);
-        p2IDAndNameText.setVisible(false);
-        Text p3IDAndNameText = new Text();
-        p3IDAndNameText.setFont(Font.font("Verdana", 12));
-        p3IDAndNameText.setFill(Color.GHOSTWHITE);
-        p3IDAndNameText.setX(605);
-        p3IDAndNameText.setY(666);
-        p3IDAndNameText.setVisible(false);
-        Text p4IDAndNameText = new Text();
-        p4IDAndNameText.setFont(Font.font("Verdana", 12));
-        p4IDAndNameText.setFill(Color.GHOSTWHITE);
-        p4IDAndNameText.setX(905);
-        p4IDAndNameText.setY(666);
-        p4IDAndNameText.setVisible(false);
-        group.getChildren().addAll(p1IDAndNameText, p2IDAndNameText, p3IDAndNameText, p4IDAndNameText);
+        Text[] pIDAndNameTexts = new Text[4];
+        for (int i = 0; i < pIDAndNameTexts.length; i++) {
+            pIDAndNameTexts[i] = new Text();
+            pIDAndNameTexts[i].setFont(Font.font("Verdana", 12));
+            pIDAndNameTexts[i].setFill(Color.GHOSTWHITE);
+            pIDAndNameTexts[i].setX((i * 300) + 5);
+            pIDAndNameTexts[i].setY(666);
+            pIDAndNameTexts[i].setVisible(false);
+        }
+        group.getChildren().addAll(pIDAndNameTexts);
 
-        Text p1CashText = new Text(); // TODO: Figure out decimal formatting
-        p1CashText.setFont(Font.font("Verdana", 12));
-        p1CashText.setFill(Color.GHOSTWHITE);
-        p1CashText.setX(5);
-        p1CashText.setY(695);
-        p1CashText.setVisible(false);
-        Text p2CashText = new Text();
-        p2CashText.setFont(Font.font("Verdana", 12));
-        p2CashText.setFill(Color.GHOSTWHITE);
-        p2CashText.setX(305);
-        p2CashText.setY(695);
-        p2CashText.setVisible(false);
-        Text p3CashText = new Text();
-        p3CashText.setFont(Font.font("Verdana", 12));
-        p3CashText.setFill(Color.GHOSTWHITE);
-        p3CashText.setX(605);
-        p3CashText.setY(695);
-        p3CashText.setVisible(false);
-        Text p4CashText = new Text();
-        p4CashText.setFont(Font.font("Verdana", 12));
-        p4CashText.setFill(Color.GHOSTWHITE);
-        p4CashText.setX(905);
-        p4CashText.setY(695);
-        p4CashText.setVisible(false);
-        group.getChildren().addAll(p1CashText, p2CashText, p3CashText, p4CashText);
+        Text[] pCashTexts = new Text[4]; // TODO: Figure out decimal formatting
+        for (int i = 0; i < pCashTexts.length; i++) {
+            pCashTexts[i] = new Text();
+            pCashTexts[i].setFont(Font.font("Verdana", 12));
+            pCashTexts[i].setFill(Color.GHOSTWHITE);
+            pCashTexts[i].setX((i * 300) + 5);
+            pCashTexts[i].setY(695);
+            pCashTexts[i].setVisible(false);
+        }
+        group.getChildren().addAll(pCashTexts);
 
         Button dealButton = new Button("DEAL");
         dealButton.setFont(new Font(20));
@@ -548,213 +493,93 @@ public class FrontEnd extends Application {
         dealButton.setVisible(false);
         group.getChildren().add(dealButton);
 
-        Text p1WagerText = new Text();
-        p1WagerText.setFont(Font.font("Verdana", 12));
-        p1WagerText.setFill(Color.GHOSTWHITE);
-        p1WagerText.setX(155);
-        p1WagerText.setY(695);
-        p1WagerText.setVisible(false);
-        Text p2WagerText = new Text();
-        p2WagerText.setFont(Font.font("Verdana", 12));
-        p2WagerText.setFill(Color.GHOSTWHITE);
-        p2WagerText.setX(455);
-        p2WagerText.setY(695);
-        p2WagerText.setVisible(false);
-        Text p3WagerText = new Text();
-        p3WagerText.setFont(Font.font("Verdana", 12));
-        p3WagerText.setFill(Color.GHOSTWHITE);
-        p3WagerText.setX(755);
-        p3WagerText.setY(695);
-        p3WagerText.setVisible(false);
-        Text p4WagerText = new Text();
-        p4WagerText.setFont(Font.font("Verdana", 12));
-        p4WagerText.setFill(Color.GHOSTWHITE);
-        p4WagerText.setX(1055);
-        p4WagerText.setY(695);
-        p4WagerText.setVisible(false);
-        group.getChildren().addAll(p1WagerText, p2WagerText, p3WagerText, p4WagerText);
+        Text[] pWagerTexts = new Text[4];
+        for (int i = 0; i < pWagerTexts.length; i++) {
+            pWagerTexts[i] = new Text();
+            pWagerTexts[i].setFont(Font.font("Verdana", 12));
+            pWagerTexts[i].setFill(Color.GHOSTWHITE);
+            pWagerTexts[i].setX((i * 300) + 155);
+            pWagerTexts[i].setY(695);
+            pWagerTexts[i].setVisible(false);
+        }
+        group.getChildren().addAll(pWagerTexts);
 
-        Button p1YesButton = new Button("Yes");
-        p1YesButton.setTextAlignment(TextAlignment.CENTER);
-        p1YesButton.setLayoutX(90);
-        p1YesButton.setLayoutY(535);
-        p1YesButton.setPrefWidth(55);
-        p1YesButton.setVisible(false);
-        Button p2YesButton = new Button("Yes");
-        p2YesButton.setTextAlignment(TextAlignment.CENTER);
-        p2YesButton.setLayoutX(390);
-        p2YesButton.setLayoutY(535);
-        p2YesButton.setPrefWidth(55);
-        p2YesButton.setVisible(false);
-        Button p3YesButton = new Button("Yes");
-        p3YesButton.setTextAlignment(TextAlignment.CENTER);
-        p3YesButton.setLayoutX(690);
-        p3YesButton.setLayoutY(535);
-        p3YesButton.setPrefWidth(55);
-        p3YesButton.setVisible(false);
-        Button p4YesButton = new Button("Yes");
-        p4YesButton.setTextAlignment(TextAlignment.CENTER);
-        p4YesButton.setLayoutX(990);
-        p4YesButton.setLayoutY(535);
-        p4YesButton.setPrefWidth(55);
-        p4YesButton.setVisible(false);
-        group.getChildren().addAll(p1YesButton, p2YesButton, p3YesButton, p4YesButton);
+        Button[] pYesButtons = new Button[4];
+        for (int i = 0; i < pYesButtons.length; i++) {
+            pYesButtons[i] = new Button("Yes");
+            pYesButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pYesButtons[i].setLayoutX((i * 300) + 90);
+            pYesButtons[i].setLayoutY(535);
+            pYesButtons[i].setPrefWidth(55);
+            pYesButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pYesButtons);
         
-        Button p1NoButton = new Button("No");
-        p1NoButton.setTextAlignment(TextAlignment.CENTER);
-        p1NoButton.setLayoutX(155);
-        p1NoButton.setLayoutY(535);
-        p1NoButton.setPrefWidth(55);
-        p1NoButton.setVisible(false);
-        Button p2NoButton = new Button("No");
-        p2NoButton.setTextAlignment(TextAlignment.CENTER);
-        p2NoButton.setLayoutX(455);
-        p2NoButton.setLayoutY(535);
-        p2NoButton.setPrefWidth(55);
-        p2NoButton.setVisible(false);
-        Button p3NoButton = new Button("No");
-        p3NoButton.setTextAlignment(TextAlignment.CENTER);
-        p3NoButton.setLayoutX(755);
-        p3NoButton.setLayoutY(535);
-        p3NoButton.setPrefWidth(55);
-        p3NoButton.setVisible(false);
-        Button p4NoButton = new Button("No");
-        p4NoButton.setTextAlignment(TextAlignment.CENTER);
-        p4NoButton.setLayoutX(1055);
-        p4NoButton.setLayoutY(535);
-        p4NoButton.setPrefWidth(55);
-        p4NoButton.setVisible(false);
-        group.getChildren().addAll(p1NoButton, p2NoButton, p3NoButton, p4NoButton);
+        Button[] pNoButtons = new Button[4];
+        for (int i = 0; i < pNoButtons.length; i++) {
+            pNoButtons[i] = new Button("No");
+            pNoButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pNoButtons[i].setLayoutX((i * 300) + 155);
+            pNoButtons[i].setLayoutY(535);
+            pNoButtons[i].setPrefWidth(55);
+            pNoButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pNoButtons);
 
-        Button p1HitButton = new Button("Hit");
-        p1HitButton.setTextAlignment(TextAlignment.CENTER);
-        p1HitButton.setLayoutX(90);
-        p1HitButton.setLayoutY(570);
-        p1HitButton.setPrefWidth(55);
-        p1HitButton.setVisible(false);
-        Button p2HitButton = new Button("Hit");
-        p2HitButton.setTextAlignment(TextAlignment.CENTER);
-        p2HitButton.setLayoutX(390);
-        p2HitButton.setLayoutY(570);
-        p2HitButton.setPrefWidth(55);
-        p2HitButton.setVisible(false);
-        Button p3HitButton = new Button("Hit");
-        p3HitButton.setTextAlignment(TextAlignment.CENTER);
-        p3HitButton.setLayoutX(690);
-        p3HitButton.setLayoutY(570);
-        p3HitButton.setPrefWidth(55);
-        p3HitButton.setVisible(false);
-        Button p4HitButton = new Button("Hit");
-        p4HitButton.setTextAlignment(TextAlignment.CENTER);
-        p4HitButton.setLayoutX(990);
-        p4HitButton.setLayoutY(570);
-        p4HitButton.setPrefWidth(55);
-        p4HitButton.setVisible(false);
-        group.getChildren().addAll(p1HitButton, p2HitButton, p3HitButton, p4HitButton);
+        Button[] pHitButtons = new Button[4];
+        for (int i = 0; i < pHitButtons.length; i++) {
+            pHitButtons[i] = new Button("Hit");
+            pHitButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pHitButtons[i].setLayoutX((i * 300) + 90);
+            pHitButtons[i].setLayoutY(570);
+            pHitButtons[i].setPrefWidth(55);
+            pHitButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pHitButtons);
         
-        Button p1StandButton = new Button("Stand");
-        p1StandButton.setTextAlignment(TextAlignment.CENTER);
-        p1StandButton.setLayoutX(155);
-        p1StandButton.setLayoutY(570);
-        p1StandButton.setPrefWidth(55);
-        p1StandButton.setVisible(false);
-        Button p2StandButton = new Button("Stand");
-        p2StandButton.setTextAlignment(TextAlignment.CENTER);
-        p2StandButton.setLayoutX(455);
-        p2StandButton.setLayoutY(570);
-        p2StandButton.setPrefWidth(55);
-        p2StandButton.setVisible(false);
-        Button p3StandButton = new Button("Stand");
-        p3StandButton.setTextAlignment(TextAlignment.CENTER);
-        p3StandButton.setLayoutX(755);
-        p3StandButton.setLayoutY(570);
-        p3StandButton.setPrefWidth(55);
-        p3StandButton.setVisible(false);
-        Button p4StandButton = new Button("Stand");
-        p4StandButton.setTextAlignment(TextAlignment.CENTER);
-        p4StandButton.setLayoutX(1055);
-        p4StandButton.setLayoutY(570);
-        p4StandButton.setPrefWidth(55);
-        p4StandButton.setVisible(false);
-        group.getChildren().addAll(p1StandButton, p2StandButton, p3StandButton, p4StandButton);
+        Button[] pStandButtons = new Button[4];
+        for (int i = 0; i < pStandButtons.length; i++) {
+            pStandButtons[i] = new Button("Stand");
+            pStandButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pStandButtons[i].setLayoutX((i * 300) + 155);
+            pStandButtons[i].setLayoutY(570);
+            pStandButtons[i].setPrefWidth(55);
+            pStandButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pStandButtons);
 
-        Button p1DoubleButton = new Button("Double");
-        p1DoubleButton.setTextAlignment(TextAlignment.CENTER);
-        p1DoubleButton.setLayoutX(90);
-        p1DoubleButton.setLayoutY(605);
-        p1DoubleButton.setPrefWidth(55);
-        p1DoubleButton.setVisible(false);
-        Button p2DoubleButton = new Button("Double");
-        p2DoubleButton.setTextAlignment(TextAlignment.CENTER);
-        p2DoubleButton.setLayoutX(390);
-        p2DoubleButton.setLayoutY(605);
-        p2DoubleButton.setPrefWidth(55);
-        p2DoubleButton.setVisible(false);
-        Button p3DoubleButton = new Button("Double");
-        p3DoubleButton.setTextAlignment(TextAlignment.CENTER);
-        p3DoubleButton.setLayoutX(690);
-        p3DoubleButton.setLayoutY(605);
-        p3DoubleButton.setPrefWidth(55);
-        p3DoubleButton.setVisible(false);
-        Button p4DoubleButton = new Button("Double");
-        p4DoubleButton.setTextAlignment(TextAlignment.CENTER);
-        p4DoubleButton.setLayoutX(990);
-        p4DoubleButton.setLayoutY(605);
-        p4DoubleButton.setPrefWidth(55);
-        p4DoubleButton.setVisible(false);
-        group.getChildren().addAll(p1DoubleButton, p2DoubleButton, p3DoubleButton, p4DoubleButton);
+        Button[] pDoubleButtons = new Button[4];
+        for (int i = 0; i < pDoubleButtons.length; i++) {
+            pDoubleButtons[i] = new Button("Double");
+            pDoubleButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pDoubleButtons[i].setLayoutX((i * 300) + 90);
+            pDoubleButtons[i].setLayoutY(605);
+            pDoubleButtons[i].setPrefWidth(55);
+            pDoubleButtons[i].setVisible(false); 
+        }
+        group.getChildren().addAll(pDoubleButtons);
         
-        Button p1SplitButton = new Button("Split");
-        p1SplitButton.setTextAlignment(TextAlignment.CENTER);
-        p1SplitButton.setLayoutX(155);
-        p1SplitButton.setLayoutY(605);
-        p1SplitButton.setPrefWidth(55);
-        p1SplitButton.setVisible(false);
-        Button p2SplitButton = new Button("Split");
-        p2SplitButton.setTextAlignment(TextAlignment.CENTER);
-        p2SplitButton.setLayoutX(455);
-        p2SplitButton.setLayoutY(605);
-        p2SplitButton.setPrefWidth(55);
-        p2SplitButton.setVisible(false);
-        Button p3SplitButton = new Button("Split");
-        p3SplitButton.setTextAlignment(TextAlignment.CENTER);
-        p3SplitButton.setLayoutX(755);
-        p3SplitButton.setLayoutY(605);
-        p3SplitButton.setPrefWidth(55);
-        p3SplitButton.setVisible(false);
-        Button p4SplitButton = new Button("Split");
-        p4SplitButton.setTextAlignment(TextAlignment.CENTER);
-        p4SplitButton.setLayoutX(1055);
-        p4SplitButton.setLayoutY(605);
-        p4SplitButton.setPrefWidth(55);
-        p4SplitButton.setVisible(false);
-        group.getChildren().addAll(p1SplitButton, p2SplitButton, p3SplitButton, p4SplitButton);
+        Button[] pSplitButtons = new Button[4];
+        for (int i = 0; i < pSplitButtons.length; i++) {
+            pSplitButtons[i] = new Button("Split");
+            pSplitButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pSplitButtons[i].setLayoutX((i * 300) + 155);
+            pSplitButtons[i].setLayoutY(605);
+            pSplitButtons[i].setPrefWidth(55);
+            pSplitButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pSplitButtons);
 
-        Button p1SurrenderButton = new Button("Surrender");
-        p1SurrenderButton.setTextAlignment(TextAlignment.CENTER);
-        p1SurrenderButton.setLayoutX(90);
-        p1SurrenderButton.setLayoutY(640);
-        p1SurrenderButton.setPrefWidth(120);
-        p1SurrenderButton.setVisible(false);
-        Button p2SurrenderButton = new Button("Surrender");
-        p2SurrenderButton.setTextAlignment(TextAlignment.CENTER);
-        p2SurrenderButton.setLayoutX(390);
-        p2SurrenderButton.setLayoutY(640);
-        p2SurrenderButton.setPrefWidth(120);
-        p2SurrenderButton.setVisible(false);
-        Button p3SurrenderButton = new Button("Surrender");
-        p3SurrenderButton.setTextAlignment(TextAlignment.CENTER);
-        p3SurrenderButton.setLayoutX(690);
-        p3SurrenderButton.setLayoutY(640);
-        p3SurrenderButton.setPrefWidth(120);
-        p3SurrenderButton.setVisible(false);
-        Button p4SurrenderButton = new Button("Surrender");
-        p4SurrenderButton.setTextAlignment(TextAlignment.CENTER);
-        p4SurrenderButton.setLayoutX(990);
-        p4SurrenderButton.setLayoutY(640);
-        p4SurrenderButton.setPrefWidth(120);
-        p4SurrenderButton.setVisible(false);
-        group.getChildren().addAll(p1SurrenderButton, p2SurrenderButton, p3SurrenderButton, p4SurrenderButton);
+        Button[] pSurrenderButtons = new Button[4];
+        for (int i = 0; i < pSurrenderButtons.length; i++) {
+            pSurrenderButtons[i] = new Button("Surrender");
+            pSurrenderButtons[i].setTextAlignment(TextAlignment.CENTER);
+            pSurrenderButtons[i].setLayoutX((i * 300) + 90);
+            pSurrenderButtons[i].setLayoutY(640);
+            pSurrenderButtons[i].setPrefWidth(120);
+            pSurrenderButtons[i].setVisible(false);
+        }
+        group.getChildren().addAll(pSurrenderButtons);
 
         // Start of Button Actions
         pSubmitButtons[0].setOnAction((event) -> {
@@ -774,11 +599,11 @@ public class FrontEnd extends Application {
 
                 pWagerFields[0].clear();
                 pWagerFields[0].setVisible(true);
-                p1LeaveButton.setVisible(true);
-                p1IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
-                p1CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
-                p1IDAndNameText.setVisible(true);
-                p1CashText.setVisible(true);
+                pLeaveButtons[0].setVisible(true);
+                pIDAndNameTexts[0].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
+                pIDAndNameTexts[0].setVisible(true);
+                pCashTexts[0].setVisible(true);
                 dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
@@ -820,11 +645,11 @@ public class FrontEnd extends Application {
 
                 pWagerFields[1].clear();
                 pWagerFields[1].setVisible(true);
-                p2LeaveButton.setVisible(true);
-                p2IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
-                p2CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
-                p2IDAndNameText.setVisible(true);
-                p2CashText.setVisible(true);
+                pLeaveButtons[1].setVisible(true);
+                pIDAndNameTexts[1].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
+                pIDAndNameTexts[1].setVisible(true);
+                pCashTexts[1].setVisible(true);
                 dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
@@ -866,11 +691,11 @@ public class FrontEnd extends Application {
 
                 pWagerFields[2].clear();
                 pWagerFields[2].setVisible(true);
-                p3LeaveButton.setVisible(true);
-                p3IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
-                p3CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
-                p3IDAndNameText.setVisible(true);
-                p3CashText.setVisible(true);
+                pLeaveButtons[2].setVisible(true);
+                pIDAndNameTexts[2].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
+                pIDAndNameTexts[2].setVisible(true);
+                pCashTexts[2].setVisible(true);
                 dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
@@ -912,11 +737,11 @@ public class FrontEnd extends Application {
 
                 pWagerFields[3].clear();
                 pWagerFields[3].setVisible(true);
-                p4LeaveButton.setVisible(true);
-                p4IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
-                p4CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
-                p4IDAndNameText.setVisible(true);
-                p4CashText.setVisible(true);
+                pLeaveButtons[3].setVisible(true);
+                pIDAndNameTexts[3].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                pCashTexts[3].setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
+                pIDAndNameTexts[3].setVisible(true);
+                pCashTexts[3].setVisible(true);
                 dealButton.setVisible(true);
             } catch (NumberFormatException e1) {
                 Alert e1Alert = new Alert(AlertType.ERROR);
@@ -941,13 +766,13 @@ public class FrontEnd extends Application {
                 pIDFields[3].requestFocus();
             }
         });
-        p1LeaveButton.setOnAction((event) -> {
+        pLeaveButtons[0].setOnAction((event) -> {
             pInUse[0] = false;
             pIDs[0] = -1;
             pWagerFields[0].setVisible(false);
-            p1LeaveButton.setVisible(false);
-            p1IDAndNameText.setVisible(false);
-            p1CashText.setVisible(false);
+            pLeaveButtons[0].setVisible(false);
+            pIDAndNameTexts[0].setVisible(false);
+            pCashTexts[0].setVisible(false);
             if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
@@ -956,13 +781,13 @@ public class FrontEnd extends Application {
             pIDFields[0].setVisible(true);
             pSubmitButtons[0].setVisible(true);
         });
-        p2LeaveButton.setOnAction((event) -> {
+        pLeaveButtons[1].setOnAction((event) -> {
             pInUse[1] = false;
             pIDs[1] = -1;
             pWagerFields[1].setVisible(false);
-            p2LeaveButton.setVisible(false);
-            p2IDAndNameText.setVisible(false);
-            p2CashText.setVisible(false);
+            pLeaveButtons[1].setVisible(false);
+            pIDAndNameTexts[1].setVisible(false);
+            pCashTexts[1].setVisible(false);
             if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
@@ -971,13 +796,13 @@ public class FrontEnd extends Application {
             pIDFields[1].setVisible(true);
             pSubmitButtons[1].setVisible(true);
         });
-        p3LeaveButton.setOnAction((event) -> {
+        pLeaveButtons[2].setOnAction((event) -> {
             pInUse[2] = false;
             pIDs[2] = -1;
             pWagerFields[2].setVisible(false);
-            p3LeaveButton.setVisible(false);
-            p3IDAndNameText.setVisible(false);
-            p3CashText.setVisible(false);
+            pLeaveButtons[2].setVisible(false);
+            pIDAndNameTexts[2].setVisible(false);
+            pCashTexts[2].setVisible(false);
             if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
@@ -986,13 +811,13 @@ public class FrontEnd extends Application {
             pIDFields[2].setVisible(true);
             pSubmitButtons[2].setVisible(true);
         });
-        p4LeaveButton.setOnAction((event) -> {
+        pLeaveButtons[3].setOnAction((event) -> {
             pInUse[3] = false;
             pIDs[3] = -1;
             pWagerFields[3].setVisible(false);
-            p4LeaveButton.setVisible(false);
-            p4IDAndNameText.setVisible(false);
-            p4CashText.setVisible(false);
+            pLeaveButtons[3].setVisible(false);
+            pIDAndNameTexts[3].setVisible(false);
+            pCashTexts[3].setVisible(false);
             if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
@@ -1033,7 +858,7 @@ public class FrontEnd extends Application {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         throw new NumberFormatException(backEnd.getPlayer(pIDs[1]).getName());
                     }
@@ -1041,7 +866,7 @@ public class FrontEnd extends Application {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         throw new IllegalArgumentException(backEnd.getPlayer(pIDs[1]).getName());
                     }
@@ -1049,7 +874,7 @@ public class FrontEnd extends Application {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         throw new ArithmeticException(backEnd.getPlayer(pIDs[1]).getName());
                     }
@@ -1063,10 +888,10 @@ public class FrontEnd extends Application {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         throw new NumberFormatException(backEnd.getPlayer(pIDs[2]).getName());
                     }
@@ -1074,10 +899,10 @@ public class FrontEnd extends Application {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         throw new IllegalArgumentException(backEnd.getPlayer(pIDs[2]).getName());
                     }
@@ -1085,10 +910,10 @@ public class FrontEnd extends Application {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         throw new ArithmeticException(backEnd.getPlayer(pIDs[2]).getName());
                     }
@@ -1102,13 +927,13 @@ public class FrontEnd extends Application {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
-                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
+                            pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
                         throw new NumberFormatException(backEnd.getPlayer(pIDs[3]).getName());
                     }
@@ -1116,13 +941,13 @@ public class FrontEnd extends Application {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
-                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
+                            pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
                         throw new IllegalArgumentException(backEnd.getPlayer(pIDs[3]).getName());
                     }
@@ -1130,13 +955,13 @@ public class FrontEnd extends Application {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
-                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                            pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
-                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                            pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
                         if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
-                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
+                            pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
                         throw new ArithmeticException(backEnd.getPlayer(pIDs[3]).getName());
                     }
@@ -1160,75 +985,75 @@ public class FrontEnd extends Application {
 
                 if (pInUse[0]) {
                     pWagerFields[0].setVisible(false);
-                    p1LeaveButton.setVisible(false);
-                    p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
-                    p1WagerText.setText("Wager: $" + pWagerEntries[0]);
-                    p1WagerText.setVisible(true);
+                    pLeaveButtons[0].setVisible(false);
+                    pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                    pWagerTexts[0].setText("Wager: $" + pWagerEntries[0]);
+                    pWagerTexts[0].setVisible(true);
 
-                    p1HitButton.setVisible(true);
-                    p1HitButton.setDisable(true);
-                    p1StandButton.setVisible(true);
-                    p1StandButton.setDisable(true);
-                    p1DoubleButton.setVisible(true);
-                    p1DoubleButton.setDisable(true);
-                    p1SplitButton.setVisible(true);
-                    p1SplitButton.setDisable(true);
-                    p1SurrenderButton.setVisible(true);
-                    p1SurrenderButton.setDisable(true);
+                    pHitButtons[0].setVisible(true);
+                    pHitButtons[0].setDisable(true);
+                    pStandButtons[0].setVisible(true);
+                    pStandButtons[0].setDisable(true);
+                    pDoubleButtons[0].setVisible(true);
+                    pDoubleButtons[0].setDisable(true);
+                    pSplitButtons[0].setVisible(true);
+                    pSplitButtons[0].setDisable(true);
+                    pSurrenderButtons[0].setVisible(true);
+                    pSurrenderButtons[0].setDisable(true);
                 }
                 if (pInUse[1]) {
                     pWagerFields[1].setVisible(false);
-                    p2LeaveButton.setVisible(false);
-                    p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
-                    p2WagerText.setText("Wager: $" + pWagerEntries[1]);
-                    p2WagerText.setVisible(true);
+                    pLeaveButtons[1].setVisible(false);
+                    pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                    pWagerTexts[1].setText("Wager: $" + pWagerEntries[1]);
+                    pWagerTexts[1].setVisible(true);
 
-                    p2HitButton.setVisible(true);
-                    p2HitButton.setDisable(true);
-                    p2StandButton.setVisible(true);
-                    p2StandButton.setDisable(true);
-                    p2DoubleButton.setVisible(true);
-                    p2DoubleButton.setDisable(true);
-                    p2SplitButton.setVisible(true);
-                    p2SplitButton.setDisable(true);
-                    p2SurrenderButton.setVisible(true);
-                    p2SurrenderButton.setDisable(true);
+                    pHitButtons[1].setVisible(true);
+                    pHitButtons[1].setDisable(true);
+                    pStandButtons[1].setVisible(true);
+                    pStandButtons[1].setDisable(true);
+                    pDoubleButtons[1].setVisible(true);
+                    pDoubleButtons[1].setDisable(true);
+                    pSplitButtons[1].setVisible(true);
+                    pSplitButtons[1].setDisable(true);
+                    pSurrenderButtons[1].setVisible(true);
+                    pSurrenderButtons[1].setDisable(true);
                 }
                 if (pInUse[2]) {
                     pWagerFields[2].setVisible(false);
-                    p3LeaveButton.setVisible(false);
-                    p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
-                    p3WagerText.setText("Wager: $" + pWagerEntries[2]);
-                    p3WagerText.setVisible(true);
+                    pLeaveButtons[2].setVisible(false);
+                    pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
+                    pWagerTexts[2].setText("Wager: $" + pWagerEntries[2]);
+                    pWagerTexts[2].setVisible(true);
 
-                    p3HitButton.setVisible(true);
-                    p3HitButton.setDisable(true);
-                    p3StandButton.setVisible(true);
-                    p3StandButton.setDisable(true);
-                    p3DoubleButton.setVisible(true);
-                    p3DoubleButton.setDisable(true);
-                    p3SplitButton.setVisible(true);
-                    p3SplitButton.setDisable(true);
-                    p3SurrenderButton.setVisible(true);
-                    p3SurrenderButton.setDisable(true);
+                    pHitButtons[2].setVisible(true);
+                    pHitButtons[2].setDisable(true);
+                    pStandButtons[2].setVisible(true);
+                    pStandButtons[2].setDisable(true);
+                    pDoubleButtons[2].setVisible(true);
+                    pDoubleButtons[2].setDisable(true);
+                    pSplitButtons[2].setVisible(true);
+                    pSplitButtons[2].setDisable(true);
+                    pSurrenderButtons[2].setVisible(true);
+                    pSurrenderButtons[2].setDisable(true);
                 }
                 if (pInUse[3]) {
                     pWagerFields[3].setVisible(false);
-                    p4LeaveButton.setVisible(false);
-                    p4CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
-                    p4WagerText.setText("Wager: $" + pWagerEntries[3]);
-                    p4WagerText.setVisible(true);
+                    pLeaveButtons[3].setVisible(false);
+                    pCashTexts[3].setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
+                    pWagerTexts[3].setText("Wager: $" + pWagerEntries[3]);
+                    pWagerTexts[3].setVisible(true);
 
-                    p4HitButton.setVisible(true);
-                    p4HitButton.setDisable(true);
-                    p4StandButton.setVisible(true);
-                    p4StandButton.setDisable(true);
-                    p4DoubleButton.setVisible(true);
-                    p4DoubleButton.setDisable(true);
-                    p4SplitButton.setVisible(true);
-                    p4SplitButton.setDisable(true);
-                    p4SurrenderButton.setVisible(true);
-                    p4SurrenderButton.setDisable(true);
+                    pHitButtons[3].setVisible(true);
+                    pHitButtons[3].setDisable(true);
+                    pStandButtons[3].setVisible(true);
+                    pStandButtons[3].setDisable(true);
+                    pDoubleButtons[3].setVisible(true);
+                    pDoubleButtons[3].setDisable(true);
+                    pSplitButtons[3].setVisible(true);
+                    pSplitButtons[3].setDisable(true);
+                    pSurrenderButtons[3].setVisible(true);
+                    pSurrenderButtons[3].setDisable(true);
                 }
 
                 // Deal Starting Cards
@@ -1354,43 +1179,43 @@ public class FrontEnd extends Application {
                     // FIXME: Following code is very ugly
                     // Checks what buttons should be visible and makes sure they are disabled
                     if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                        p4YesButton.setVisible(true);
-                        p4NoButton.setVisible(true);
-                        p4YesButton.setDisable(true);
-                        p4NoButton.setDisable(true);
+                        pYesButtons[3].setVisible(true);
+                        pNoButtons[3].setVisible(true);
+                        pYesButtons[3].setDisable(true);
+                        pNoButtons[3].setDisable(true);
                     }
                     if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
-                        p3YesButton.setVisible(true);
-                        p3NoButton.setVisible(true);
-                        p3YesButton.setDisable(true);
-                        p3NoButton.setDisable(true);
+                        pYesButtons[2].setVisible(true);
+                        pNoButtons[2].setVisible(true);
+                        pYesButtons[2].setDisable(true);
+                        pNoButtons[2].setDisable(true);
                     }
                     if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
-                        p2YesButton.setVisible(true);
-                        p2NoButton.setVisible(true);
-                        p2YesButton.setDisable(true);
-                        p2NoButton.setDisable(true);
+                        pYesButtons[1].setVisible(true);
+                        pNoButtons[1].setVisible(true);
+                        pYesButtons[1].setDisable(true);
+                        pNoButtons[1].setDisable(true);
                     }
                     if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
-                        p1YesButton.setVisible(true);
-                        p1NoButton.setVisible(true);
-                        p1YesButton.setDisable(true);
-                        p1NoButton.setDisable(true);
+                        pYesButtons[0].setVisible(true);
+                        pNoButtons[0].setVisible(true);
+                        pYesButtons[0].setDisable(true);
+                        pNoButtons[0].setDisable(true);
                     }
 
                     // Finds the first player without Blackjack and enables their buttons
                     if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                        p4YesButton.setDisable(false);
-                        p4NoButton.setDisable(false);
+                        pYesButtons[3].setDisable(false);
+                        pNoButtons[3].setDisable(false);
                     } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
-                        p3YesButton.setDisable(false);
-                        p3NoButton.setDisable(false);
+                        pYesButtons[2].setDisable(false);
+                        pNoButtons[2].setDisable(false);
                     } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
-                        p2YesButton.setDisable(false);
-                        p2NoButton.setDisable(false);
+                        pYesButtons[1].setDisable(false);
+                        pNoButtons[1].setDisable(false);
                     } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
-                        p1YesButton.setDisable(false);
-                        p1NoButton.setDisable(false);
+                        pYesButtons[0].setDisable(false);
+                        pNoButtons[0].setDisable(false);
                     } else { // EVERYONE HAS BLACKJACK
                         showDealerHiddenCard(group);
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
@@ -1440,44 +1265,44 @@ public class FrontEnd extends Application {
                     } else { // Dealer does not have Blackjack
                         // Determine first player without Blackjack
                         if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                            p4HitButton.setDisable(false);
-                            p4StandButton.setDisable(false);
-                            p4SurrenderButton.setDisable(false);
+                            pHitButtons[3].setDisable(false);
+                            pStandButtons[3].setDisable(false);
+                            pSurrenderButtons[3].setDisable(false);
                             if (backEnd.canDouble(pIDs[3], pWagerEntries[3])) {
-                                p4DoubleButton.setDisable(false);
+                                pDoubleButtons[3].setDisable(false);
                             }
                             if (backEnd.canSplit(pIDs[3], pWagerEntries[3], pHandIndexes[3])) {
-                                p4SplitButton.setDisable(false);
+                                pSplitButtons[3].setDisable(false);
                             }
                         } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
-                            p3HitButton.setDisable(false);
-                            p3StandButton.setDisable(false);
-                            p3SurrenderButton.setDisable(false);
+                            pHitButtons[2].setDisable(false);
+                            pStandButtons[2].setDisable(false);
+                            pSurrenderButtons[2].setDisable(false);
                             if (backEnd.canDouble(pIDs[2], pWagerEntries[2])) {
-                                p3DoubleButton.setDisable(false);
+                                pDoubleButtons[2].setDisable(false);
                             }
                             if (backEnd.canSplit(pIDs[2], pWagerEntries[2], pHandIndexes[2])) {
-                                p3SplitButton.setDisable(false);
+                                pSplitButtons[2].setDisable(false);
                             }
                         } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
-                            p2HitButton.setDisable(false);
-                            p2StandButton.setDisable(false);
-                            p2SurrenderButton.setDisable(false);
+                            pHitButtons[1].setDisable(false);
+                            pStandButtons[1].setDisable(false);
+                            pSurrenderButtons[1].setDisable(false);
                             if (backEnd.canDouble(pIDs[1], pWagerEntries[1])) {
-                                p2DoubleButton.setDisable(false);
+                                pDoubleButtons[1].setDisable(false);
                             }
                             if (backEnd.canSplit(pIDs[1], pWagerEntries[1], pHandIndexes[1])) {
-                                p2SplitButton.setDisable(false);
+                                pSplitButtons[1].setDisable(false);
                             }
                         } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
-                            p1HitButton.setDisable(false);
-                            p1StandButton.setDisable(false);
-                            p1SurrenderButton.setDisable(false);
+                            pHitButtons[0].setDisable(false);
+                            pStandButtons[0].setDisable(false);
+                            pSurrenderButtons[0].setDisable(false);
                             if (backEnd.canDouble(pIDs[0], pWagerEntries[0])) {
-                                p1DoubleButton.setDisable(false);
+                                pDoubleButtons[0].setDisable(false);
                             }
                             if (backEnd.canSplit(pIDs[0], pWagerEntries[0], pHandIndexes[0])) {
-                                p1SplitButton.setDisable(false);
+                                pSplitButtons[0].setDisable(false);
                             }
                         } else { // Everyone has Blackjack and Dealer does not
                             showDealerHiddenCard(group);
