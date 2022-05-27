@@ -1068,7 +1068,7 @@ public class FrontEnd extends Application {
                         currentPlayer = 4;
                     }
     
-                    activeHands[3] = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]); // TODO ADDED
+                    activeHands[3] = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]);
                     if (backEnd.hitPlayerHand(activeHands[3])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
@@ -1085,7 +1085,7 @@ public class FrontEnd extends Application {
                         pHandIndexes[2] = backEnd.getPlayer(pIDs[2]).addNewHand();
                     }
                     
-                    activeHands[2] = backEnd.getPlayer(pIDs[2]).getHands().get(pHandIndexes[2]); // TODO ADDED
+                    activeHands[2] = backEnd.getPlayer(pIDs[2]).getHands().get(pHandIndexes[2]);
                     if (backEnd.hitPlayerHand(activeHands[2])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
@@ -1102,7 +1102,7 @@ public class FrontEnd extends Application {
                         pHandIndexes[1] = backEnd.getPlayer(pIDs[1]).addNewHand();
                     }
 
-                    activeHands[1] = backEnd.getPlayer(pIDs[1]).getHands().get(pHandIndexes[1]); // TODO ADDED
+                    activeHands[1] = backEnd.getPlayer(pIDs[1]).getHands().get(pHandIndexes[1]);
                     if (backEnd.hitPlayerHand(activeHands[1])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
@@ -1119,7 +1119,7 @@ public class FrontEnd extends Application {
                         pHandIndexes[0] = backEnd.getPlayer(pIDs[0]).addNewHand();
                     }
 
-                    activeHands[0] = backEnd.getPlayer(pIDs[0]).getHands().get(pHandIndexes[0]); // TODO ADDED
+                    activeHands[0] = backEnd.getPlayer(pIDs[0]).getHands().get(pHandIndexes[0]);
                     if (backEnd.hitPlayerHand(activeHands[0])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
