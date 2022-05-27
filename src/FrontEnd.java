@@ -36,13 +36,15 @@ public class FrontEnd extends Application {
     private Stage mStage;
     private String greetingString;
 
-    private boolean p1InUse, p2InUse, p3InUse, p4InUse;
-    private int p1ID, p2ID, p3ID, p4ID;
-    private int p1HandIndex, p2HandIndex, p3HandIndex, p4HandIndex;
-    private double p1WagerEntry, p2WagerEntry, p3WagerEntry, p4WagerEntry;
+    private boolean[] pInUse;
+    private int[] pIDs;
+    private int[] pHandIndexes;
+    private double[] pWagerEntries;
     
-    private boolean reshuffleNeeded;
+    private Hand[] activeHands;
     private ArrayList<ImageView> inPlayCards;
+
+    private boolean reshuffleNeeded;
     private ImageView dealerHiddenCard;
 
     /**
@@ -51,25 +53,18 @@ public class FrontEnd extends Application {
     public FrontEnd() {
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
 
-        p1InUse = false;
-        p2InUse = false;
-        p3InUse = false;
-        p4InUse = false;
-        p1ID = -1;
-        p2ID = -1;
-        p3ID = -1;
-        p4ID = -1;
-        p1HandIndex = 0;
-        p2HandIndex = 0;
-        p3HandIndex = 0;
-        p4HandIndex = 0;
-        p1WagerEntry = 0;
-        p2WagerEntry = 0;
-        p3WagerEntry = 0;
-        p4WagerEntry = 0;
+        pInUse = new boolean[4];
+        pIDs = new int[4];
+        for (int i = 0; i < pIDs.length; i++) {
+            pIDs[i] = -1;
+        }
+        pHandIndexes = new int[4];
+        pWagerEntries = new double[4];
+
+        activeHands = new Hand[4];
+        inPlayCards = new ArrayList<>();
 
         reshuffleNeeded = false;
-        inPlayCards = new ArrayList<>();
         dealerHiddenCard = null;
     }
 
@@ -297,9 +292,9 @@ public class FrontEnd extends Application {
                 successAlert.setTitle("BlackjackFX");
                 ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                 successAlert.setHeaderText("Account Successfully Opened!\n" +
-                    "Name: " + backEnd.getDm().playerTable.get(playerIDNumber).getName() + "\n" +
+                    "Name: " + backEnd.getPlayer(playerIDNumber).getName() + "\n" +
                     "ID Number: " + playerIDNumber + "\n" +
-                    "Balance: $" + backEnd.getDm().playerTable.get(playerIDNumber).getCash());
+                    "Balance: $" + backEnd.getPlayer(playerIDNumber).getCash());
                 successAlert.show();
             });
         });
@@ -401,9 +396,9 @@ public class FrontEnd extends Application {
                     successAlert.setTitle("BlackjackFX");
                     ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                     successAlert.setHeaderText("Transaction Complete!\n" +
-                        "Name: " + backEnd.getDm().playerTable.get(IDEntry).getName() + "\n" +
-                        "ID Number: " + backEnd.getDm().playerTable.get(IDEntry).getIDNumber() + "\n" +
-                        "Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                        "Name: " + backEnd.getPlayer(IDEntry).getName() + "\n" +
+                        "ID Number: " + backEnd.getPlayer(IDEntry).getIDNumber() + "\n" +
+                        "Balance: $" + backEnd.getPlayer(IDEntry).getCash());
                     successAlert.show();
                 } else {
                     Alert failAlert = new Alert(AlertType.ERROR);
@@ -411,9 +406,9 @@ public class FrontEnd extends Application {
                     ((Stage) failAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
                     if (backEnd.checkIfPlayerExists(IDEntry)) {
                         failAlert.setHeaderText("Error: Insufficient Funds\n" +
-                        "Name: " + backEnd.getDm().playerTable.get(IDEntry).getName() + "\n" +
-                        "ID Number: " + backEnd.getDm().playerTable.get(IDEntry).getIDNumber() + "\n" +
-                        "Balance: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                        "Name: " + backEnd.getPlayer(IDEntry).getName() + "\n" +
+                        "ID Number: " + backEnd.getPlayer(IDEntry).getIDNumber() + "\n" +
+                        "Balance: $" + backEnd.getPlayer(IDEntry).getCash());
                     } else {
                         failAlert.setHeaderText("Error: Account Does not Exist");
                     }
@@ -802,15 +797,15 @@ public class FrontEnd extends Application {
                     throw new NoSuchElementException();
                 }
 
-                p1ID = IDEntry;
+                pIDs[0] = IDEntry;
                 p1IDField.setVisible(false);
                 p1SubmitButton.setVisible(false);
 
                 p1WagerField.clear();
                 p1WagerField.setVisible(true);
                 p1LeaveButton.setVisible(true);
-                p1IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
-                p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p1IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                p1CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
                 p1IDAndNameText.setVisible(true);
                 p1CashText.setVisible(true);
                 dealButton.setVisible(true);
@@ -848,15 +843,15 @@ public class FrontEnd extends Application {
                     throw new NoSuchElementException();
                 }
 
-                p2ID = IDEntry;
+                pIDs[1] = IDEntry;
                 p2IDField.setVisible(false);
                 p2SubmitButton.setVisible(false);
 
                 p2WagerField.clear();
                 p2WagerField.setVisible(true);
                 p2LeaveButton.setVisible(true);
-                p2IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
-                p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p2IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                p2CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
                 p2IDAndNameText.setVisible(true);
                 p2CashText.setVisible(true);
                 dealButton.setVisible(true);
@@ -894,15 +889,15 @@ public class FrontEnd extends Application {
                     throw new NoSuchElementException();
                 }
 
-                p3ID = IDEntry;
+                pIDs[2] = IDEntry;
                 p3IDField.setVisible(false);
                 p3SubmitButton.setVisible(false);
 
                 p3WagerField.clear();
                 p3WagerField.setVisible(true);
                 p3LeaveButton.setVisible(true);
-                p3IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
-                p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p3IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                p3CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
                 p3IDAndNameText.setVisible(true);
                 p3CashText.setVisible(true);
                 dealButton.setVisible(true);
@@ -940,15 +935,15 @@ public class FrontEnd extends Application {
                     throw new NoSuchElementException();
                 }
 
-                p4ID = IDEntry;
+                pIDs[3] = IDEntry;
                 p4IDField.setVisible(false);
                 p4SubmitButton.setVisible(false);
 
                 p4WagerField.clear();
                 p4WagerField.setVisible(true);
                 p4LeaveButton.setVisible(true);
-                p4IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getDm().playerTable.get(IDEntry).getName());
-                p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(IDEntry).getCash());
+                p4IDAndNameText.setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
+                p4CashText.setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
                 p4IDAndNameText.setVisible(true);
                 p4CashText.setVisible(true);
                 dealButton.setVisible(true);
@@ -976,13 +971,13 @@ public class FrontEnd extends Application {
             }
         });
         p1LeaveButton.setOnAction((event) -> {
-            p1InUse = false;
-            p1ID = -1;
+            pInUse[0] = false;
+            pIDs[0] = -1;
             p1WagerField.setVisible(false);
             p1LeaveButton.setVisible(false);
             p1IDAndNameText.setVisible(false);
             p1CashText.setVisible(false);
-            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+            if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
 
@@ -991,13 +986,13 @@ public class FrontEnd extends Application {
             p1SubmitButton.setVisible(true);
         });
         p2LeaveButton.setOnAction((event) -> {
-            p2InUse = false;
-            p2ID = -1;
+            pInUse[1] = false;
+            pIDs[1] = -1;
             p2WagerField.setVisible(false);
             p2LeaveButton.setVisible(false);
             p2IDAndNameText.setVisible(false);
             p2CashText.setVisible(false);
-            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+            if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
 
@@ -1006,13 +1001,13 @@ public class FrontEnd extends Application {
             p2SubmitButton.setVisible(true);
         });
         p3LeaveButton.setOnAction((event) -> {
-            p3InUse = false;
-            p3ID = -1;
+            pInUse[2] = false;
+            pIDs[2] = -1;
             p3WagerField.setVisible(false);
             p3LeaveButton.setVisible(false);
             p3IDAndNameText.setVisible(false);
             p3CashText.setVisible(false);
-            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+            if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
 
@@ -1021,13 +1016,13 @@ public class FrontEnd extends Application {
             p3SubmitButton.setVisible(true);
         });
         p4LeaveButton.setOnAction((event) -> {
-            p4InUse = false;
-            p4ID = -1;
+            pInUse[3] = false;
+            pIDs[3] = -1;
             p4WagerField.setVisible(false);
             p4LeaveButton.setVisible(false);
             p4IDAndNameText.setVisible(false);
             p4CashText.setVisible(false);
-            if (p1ID == -1 && p2ID == -1 && p3ID == -1 && p4ID == -1) {
+            if (pIDs[0] == -1 && pIDs[1] == -1 && pIDs[2] == -1 && pIDs[3] == -1) {
                 dealButton.setVisible(false);
             }
 
@@ -1041,141 +1036,141 @@ public class FrontEnd extends Application {
                 // Checks for Valid Input
                 if (p1WagerField.isVisible()) {
                     try {
-                        p1WagerEntry = Double.parseDouble(p1WagerField.getText().trim());
+                        pWagerEntries[0] = Double.parseDouble(p1WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p1WagerField.clear();
                         p1WagerField.requestFocus();
-                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p1ID).getName());
+                        throw new NumberFormatException(backEnd.getPlayer(pIDs[0]).getName());
                     }
-                    if (p1WagerEntry <= 0) {
+                    if (pWagerEntries[0] <= 0) {
                         p1WagerField.clear();
                         p1WagerField.requestFocus();
-                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p1ID).getName());
+                        throw new IllegalArgumentException(backEnd.getPlayer(pIDs[0]).getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(p1ID, -p1WagerEntry)) {
+                    if (!backEnd.addOrSubtractCashToPlayer(pIDs[0], -pWagerEntries[0])) {
                         p1WagerField.clear();
                         p1WagerField.requestFocus();
-                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p1ID).getName());
+                        throw new ArithmeticException(backEnd.getPlayer(pIDs[0]).getName());
                     }
 
-                    p1InUse = true;
+                    pInUse[0] = true;
                 }
                 if (p2WagerField.isVisible()) {
                     try {
-                        p2WagerEntry = Double.parseDouble(p2WagerField.getText().trim());
+                        pWagerEntries[1] = Double.parseDouble(p2WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p2ID).getName());
+                        throw new NumberFormatException(backEnd.getPlayer(pIDs[1]).getName());
                     }
-                    if (p2WagerEntry <= 0) {
+                    if (pWagerEntries[1] <= 0) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p2ID).getName());
+                        throw new IllegalArgumentException(backEnd.getPlayer(pIDs[1]).getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(p2ID, -p2WagerEntry)) {
+                    if (!backEnd.addOrSubtractCashToPlayer(pIDs[1], -pWagerEntries[1])) {
                         p2WagerField.clear();
                         p2WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p2ID).getName());
+                        throw new ArithmeticException(backEnd.getPlayer(pIDs[1]).getName());
                     }
 
-                    p2InUse = true;
+                    pInUse[1] = true;
                 }
                 if (p3WagerField.isVisible()) {
                     try {
-                        p3WagerEntry = Double.parseDouble(p3WagerField.getText().trim());
+                        pWagerEntries[2] = Double.parseDouble(p3WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p3ID).getName());
+                        throw new NumberFormatException(backEnd.getPlayer(pIDs[2]).getName());
                     }
-                    if (p3WagerEntry <= 0) {
+                    if (pWagerEntries[2] <= 0) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p3ID).getName());
+                        throw new IllegalArgumentException(backEnd.getPlayer(pIDs[2]).getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(p3ID, -p3WagerEntry)) {
+                    if (!backEnd.addOrSubtractCashToPlayer(pIDs[2], -pWagerEntries[2])) {
                         p3WagerField.clear();
                         p3WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p3ID).getName());
+                        throw new ArithmeticException(backEnd.getPlayer(pIDs[2]).getName());
                     }
 
-                    p3InUse = true;
+                    pInUse[2] = true;
                 }
                 if (p4WagerField.isVisible()) {
                     try {
-                        p4WagerEntry = Double.parseDouble(p4WagerField.getText().trim());
+                        pWagerEntries[3] = Double.parseDouble(p4WagerField.getText().trim());
                     } catch (NumberFormatException e) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
-                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
+                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
-                        throw new NumberFormatException(backEnd.getDm().playerTable.get(p4ID).getName());
+                        throw new NumberFormatException(backEnd.getPlayer(pIDs[3]).getName());
                     }
-                    if (p4WagerEntry <= 0) {
+                    if (pWagerEntries[3] <= 0) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
-                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
+                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
-                        throw new IllegalArgumentException(backEnd.getDm().playerTable.get(p4ID).getName());
+                        throw new IllegalArgumentException(backEnd.getPlayer(pIDs[3]).getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(p4ID, -p4WagerEntry)) {
+                    if (!backEnd.addOrSubtractCashToPlayer(pIDs[3], -pWagerEntries[3])) {
                         p4WagerField.clear();
                         p4WagerField.requestFocus();
-                        if (backEnd.addOrSubtractCashToPlayer(p1ID, p1WagerEntry)) {
-                            p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[0], pWagerEntries[0])) {
+                            p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p2ID, p2WagerEntry)) {
-                            p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[1], pWagerEntries[1])) {
+                            p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
                         }
-                        if (backEnd.addOrSubtractCashToPlayer(p3ID, p3WagerEntry)) {
-                            p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
+                        if (backEnd.addOrSubtractCashToPlayer(pIDs[2], pWagerEntries[2])) {
+                            p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
                         }
-                        throw new ArithmeticException(backEnd.getDm().playerTable.get(p4ID).getName());
+                        throw new ArithmeticException(backEnd.getPlayer(pIDs[3]).getName());
                     }
 
-                    p4InUse = true;
+                    pInUse[3] = true;
                 }
                 dealButton.setVisible(false);
 
@@ -1192,11 +1187,11 @@ public class FrontEnd extends Application {
                 p4IDField.setVisible(false);
                 p4SubmitButton.setVisible(false);
 
-                if (p1InUse) {
+                if (pInUse[0]) {
                     p1WagerField.setVisible(false);
                     p1LeaveButton.setVisible(false);
-                    p1CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p1ID).getCash());
-                    p1WagerText.setText("Wager: $" + p1WagerEntry);
+                    p1CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
+                    p1WagerText.setText("Wager: $" + pWagerEntries[0]);
                     p1WagerText.setVisible(true);
 
                     p1HitButton.setVisible(true);
@@ -1210,11 +1205,11 @@ public class FrontEnd extends Application {
                     p1SurrenderButton.setVisible(true);
                     p1SurrenderButton.setDisable(true);
                 }
-                if (p2InUse) {
+                if (pInUse[1]) {
                     p2WagerField.setVisible(false);
                     p2LeaveButton.setVisible(false);
-                    p2CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p2ID).getCash());
-                    p2WagerText.setText("Wager: $" + p2WagerEntry);
+                    p2CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
+                    p2WagerText.setText("Wager: $" + pWagerEntries[1]);
                     p2WagerText.setVisible(true);
 
                     p2HitButton.setVisible(true);
@@ -1228,11 +1223,11 @@ public class FrontEnd extends Application {
                     p2SurrenderButton.setVisible(true);
                     p2SurrenderButton.setDisable(true);
                 }
-                if (p3InUse) {
+                if (pInUse[2]) {
                     p3WagerField.setVisible(false);
                     p3LeaveButton.setVisible(false);
-                    p3CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p3ID).getCash());
-                    p3WagerText.setText("Wager: $" + p3WagerEntry);
+                    p3CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
+                    p3WagerText.setText("Wager: $" + pWagerEntries[2]);
                     p3WagerText.setVisible(true);
 
                     p3HitButton.setVisible(true);
@@ -1246,11 +1241,11 @@ public class FrontEnd extends Application {
                     p3SurrenderButton.setVisible(true);
                     p3SurrenderButton.setDisable(true);
                 }
-                if (p4InUse) {
+                if (pInUse[3]) {
                     p4WagerField.setVisible(false);
                     p4LeaveButton.setVisible(false);
-                    p4CashText.setText("Cash: $" + backEnd.getDm().playerTable.get(p4ID).getCash());
-                    p4WagerText.setText("Wager: $" + p4WagerEntry);
+                    p4CashText.setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
+                    p4WagerText.setText("Wager: $" + pWagerEntries[3]);
                     p4WagerText.setVisible(true);
 
                     p4HitButton.setVisible(true);
@@ -1266,70 +1261,74 @@ public class FrontEnd extends Application {
                 }
 
                 // Deal Starting Cards
-                p1HandIndex = 0;
-                p2HandIndex = 0;
-                p3HandIndex = 0;
-                p4HandIndex = 0;
+                pHandIndexes[0] = 0;
+                pHandIndexes[1] = 0;
+                pHandIndexes[2] = 0;
+                pHandIndexes[3] = 0;
                 int currentPlayer = -1;
 
-                if (p4InUse) {
+                if (pInUse[3]) {
                     if (currentPlayer == -1) {
                         currentPlayer = 4;
                     }
     
-                    if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
+                    activeHands[3] = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]); // TODO ADDED
+                    if (backEnd.hitPlayerHand(activeHands[3])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p4ID, p4HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[3], pHandIndexes[3], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
-                if (p3InUse) {
+                if (pInUse[2]) {
                     if (currentPlayer == -1) {
                         currentPlayer = 3;
                     }
 
-                    if (p3ID == p4ID) {
-                        p3HandIndex = backEnd.getDm().playerTable.get(p3ID).addNewHand();
+                    if (pIDs[2] == pIDs[3]) {
+                        pHandIndexes[2] = backEnd.getPlayer(pIDs[2]).addNewHand();
                     }
                     
-                    if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
+                    activeHands[2] = backEnd.getPlayer(pIDs[2]).getHands().get(pHandIndexes[2]); // TODO ADDED
+                    if (backEnd.hitPlayerHand(activeHands[2])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p3ID, p3HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[2], pHandIndexes[2], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-                if (p2InUse) {
+                if (pInUse[1]) {
                     if (currentPlayer == -1) {
                         currentPlayer = 2;
                     }
 
-                    if (p2ID == p3ID || p2ID == p4ID) {
-                        p2HandIndex = backEnd.getDm().playerTable.get(p2ID).addNewHand();
+                    if (pIDs[1] == pIDs[2] || pIDs[1] == pIDs[3]) {
+                        pHandIndexes[1] = backEnd.getPlayer(pIDs[1]).addNewHand();
                     }
 
-                    if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
+                    activeHands[1] = backEnd.getPlayer(pIDs[1]).getHands().get(pHandIndexes[1]); // TODO ADDED
+                    if (backEnd.hitPlayerHand(activeHands[1])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p2ID, p2HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[1], pHandIndexes[1], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
-                if (p1InUse) {
+                if (pInUse[0]) {
                     if (currentPlayer == -1) {
                         currentPlayer = 1;
                     }
 
-                    if (p1ID == p2ID || p1ID == p3ID || p1ID == p4ID) {
-                        p1HandIndex = backEnd.getDm().playerTable.get(p1ID).addNewHand();
+                    if (pIDs[0] == pIDs[1] || pIDs[0] == pIDs[2] || pIDs[0] == pIDs[3]) {
+                        pHandIndexes[0] = backEnd.getPlayer(pIDs[0]).addNewHand();
                     }
 
-                    if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
+                    activeHands[0] = backEnd.getPlayer(pIDs[0]).getHands().get(pHandIndexes[0]); // TODO ADDED
+                    if (backEnd.hitPlayerHand(activeHands[0])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p1ID, p1HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[0], pHandIndexes[0], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
@@ -1339,36 +1338,36 @@ public class FrontEnd extends Application {
                 inPlayCards.add(displayCard(-2, -2, group));
                 numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 
-                if (p4InUse) {
-                    if (backEnd.hitPlayer(p4ID, p4HandIndex)) {
+                if (pInUse[3]) {
+                    if (backEnd.hitPlayerHand(activeHands[3])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p4ID, p4HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[3], pHandIndexes[3], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
-                if (p3InUse) {
-                    if (backEnd.hitPlayer(p3ID, p3HandIndex)) {
+                if (pInUse[2]) {
+                    if (backEnd.hitPlayerHand(activeHands[2])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p3ID, p3HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[2], pHandIndexes[2], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
-                if (p2InUse) {
-                    if (backEnd.hitPlayer(p2ID, p2HandIndex)) {
+                if (pInUse[1]) {
+                    if (backEnd.hitPlayerHand(activeHands[1])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p2ID, p2HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[1], pHandIndexes[1], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards()));
                 }
-                if (p1InUse) {
-                    if (backEnd.hitPlayer(p1ID, p1HandIndex)) {
+                if (pInUse[0]) {
+                    if (backEnd.hitPlayerHand(activeHands[0])) {
                         reshuffleNeeded = true;
                         displayCutCard(group);
                     }
-                    inPlayCards.add(displayCard(p1ID, p1HandIndex, group));
+                    inPlayCards.add(displayCard(pIDs[0], pHandIndexes[0], group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
@@ -1383,25 +1382,25 @@ public class FrontEnd extends Application {
                 if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
                     // FIXME: Following code is very ugly
                     // Checks what buttons should be visible and makes sure they are disabled
-                    if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
+                    if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
                         p4YesButton.setVisible(true);
                         p4NoButton.setVisible(true);
                         p4YesButton.setDisable(true);
                         p4NoButton.setDisable(true);
                     }
-                    if (p3InUse && !backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                    if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
                         p3YesButton.setVisible(true);
                         p3NoButton.setVisible(true);
                         p3YesButton.setDisable(true);
                         p3NoButton.setDisable(true);
                     }
-                    if (p2InUse && !backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                    if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
                         p2YesButton.setVisible(true);
                         p2NoButton.setVisible(true);
                         p2YesButton.setDisable(true);
                         p2NoButton.setDisable(true);
                     }
-                    if (p1InUse && !backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                    if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
                         p1YesButton.setVisible(true);
                         p1NoButton.setVisible(true);
                         p1YesButton.setDisable(true);
@@ -1409,159 +1408,134 @@ public class FrontEnd extends Application {
                     }
 
                     // Finds the first player without Blackjack and enables their buttons
-                    if (p4InUse && !backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) {
+                    if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
                         p4YesButton.setDisable(false);
                         p4NoButton.setDisable(false);
-                    } else if (p3InUse && !backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
+                    } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
                         p3YesButton.setDisable(false);
                         p3NoButton.setDisable(false);
-                    } else if (p2InUse && !backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
+                    } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
                         p2YesButton.setDisable(false);
                         p2NoButton.setDisable(false);
-                    } else if (p1InUse && !backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
+                    } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
                         p1YesButton.setDisable(false);
                         p1NoButton.setDisable(false);
                     } else { // EVERYONE HAS BLACKJACK
                         showDealerHiddenCard(group);
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            if (p4InUse) { // Push TODO UPDATE TEXT
-                                backEnd.payPlayer(p4ID, p4WagerEntry, 2);
+                            if (pInUse[3]) { // Push TODO UPDATE TEXT
+                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 2);
                             }
-                            if (p3InUse) {
-                                backEnd.payPlayer(p3ID, p3WagerEntry, 2);
+                            if (pInUse[2]) {
+                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 2);
                             }
-                            if (p2InUse) {
-                                backEnd.payPlayer(p2ID, p2WagerEntry, 2);
+                            if (pInUse[1]) {
+                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 2);
                             }
-                            if (p1InUse) {
-                                backEnd.payPlayer(p1ID, p1WagerEntry, 2);
+                            if (pInUse[0]) {
+                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 2);
                             }
                             // Terminate round
                         } else {
-                            if (p4InUse) { // Players win TODO UPDATE TEXT, SHOW BLACKJACK CELEBRATION?
-                                backEnd.payPlayer(p4ID, p4WagerEntry, 3);
+                            if (pInUse[3]) { // Players win TODO UPDATE TEXT, SHOW BLACKJACK CELEBRATION?
+                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 3);
                             }
-                            if (p3InUse) {
-                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            if (pInUse[2]) {
+                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 3);
                             }
-                            if (p2InUse) {
-                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            if (pInUse[1]) {
+                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 3);
                             }
-                            if (p1InUse) {
-                                backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                            if (pInUse[0]) {
+                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 3);
                             }
                         }
                     }
-                } else { // No Insurance FIXME START HERE!
-                    if (p4InUse && currentPlayer == 4) {
-                        if (backEnd.isPlayerBlackjack(p4ID, p4HandIndex)) { // BLACKJACK
-                            currentPlayer--;
-                        } else {
+                } else { // No Insurance
+                    if (backEnd.isDealerBlackjack()) { // Dealer has Blackjack (Showing Value 10)
+                        showDealerHiddenCard(group);
+                        if (pInUse[3] && backEnd.isPlayerHandBlackjack(activeHands[3])) {
+                            backEnd.payPlayer(pIDs[3], pWagerEntries[3], 2);
+                        }
+                        if (pInUse[2] && backEnd.isPlayerHandBlackjack(activeHands[3])) {
+                            backEnd.payPlayer(pIDs[2], pWagerEntries[2], 2);
+                        }
+                        if (pInUse[1] && backEnd.isPlayerHandBlackjack(activeHands[1])) {
+                            backEnd.payPlayer(pIDs[1], pWagerEntries[1], 2);
+                        }
+                        if (pInUse[0] && backEnd.isPlayerHandBlackjack(activeHands[0])) {
+                            backEnd.payPlayer(pIDs[0], pWagerEntries[0], 2);
+                        }
+                    } else { // Dealer does not have Blackjack
+                        // Determine first player without Blackjack
+                        if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
                             p4HitButton.setDisable(false);
                             p4StandButton.setDisable(false);
                             p4SurrenderButton.setDisable(false);
-
-                            if (backEnd.canDouble(p4ID, p4WagerEntry)) {
+                            if (backEnd.canDouble(pIDs[3], pWagerEntries[3])) {
                                 p4DoubleButton.setDisable(false);
                             }
-                            if (backEnd.canSplit(p4ID, p4WagerEntry, p4HandIndex)) {
+                            if (backEnd.canSplit(pIDs[3], pWagerEntries[3], pHandIndexes[3])) {
                                 p4SplitButton.setDisable(false);
                             }
-                        }
-                    } 
-                    if (p3InUse && currentPlayer == 3) {
-                        if (backEnd.isPlayerBlackjack(p3ID, p3HandIndex)) {
-                            currentPlayer--;
-                        } else {
+                        } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
                             p3HitButton.setDisable(false);
                             p3StandButton.setDisable(false);
                             p3SurrenderButton.setDisable(false);
-
-                            if (backEnd.canDouble(p3ID, p3WagerEntry)) {
+                            if (backEnd.canDouble(pIDs[2], pWagerEntries[2])) {
                                 p3DoubleButton.setDisable(false);
                             }
-                            if (backEnd.canSplit(p3ID, p3WagerEntry, p3HandIndex)) {
+                            if (backEnd.canSplit(pIDs[2], pWagerEntries[2], pHandIndexes[2])) {
                                 p3SplitButton.setDisable(false);
                             }
-                        }
-                    }
-                    if (p2InUse && currentPlayer == 2) {
-                        if (backEnd.isPlayerBlackjack(p2ID, p2HandIndex)) {
-                            currentPlayer--;
-                        } else {
+                        } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
                             p2HitButton.setDisable(false);
                             p2StandButton.setDisable(false);
-                            p2DoubleButton.setDisable(false);
                             p2SurrenderButton.setDisable(false);
-
-                            if (backEnd.canDouble(p2ID, p2WagerEntry)) {
+                            if (backEnd.canDouble(pIDs[1], pWagerEntries[1])) {
                                 p2DoubleButton.setDisable(false);
                             }
-                            if (backEnd.canSplit(p2ID, p2WagerEntry, p2HandIndex)) {
+                            if (backEnd.canSplit(pIDs[1], pWagerEntries[1], pHandIndexes[1])) {
                                 p2SplitButton.setDisable(false);
                             }
-                        }
-                    } 
-                    if (p1InUse && currentPlayer == 1) {
-                        if (backEnd.isPlayerBlackjack(p1ID, p1HandIndex)) {
-                            currentPlayer--;
-                        } else {
+                        } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
                             p1HitButton.setDisable(false);
                             p1StandButton.setDisable(false);
-                            p1DoubleButton.setDisable(false);
                             p1SurrenderButton.setDisable(false);
-
-                            if (backEnd.canDouble(p1ID, p1WagerEntry)) {
+                            if (backEnd.canDouble(pIDs[0], pWagerEntries[0])) {
                                 p1DoubleButton.setDisable(false);
                             }
-                            if (backEnd.canSplit(p1ID, p1WagerEntry, p1HandIndex)) {
+                            if (backEnd.canSplit(pIDs[0], pWagerEntries[0], pHandIndexes[0])) {
                                 p1SplitButton.setDisable(false);
                             }
-                        }
-                    }
-
-                    if (currentPlayer == 0) { // EVERYONE HAS BLACKJACK
-                        if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            if (p4InUse) { // Push TODO UPDATE TEXT?
-                                backEnd.payPlayer(p4ID, p4WagerEntry, 2);
+                        } else { // Everyone has Blackjack and Dealer does not
+                            showDealerHiddenCard(group);
+                            if (pInUse[3]) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
+                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 3);
                             }
-                            if (p3InUse) {
-                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
+                            if (pInUse[2]) {
+                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 3);
                             }
-                            if (p2InUse) {
-                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
+                            if (pInUse[1]) {
+                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 3);
                             }
-                            if (p1InUse) {
-                                backEnd.payPlayer(p1ID, p1WagerEntry, 2);
-                            }
-                            
-                            // Terminate round
-                        } else {
-                            if (p4InUse) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
-                                backEnd.payPlayer(p4ID, p4WagerEntry, 3);
-                            }
-                            if (p3InUse) {
-                                backEnd.payPlayer(p3ID, p3WagerEntry, 3);
-                            }
-                            if (p2InUse) {
-                                backEnd.payPlayer(p2ID, p2WagerEntry, 3);
-                            }
-                            if (p1InUse) {
-                                backEnd.payPlayer(p1ID, p1WagerEntry, 3);
+                            if (pInUse[0]) {
+                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 3);
                             }
                         }
                     }
                 }
 
                 // TODO Remove these, temp prints
-                // List<Card> p1CardList = backEnd.getDm().playerTable.get(p1ID).getHands().get(p1HandIndex).getCardList();
-                // List<Card> p2CardList = backEnd.getDm().playerTable.get(p2ID).getHands().get(p2HandIndex).getCardList();
-                // List<Card> p3CardList = backEnd.getDm().playerTable.get(p3ID).getHands().get(p3HandIndex).getCardList();
-                // List<Card> p4CardList = backEnd.getDm().playerTable.get(p4ID).getHands().get(p4HandIndex).getCardList();
+                // List<Card> p1CardList = backEnd.getPlayer(pIDs[0]).getHands().get(pHandIndexes[0]).getCardList();
+                // List<Card> p2CardList = backEnd.getPlayer(pIDs[1]).getHands().get(pHandIndexes[1]).getCardList();
+                // List<Card> p3CardList = backEnd.getPlayer(pIDs[2]).getHands().get(pHandIndexes[2]).getCardList();
+                // List<Card> p4CardList = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]).getCardList();
                 // System.out.println("P1 HAND: " + p1CardList);
                 // System.out.println("P2 HAND: " + p2CardList);
                 // System.out.println("P3 HAND: " + p3CardList);
                 // System.out.println("P4 HAND: " + p4CardList);
+                // System.out.println(activeHands[0].getCardList());
                 System.out.println("DEALER HAND: " + backEnd.getDealer().getHand());
                 System.out.println("CARD LIST SIZE: " + backEnd.getDecks().getCardList().size());
                 System.out.println("USED LIST: " + backEnd.getDecks().getUsedCardList());
@@ -1608,13 +1582,13 @@ public class FrontEnd extends Application {
             cardXPos = Constants.dealerCardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
             cardYPos = Constants.dealerCardFrontYPos;
         } else {
-            handCardList = backEnd.getDm().playerTable.get(playerID).getHands().get(handIndex).getCardList();
+            handCardList = backEnd.getPlayer(playerID).getHands().get(handIndex).getCardList();
 
-            if (playerID == p4ID && handIndex == p4HandIndex) {
+            if (playerID == pIDs[3] && handIndex == pHandIndexes[3]) {
                 cardXPos = Constants.p4CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
-            } else if (playerID == p3ID && handIndex == p3HandIndex) {
+            } else if (playerID == pIDs[2] && handIndex == pHandIndexes[2]) {
                 cardXPos = Constants.p3CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
-            } else if (playerID == p2ID && handIndex == p2HandIndex) {
+            } else if (playerID == pIDs[1] && handIndex == pHandIndexes[1]) {
                 cardXPos = Constants.p2CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);
             } else {
                 cardXPos = Constants.p1CardStartingXPos + ((handCardList.size() - 1) * Constants.layeredCardOffset);  

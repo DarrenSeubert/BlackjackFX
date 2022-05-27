@@ -64,7 +64,7 @@ public class Decks {
         // cardList.add(0, new Card(Card.Suit.Heart, Card.Value.Ace));
         // cardList.add(0, new Card(Card.Suit.Heart, Card.Value.Four));
         // cardList.add(0, new Card(Card.Suit.Heart, Card.Value.Five));
-        // cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.Ace));
+        // cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.King));
     }
 
     /**

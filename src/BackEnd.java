@@ -1,5 +1,3 @@
-import java.util.List;
-
 /**
  * Class that handles the back end engine for Blackjack
  * 
@@ -36,6 +34,16 @@ public class BackEnd {
      */
     public DataManager getDm() {
         return dm;
+    }
+
+    /**
+     * 
+     * Note: Make sure player exists before calling via checkIfPlayerExists()
+     * 
+     * @return
+     */
+    public Player getPlayer(int playerID) {
+        return dm.playerTable.get(playerID);
     }
 
     /**
@@ -77,6 +85,9 @@ public class BackEnd {
      * @param cashAmount
      * @return
      */
+    // TODO Maybe seperate out this method into two: 
+    // 1) For known player already exits (For in game paying)
+    // 2) For not known if player already exits (For adding money to an account pre game)
     public boolean addOrSubtractCashToPlayer(int playerID, double cashAmount) {
         if (!checkIfPlayerExists(playerID) || cashAmount == 0 || (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0)) {
             return false;
@@ -104,19 +115,18 @@ public class BackEnd {
     /**
      * 
      * 
-     * @param playerID
-     * @param handIndex
+     * @param hand Hand of player to hit
      * @return True if reshuffle is needed, else false
      */
-    public boolean hitPlayer(int playerID, int handIndex) {
+    public boolean hitPlayerHand(Hand hand) {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt
             decks.getCardList().remove(0);
             decks.setCutCardInDeck(false);
-            dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
+            hand.getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return true;
         } else {
-            dm.playerTable.get(playerID).getHands().get(handIndex).getCardList().add(decks.getCardList().get(0));
+            hand.getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
             return false;
         }
@@ -147,8 +157,8 @@ public class BackEnd {
      * @param handIndex
      * @return True is hand is a bust, else false
      */
-    public boolean isPlayerHandBust(int playerID, int handIndex) {
-         if (dm.playerTable.get(playerID).getHands().get(handIndex).getPossibleHandValues().size() == 0) {
+    public boolean isPlayerHandBust(Hand hand) {
+         if (hand.getPossibleHandValues().size() == 0) {
             return true;
         } else {
             return false;
@@ -162,20 +172,6 @@ public class BackEnd {
      */
     public boolean isDealerHandBust() {
         if (dealer.getHand().getPossibleHandValues().size() == 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 
-     * 
-     * @return
-     */
-    public boolean possibleDealerBlackjack() {
-        if (dealer.getHand().getCardList().get(0).getValueInt() == 10 || 
-                dealer.getHand().getCardList().get(0).getValueInt() == 1) {
             return true;
         } else {
             return false;
@@ -220,14 +216,12 @@ public class BackEnd {
      * @param playerID
      * @return True if given player has Blackjack, else false
      */
-    public boolean isPlayerBlackjack(int playerID, int handIndex) {
-        List<Hand> playerHands = dm.playerTable.get(playerID).getHands();
-
-        if (playerHands.get(handIndex).getCardList().size() != 2) {
+    public boolean isPlayerHandBlackjack(Hand hand) {
+        if (hand.getCardList().size() != 2) {
             return false;
         } else {
-            for (int i = 0; i < playerHands.get(handIndex).getPossibleHandValues().size(); i++) {
-                if (playerHands.get(handIndex).getPossibleHandValues().get(i) == 21) {
+            for (int i = 0; i < hand.getPossibleHandValues().size(); i++) {
+                if (hand.getPossibleHandValues().get(i) == 21) {
                     return true;
                 }
             }
@@ -276,11 +270,11 @@ public class BackEnd {
      * 
      * @param playerID The ID of the player to edit
      * @param wager Original wager amount by the player
-     * @param option Option that determines how much the player is paid
-     *               1: Win
-     *               2: Push
-     *               3: Blackjack
-     *               4: Surrender
+     * @param option Option that determines how much the player is paid <p>
+     *               1: Win <p>
+     *               2: Push <p>
+     *               3: Blackjack <p>
+     *               4: Surrender <p>
      * @return True on success, else false
      */
     public boolean payPlayer(int playerID, double wager, int option) {
