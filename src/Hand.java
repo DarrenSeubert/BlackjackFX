@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that represents a hand of cards in Blackjack
@@ -7,7 +6,7 @@ import java.util.List;
  * @author Darren Seubert
  */
 public class Hand {
-    private List<Card> cardList;
+    private ArrayList<Card> cardList;
 
     /**
      * 
@@ -21,7 +20,7 @@ public class Hand {
      * 
      * @return 
      */
-    public List<Card> getCardList() {
+    public ArrayList<Card> getCardList() {
         return cardList;
     }
 
@@ -30,8 +29,8 @@ public class Hand {
      * 
      * @return
      */
-    public List<Integer> getPossibleHandValues() {
-        List<Integer> possibleHandValues = new ArrayList<>();
+    public ArrayList<Integer> getPossibleHandValues() {
+        ArrayList<Integer> possibleHandValues = new ArrayList<>();
         int numberOfAces = 0;
         int handValue = 0;
 

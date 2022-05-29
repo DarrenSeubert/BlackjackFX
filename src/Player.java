@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that represents a player in Blackjack
@@ -10,7 +9,7 @@ public class Player {
     private int IDNumber;
     private String name;
     private double cash;
-    private List<Hand> handList;
+    private ArrayList<Hand> handList;
 
     /**
      * 
@@ -59,8 +58,16 @@ public class Player {
      * 
      * @return
      */
-    public List<Hand> getHands() {
+    public ArrayList<Hand> getHands() {
         return handList;
+    }
+
+    /**
+     * 
+     * @param amount
+     */
+    public void setCash(double amount) {
+        cash = amount;
     }
 
     /**

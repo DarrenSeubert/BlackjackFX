@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -41,6 +40,8 @@ public class FrontEnd extends Application {
     private int[] pHandIndexes;
     private double[] pWagerEntries;
     
+    // private Player[] activePlayers; TODO Maybe make players local instead of calling backEnd
+    // Note: Then use the new version of backEnd.payPlayer()
     private Hand[] activeHands;
     private ArrayList<ImageView> inPlayCards;
 
@@ -600,8 +601,8 @@ public class FrontEnd extends Application {
                 pWagerFields[0].clear();
                 pWagerFields[0].setVisible(true);
                 pLeaveButtons[0].setVisible(true);
-                pIDAndNameTexts[0].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(IDEntry).getName());
-                pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(IDEntry).getCash());
+                pIDAndNameTexts[0].setText("ID: " + IDEntry + "\nName: " + backEnd.getPlayer(pIDs[0]).getName());
+                pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
                 pIDAndNameTexts[0].setVisible(true);
                 pCashTexts[0].setVisible(true);
                 dealButton.setVisible(true);
@@ -1176,31 +1177,15 @@ public class FrontEnd extends Application {
 
                 // Checks to make sure insurance isn't needed and dealer doesn't have Blackjack
                 if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
-                    // FIXME: Following code is very ugly
+                    // FIXME: Following code is somewhat ugly
                     // Checks what buttons should be visible and makes sure they are disabled
-                    if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                        pYesButtons[3].setVisible(true);
-                        pNoButtons[3].setVisible(true);
-                        pYesButtons[3].setDisable(true);
-                        pNoButtons[3].setDisable(true);
-                    }
-                    if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
-                        pYesButtons[2].setVisible(true);
-                        pNoButtons[2].setVisible(true);
-                        pYesButtons[2].setDisable(true);
-                        pNoButtons[2].setDisable(true);
-                    }
-                    if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
-                        pYesButtons[1].setVisible(true);
-                        pNoButtons[1].setVisible(true);
-                        pYesButtons[1].setDisable(true);
-                        pNoButtons[1].setDisable(true);
-                    }
-                    if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
-                        pYesButtons[0].setVisible(true);
-                        pNoButtons[0].setVisible(true);
-                        pYesButtons[0].setDisable(true);
-                        pNoButtons[0].setDisable(true);
+                    for (int i = pInUse.length - 1; i >= 0; i--) {
+                        if (pInUse[i] && !backEnd.isPlayerHandBlackjack(activeHands[i])) {
+                            pYesButtons[i].setVisible(true);
+                            pNoButtons[i].setVisible(true);
+                            pYesButtons[i].setDisable(true);
+                            pNoButtons[i].setDisable(true);
+                        }
                     }
 
                     // Finds the first player without Blackjack and enables their buttons
@@ -1219,31 +1204,17 @@ public class FrontEnd extends Application {
                     } else { // EVERYONE HAS BLACKJACK
                         showDealerHiddenCard(group);
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
-                            if (pInUse[3]) { // Push TODO UPDATE TEXT
-                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 2);
-                            }
-                            if (pInUse[2]) {
-                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 2);
-                            }
-                            if (pInUse[1]) {
-                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 2);
-                            }
-                            if (pInUse[0]) {
-                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 2);
+                            for (int i = pInUse.length - 1; i >= 0; i--) {
+                                if (pInUse[i]) { // Push TODO UPDATE TEXT
+                                    backEnd.payPlayer(pIDs[i], pWagerEntries[i], 2);
+                                }
                             }
                             // Terminate round
                         } else {
-                            if (pInUse[3]) { // Players win TODO UPDATE TEXT, SHOW BLACKJACK CELEBRATION?
-                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 3);
-                            }
-                            if (pInUse[2]) {
-                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 3);
-                            }
-                            if (pInUse[1]) {
-                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 3);
-                            }
-                            if (pInUse[0]) {
-                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 3);
+                            for (int i = pInUse.length - 1; i >= 0; i--) {
+                                if (pInUse[i]) { // Players win TODO UPDATE TEXT, SHOW BLACKJACK CELEBRATION?
+                                    backEnd.payPlayer(pIDs[i], pWagerEntries[i], 3);
+                                }
                             }
                         }
                     }
@@ -1331,7 +1302,7 @@ public class FrontEnd extends Application {
                 // System.out.println("P2 HAND: " + p2CardList);
                 // System.out.println("P3 HAND: " + p3CardList);
                 // System.out.println("P4 HAND: " + p4CardList);
-                // System.out.println(activeHands[0].getCardList());
+
                 System.out.println("DEALER HAND: " + backEnd.getDealer().getHand());
                 System.out.println("CARD LIST SIZE: " + backEnd.getDecks().getCardList().size());
                 System.out.println("USED LIST: " + backEnd.getDecks().getUsedCardList());
@@ -1369,7 +1340,7 @@ public class FrontEnd extends Application {
      * @return The ImageView of the card in children list
      */
     private ImageView displayCard(int playerID, int handIndex, Group group) {
-        List<Card> handCardList;
+        ArrayList<Card> handCardList;
         int cardXPos;
         int cardYPos;
 

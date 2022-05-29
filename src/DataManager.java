@@ -95,8 +95,8 @@ public class DataManager {
 
     /**
      * 
-     * 
-     * @param player
+     * @param playerID
+     * @param cash
      */
     public void updateExistingPlayerInPlayerFile(int playerID, double cash) {
         String readLine = "";

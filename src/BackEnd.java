@@ -290,4 +290,47 @@ public class BackEnd {
             return false;
         }
     }
+
+    /** Method that pays a player based on the option passed in
+     * 
+     * @param playerID The ID of the player to edit
+     * @param wager Original wager amount by the player
+     * @param option Option that determines how much the player is paid <p>
+     *               1: Win <p>
+     *               2: Push <p>
+     *               3: Blackjack <p>
+     *               4: Surrender <p>
+     * @return True on success, else false
+     */
+    // public boolean payPlayer(Player player, double wager, int option) {
+    //     if (option == 1) {
+    //         return payPlayerHelper(player, wager * 2);
+    //     } else if (option == 2) {
+    //         return payPlayerHelper(player, wager);
+    //     } else if (option == 3) {
+    //         return payPlayerHelper(player, wager * 2.5);
+    //     } else if (option == 4) {
+    //         return payPlayerHelper(player, wager * 0.5);
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
+    /**
+     * 
+     * 
+     * @param player
+     * @param cashAmount
+     * @return
+     */
+    private boolean payPlayerHelper(Player player, double cashAmount) {
+        if (cashAmount == 0 || (cashAmount < 0 && player.getCash() + cashAmount < 0)) {
+            return false;
+        } else {
+            player.setCash(player.getCash() + cashAmount);
+            // dm.playerTable.put(playerID, updatedPlayer);
+            dm.updateExistingPlayerInPlayerFile(player.getIDNumber(), player.getCash());
+            return true;
+        }
+    }
 }
