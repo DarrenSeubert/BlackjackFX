@@ -1177,7 +1177,6 @@ public class FrontEnd extends Application {
 
                 // Checks to make sure insurance isn't needed and dealer doesn't have Blackjack
                 if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
-                    // FIXME: Following code is somewhat ugly
                     // Checks what buttons should be visible and makes sure they are disabled
                     for (int i = pInUse.length - 1; i >= 0; i--) {
                         if (pInUse[i] && !backEnd.isPlayerHandBlackjack(activeHands[i])) {
@@ -1221,17 +1220,10 @@ public class FrontEnd extends Application {
                 } else { // No Insurance
                     if (backEnd.isDealerBlackjack()) { // Dealer has Blackjack (Showing Value 10)
                         showDealerHiddenCard(group);
-                        if (pInUse[3] && backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                            backEnd.payPlayer(pIDs[3], pWagerEntries[3], 2);
-                        }
-                        if (pInUse[2] && backEnd.isPlayerHandBlackjack(activeHands[3])) {
-                            backEnd.payPlayer(pIDs[2], pWagerEntries[2], 2);
-                        }
-                        if (pInUse[1] && backEnd.isPlayerHandBlackjack(activeHands[1])) {
-                            backEnd.payPlayer(pIDs[1], pWagerEntries[1], 2);
-                        }
-                        if (pInUse[0] && backEnd.isPlayerHandBlackjack(activeHands[0])) {
-                            backEnd.payPlayer(pIDs[0], pWagerEntries[0], 2);
+                        for (int i = 0; i < pInUse.length; i++) {
+                            if (pInUse[i] && backEnd.isPlayerHandBlackjack(activeHands[i])) {
+                                backEnd.payPlayer(pIDs[i], pWagerEntries[i], 2);
+                            } 
                         }
                     } else { // Dealer does not have Blackjack
                         // Determine first player without Blackjack
