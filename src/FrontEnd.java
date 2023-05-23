@@ -38,7 +38,7 @@ public class FrontEnd extends Application {
     private boolean[] pInUse;
     private int[] pIDs;
     private int[] pHandIndexes;
-    private double[] pWagerEntries;
+    private int[] pWagerEntries;
     
     // private Player[] activePlayers; TODO Maybe make players local instead of calling backEnd
     // Note: Then use the new version of backEnd.payPlayer()
@@ -60,7 +60,7 @@ public class FrontEnd extends Application {
             pIDs[i] = -1;
         }
         pHandIndexes = new int[4];
-        pWagerEntries = new double[4];
+        pWagerEntries = new int[4];
 
         activeHands = new Hand[4];
         inPlayCards = new ArrayList<>();
@@ -828,12 +828,12 @@ public class FrontEnd extends Application {
             pSubmitButtons[3].setVisible(true);
         });
 
-        dealButton.setOnAction((event) -> {
+        dealButton.setOnAction((event) -> { // Deal button
             try {
                 // Checks for Valid Input
                 if (pWagerFields[0].isVisible()) {
                     try {
-                        pWagerEntries[0] = Double.parseDouble(pWagerFields[0].getText().trim());
+                        pWagerEntries[0] = Integer.parseInt(pWagerFields[0].getText().trim());
                     } catch (NumberFormatException e) {
                         pWagerFields[0].clear();
                         pWagerFields[0].requestFocus();
@@ -854,7 +854,7 @@ public class FrontEnd extends Application {
                 }
                 if (pWagerFields[1].isVisible()) {
                     try {
-                        pWagerEntries[1] = Double.parseDouble(pWagerFields[1].getText().trim());
+                        pWagerEntries[1] = Integer.parseInt(pWagerFields[1].getText().trim());
                     } catch (NumberFormatException e) {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
@@ -884,7 +884,7 @@ public class FrontEnd extends Application {
                 }
                 if (pWagerFields[2].isVisible()) {
                     try {
-                        pWagerEntries[2] = Double.parseDouble(pWagerFields[2].getText().trim());
+                        pWagerEntries[2] = Integer.parseInt(pWagerFields[2].getText().trim());
                     } catch (NumberFormatException e) {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
@@ -923,7 +923,7 @@ public class FrontEnd extends Application {
                 }
                 if (pWagerFields[3].isVisible()) {
                     try {
-                        pWagerEntries[3] = Double.parseDouble(pWagerFields[3].getText().trim());
+                        pWagerEntries[3] = Integer.parseInt(pWagerFields[3].getText().trim());
                     } catch (NumberFormatException e) {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
@@ -975,86 +975,30 @@ public class FrontEnd extends Application {
                 newAccountButton.setDisable(true);
                 lookupAccountIDButton.setDisable(true);
                 manageCashButton.setDisable(true);
-                pIDFields[0].setVisible(false);
-                pSubmitButtons[0].setVisible(false);
-                pIDFields[1].setVisible(false);
-                pSubmitButtons[1].setVisible(false);
-                pIDFields[2].setVisible(false);
-                pSubmitButtons[2].setVisible(false);
-                pIDFields[3].setVisible(false);
-                pSubmitButtons[3].setVisible(false);
-
-                if (pInUse[0]) {
-                    pWagerFields[0].setVisible(false);
-                    pLeaveButtons[0].setVisible(false);
-                    pCashTexts[0].setText("Cash: $" + backEnd.getPlayer(pIDs[0]).getCash());
-                    pWagerTexts[0].setText("Wager: $" + pWagerEntries[0]);
-                    pWagerTexts[0].setVisible(true);
-
-                    pHitButtons[0].setVisible(true);
-                    pHitButtons[0].setDisable(true);
-                    pStandButtons[0].setVisible(true);
-                    pStandButtons[0].setDisable(true);
-                    pDoubleButtons[0].setVisible(true);
-                    pDoubleButtons[0].setDisable(true);
-                    pSplitButtons[0].setVisible(true);
-                    pSplitButtons[0].setDisable(true);
-                    pSurrenderButtons[0].setVisible(true);
-                    pSurrenderButtons[0].setDisable(true);
+                for (int i = 0; i < pIDFields.length; i++) {
+                    pIDFields[i].setVisible(false);
+                    pSubmitButtons[i].setVisible(false);
                 }
-                if (pInUse[1]) {
-                    pWagerFields[1].setVisible(false);
-                    pLeaveButtons[1].setVisible(false);
-                    pCashTexts[1].setText("Cash: $" + backEnd.getPlayer(pIDs[1]).getCash());
-                    pWagerTexts[1].setText("Wager: $" + pWagerEntries[1]);
-                    pWagerTexts[1].setVisible(true);
 
-                    pHitButtons[1].setVisible(true);
-                    pHitButtons[1].setDisable(true);
-                    pStandButtons[1].setVisible(true);
-                    pStandButtons[1].setDisable(true);
-                    pDoubleButtons[1].setVisible(true);
-                    pDoubleButtons[1].setDisable(true);
-                    pSplitButtons[1].setVisible(true);
-                    pSplitButtons[1].setDisable(true);
-                    pSurrenderButtons[1].setVisible(true);
-                    pSurrenderButtons[1].setDisable(true);
-                }
-                if (pInUse[2]) {
-                    pWagerFields[2].setVisible(false);
-                    pLeaveButtons[2].setVisible(false);
-                    pCashTexts[2].setText("Cash: $" + backEnd.getPlayer(pIDs[2]).getCash());
-                    pWagerTexts[2].setText("Wager: $" + pWagerEntries[2]);
-                    pWagerTexts[2].setVisible(true);
+                for (int i = 0; i < pInUse.length; i++) {
+                    if (pInUse[i]) {
+                        pWagerFields[i].setVisible(false);
+                        pLeaveButtons[i].setVisible(false);
+                        pCashTexts[i].setText("Cash: $" + backEnd.getPlayer(pIDs[i]).getCash());
+                        pWagerTexts[0].setText("Wager: $" + pWagerEntries[i]);
+                        pWagerTexts[0].setVisible(true);
 
-                    pHitButtons[2].setVisible(true);
-                    pHitButtons[2].setDisable(true);
-                    pStandButtons[2].setVisible(true);
-                    pStandButtons[2].setDisable(true);
-                    pDoubleButtons[2].setVisible(true);
-                    pDoubleButtons[2].setDisable(true);
-                    pSplitButtons[2].setVisible(true);
-                    pSplitButtons[2].setDisable(true);
-                    pSurrenderButtons[2].setVisible(true);
-                    pSurrenderButtons[2].setDisable(true);
-                }
-                if (pInUse[3]) {
-                    pWagerFields[3].setVisible(false);
-                    pLeaveButtons[3].setVisible(false);
-                    pCashTexts[3].setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
-                    pWagerTexts[3].setText("Wager: $" + pWagerEntries[3]);
-                    pWagerTexts[3].setVisible(true);
-
-                    pHitButtons[3].setVisible(true);
-                    pHitButtons[3].setDisable(true);
-                    pStandButtons[3].setVisible(true);
-                    pStandButtons[3].setDisable(true);
-                    pDoubleButtons[3].setVisible(true);
-                    pDoubleButtons[3].setDisable(true);
-                    pSplitButtons[3].setVisible(true);
-                    pSplitButtons[3].setDisable(true);
-                    pSurrenderButtons[3].setVisible(true);
-                    pSurrenderButtons[3].setDisable(true);
+                        pHitButtons[i].setVisible(true);
+                        pHitButtons[i].setDisable(true);
+                        pStandButtons[i].setVisible(true);
+                        pStandButtons[i].setDisable(true);
+                        pDoubleButtons[i].setVisible(true);
+                        pDoubleButtons[i].setDisable(true);
+                        pSplitButtons[i].setVisible(true);
+                        pSplitButtons[i].setDisable(true);
+                        pSurrenderButtons[i].setVisible(true);
+                        pSurrenderButtons[i].setDisable(true);
+                    }
                 }
 
                 // Deal Starting Cards
@@ -1303,7 +1247,7 @@ public class FrontEnd extends Application {
                 Alert e1Alert = new Alert(AlertType.ERROR);
                 e1Alert.setTitle("BlackjackFX");
                 ((Stage) e1Alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                e1Alert.setHeaderText("Error: " + e1.getMessage() + "'s Wager must be a Double");
+                e1Alert.setHeaderText("Error: " + e1.getMessage() + "'s Wager must be a Integer");
                 e1Alert.show();
             } catch (IllegalArgumentException e2) {
                 Alert e2Alert = new Alert(AlertType.ERROR);

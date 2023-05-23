@@ -323,14 +323,14 @@ public class BackEnd {
      * @param cashAmount
      * @return
      */
-    private boolean payPlayerHelper(Player player, double cashAmount) {
-        if (cashAmount == 0 || (cashAmount < 0 && player.getCash() + cashAmount < 0)) {
-            return false;
-        } else {
-            player.setCash(player.getCash() + cashAmount);
-            // dm.playerTable.put(playerID, updatedPlayer);
-            dm.updateExistingPlayerInPlayerFile(player.getIDNumber(), player.getCash());
-            return true;
-        }
-    }
+    // private boolean payPlayerHelper(Player player, double cashAmount) {
+    //     if (cashAmount == 0 || (cashAmount < 0 && player.getCash() + cashAmount < 0)) {
+    //         return false;
+    //     } else {
+    //         player.setCash(player.getCash() + cashAmount);
+    //         // dm.playerTable.put(playerID, updatedPlayer);
+    //         dm.updateExistingPlayerInPlayerFile(player.getIDNumber(), player.getCash());
+    //         return true;
+    //     }
+    // }
 }
