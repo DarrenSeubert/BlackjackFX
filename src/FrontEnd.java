@@ -582,7 +582,16 @@ public class FrontEnd extends Application {
         }
         group.getChildren().addAll(pSurrenderButtons);
 
-        // Start of Button Actions
+        Button continueButton = new Button("Continue");
+        continueButton.setPrefWidth(74);
+        continueButton.setPrefHeight(40);
+        continueButton.setLayoutX(563);
+        continueButton.setLayoutY(580);
+        continueButton.setTextAlignment(TextAlignment.CENTER);
+        continueButton.setVisible(false);
+        group.getChildren().add(continueButton);
+
+        // Start of Button Actions (Note: Can not be in for loops)
         pSubmitButtons[0].setOnAction((event) -> {
             try {
                 int IDEntry = Integer.parseInt(pIDFields[0].getText().trim());
@@ -593,14 +602,6 @@ public class FrontEnd extends Application {
                 if (!backEnd.checkIfPlayerExists(IDEntry)) {
                     throw new NoSuchElementException();
                 }
-        Button continueButton = new Button("Continue");
-        continueButton.setPrefWidth(74);
-        continueButton.setPrefHeight(40);
-        continueButton.setLayoutX(563);
-        continueButton.setLayoutY(580);
-        continueButton.setTextAlignment(TextAlignment.CENTER);
-        continueButton.setVisible(false);
-        group.getChildren().add(continueButton);
 
                 pIDs[0] = IDEntry;
                 pIDFields[0].setVisible(false);
@@ -1272,44 +1273,94 @@ public class FrontEnd extends Application {
             }
         });
 
-        for (int i = 0; i < pYesButtons.length; i++) {
-            pYesButtons[i].setOnAction((event) -> {
+        pYesButtons[0].setOnAction((event) -> {
 
-            });
-        }
-        for (int i = 0; i < pNoButtons.length; i++) {
-            pNoButtons[i].setOnAction((event) -> {
+        });
+        pYesButtons[1].setOnAction((event) -> {
 
-            });
-        }
+        });
+        pYesButtons[2].setOnAction((event) -> {
 
-        for (int i = 0; i < pHitButtons.length; i++) {
-            pHitButtons[i].setOnAction((event) -> {
+        });
+        pYesButtons[3].setOnAction((event) -> {
 
-            });
-        }
-        for (int i = 0; i < pStandButtons.length; i++) {
-            pStandButtons[i].setOnAction((event) -> {
+        });
+        pNoButtons[0].setOnAction((event) -> {
 
-            });
-        }
-        for (int i = 0; i < pDoubleButtons.length; i++) {
-            pDoubleButtons[i].setOnAction((event) -> {
+        });
+        pNoButtons[1].setOnAction((event) -> {
 
-            });
-        }
-        for (int i = 0; i < pSplitButtons.length; i++) {
-            pSplitButtons[i].setOnAction((event) -> {
+        });
+        pNoButtons[2].setOnAction((event) -> {
 
-            });
-        }
-        for (int i = 0; i < pSurrenderButtons.length; i++) {
-            pSurrenderButtons[i].setOnAction((event) -> {
+        });
+        pNoButtons[3].setOnAction((event) -> {
 
-            });
-        }
+        });
 
-        dealButton.setOnAction((event) -> {
+        pHitButtons[0].setOnAction((event) -> {
+
+        });
+        pHitButtons[1].setOnAction((event) -> {
+            
+        });
+        pHitButtons[2].setOnAction((event) -> {
+            
+        });
+        pHitButtons[3].setOnAction((event) -> {
+            
+        });
+        pStandButtons[0].setOnAction((event) -> {
+
+        });
+        pStandButtons[1].setOnAction((event) -> {
+
+        });
+        pStandButtons[2].setOnAction((event) -> {
+
+        });
+        pStandButtons[3].setOnAction((event) -> {
+
+        });
+        
+        pDoubleButtons[0].setOnAction((event) -> {
+
+        });
+        pDoubleButtons[1].setOnAction((event) -> {
+
+        });
+        pDoubleButtons[2].setOnAction((event) -> {
+
+        });
+        pDoubleButtons[3].setOnAction((event) -> {
+
+        });     
+        pSplitButtons[0].setOnAction((event) -> {
+
+        });
+        pSplitButtons[1].setOnAction((event) -> {
+
+        });
+        pSplitButtons[2].setOnAction((event) -> {
+
+        });
+        pSplitButtons[3].setOnAction((event) -> {
+
+        });
+        pSurrenderButtons[0].setOnAction((event) -> {
+
+        });
+        pSurrenderButtons[1].setOnAction((event) -> {
+
+        });
+        pSurrenderButtons[2].setOnAction((event) -> {
+
+        });
+        pSurrenderButtons[3].setOnAction((event) -> {
+
+        });
+
+        continueButton.setOnAction((event) -> {
 
         });
 
