@@ -593,6 +593,14 @@ public class FrontEnd extends Application {
                 if (!backEnd.checkIfPlayerExists(IDEntry)) {
                     throw new NoSuchElementException();
                 }
+        Button continueButton = new Button("Continue");
+        continueButton.setPrefWidth(74);
+        continueButton.setPrefHeight(40);
+        continueButton.setLayoutX(563);
+        continueButton.setLayoutY(580);
+        continueButton.setTextAlignment(TextAlignment.CENTER);
+        continueButton.setVisible(false);
+        group.getChildren().add(continueButton);
 
                 pIDs[0] = IDEntry;
                 pIDFields[0].setVisible(false);
@@ -985,8 +993,8 @@ public class FrontEnd extends Application {
                         pWagerFields[i].setVisible(false);
                         pLeaveButtons[i].setVisible(false);
                         pCashTexts[i].setText("Cash: $" + backEnd.getPlayer(pIDs[i]).getCash());
-                        pWagerTexts[0].setText("Wager: $" + pWagerEntries[i]);
-                        pWagerTexts[0].setVisible(true);
+                        pWagerTexts[i].setText("Wager: $" + pWagerEntries[i]);
+                        pWagerTexts[i].setVisible(true);
 
                         pHitButtons[i].setVisible(true);
                         pHitButtons[i].setDisable(true);
@@ -1262,6 +1270,47 @@ public class FrontEnd extends Application {
                 e3Alert.setHeaderText("Error: " + e3.getMessage() + " has Insufficient Funds");
                 e3Alert.show();
             }
+        });
+
+        for (int i = 0; i < pYesButtons.length; i++) {
+            pYesButtons[i].setOnAction((event) -> {
+
+            });
+        }
+        for (int i = 0; i < pNoButtons.length; i++) {
+            pNoButtons[i].setOnAction((event) -> {
+
+            });
+        }
+
+        for (int i = 0; i < pHitButtons.length; i++) {
+            pHitButtons[i].setOnAction((event) -> {
+
+            });
+        }
+        for (int i = 0; i < pStandButtons.length; i++) {
+            pStandButtons[i].setOnAction((event) -> {
+
+            });
+        }
+        for (int i = 0; i < pDoubleButtons.length; i++) {
+            pDoubleButtons[i].setOnAction((event) -> {
+
+            });
+        }
+        for (int i = 0; i < pSplitButtons.length; i++) {
+            pSplitButtons[i].setOnAction((event) -> {
+
+            });
+        }
+        for (int i = 0; i < pSurrenderButtons.length; i++) {
+            pSurrenderButtons[i].setOnAction((event) -> {
+
+            });
+        }
+
+        dealButton.setOnAction((event) -> {
+
         });
 
         mStage.show();
