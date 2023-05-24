@@ -1367,6 +1367,15 @@ public class FrontEnd extends Application {
         mStage.show();
     }
 
+
+    /**
+     * Function that clears the table of all cards, resets all necessary values, and brings the
+     * game back wager screen
+     */
+    private void resetTable() {
+
+    }
+
     /**
      * 
      * 
