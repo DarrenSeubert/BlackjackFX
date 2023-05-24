@@ -227,7 +227,7 @@ public class DataManager {
      * @param nameToSearch
      * @return -1 if name is not on file, else the ID number of the given name
      */
-    public int lookupPlayerID(String nameToSearch) { // TODO, Have this return all accouints with the given name, not just the oldest one
+    public int lookupPlayerID(String nameToSearch) { // TODO, Have this return all accounts with the given name, not just the oldest one
         int outputID;
         
         int IDIndex = 0;

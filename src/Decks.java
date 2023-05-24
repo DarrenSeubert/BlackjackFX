@@ -48,7 +48,7 @@ public class Decks {
             cutCardInDeck = false;
         }
 
-        // TODO TEMP
+        // TODO For Testing
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ten));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Nine));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ace));

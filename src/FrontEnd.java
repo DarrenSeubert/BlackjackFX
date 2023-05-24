@@ -1274,7 +1274,7 @@ public class FrontEnd extends Application {
         });
 
         pYesButtons[0].setOnAction((event) -> {
-
+            
         });
         pYesButtons[1].setOnAction((event) -> {
 
