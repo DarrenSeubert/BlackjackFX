@@ -241,13 +241,9 @@ public class BackEnd {
     public boolean canSplit(int playerID, double wager, int handIndex) {
         Player player = dm.playerTable.get(playerID);
 
-        if (player.getHands().get(handIndex).getCardList().get(0).getValue() == 
+        return player.getHands().get(handIndex).getCardList().get(0).getValue() == 
             player.getHands().get(handIndex).getCardList().get(1).getValue() && 
-            player.getCash() >= wager) {
-            return true;
-        } else {
-            return false;
-        }
+            player.getCash() >= wager;
     }
 
     /**
@@ -257,12 +253,19 @@ public class BackEnd {
      * @param wager
      * @return
      */
-    public boolean canDouble(int playerID, double wager) {
-        if (dm.playerTable.get(playerID).getCash() >= wager) {
-            return true;
-        } else {
-            return false;
-        }
+    public boolean canDouble(int playerID, int wager) {
+        return dm.playerTable.get(playerID).getCash() >= wager;
+    }
+
+    /**
+     * 
+     * 
+     * @param playerID
+     * @param originalWager
+     * @return
+     */
+    public boolean canAffordInsurance(int playerID, int originalWager) {
+        return dm.playerTable.get(playerID).getCash() >= originalWager / 2.0;
     }
 
     /**

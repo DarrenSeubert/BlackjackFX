@@ -1140,17 +1140,17 @@ public class FrontEnd extends Application {
                         }
                     }
 
-                    // Finds the first player without Blackjack and enables their buttons
-                    if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3])) {
+                    // Finds the first player without Blackjack and can afford insurance enables their buttons
+                    if (pInUse[3] && !backEnd.isPlayerHandBlackjack(activeHands[3]) && backEnd.canAffordInsurance(pIDs[3], pWagerEntries[3])) {
                         pYesButtons[3].setDisable(false);
                         pNoButtons[3].setDisable(false);
-                    } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2])) {
+                    } else if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2]) && backEnd.canAffordInsurance(pIDs[2], pWagerEntries[2])) {
                         pYesButtons[2].setDisable(false);
                         pNoButtons[2].setDisable(false);
-                    } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1])) {
+                    } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1]) && backEnd.canAffordInsurance(pIDs[1], pWagerEntries[1])) {
                         pYesButtons[1].setDisable(false);
                         pNoButtons[1].setDisable(false);
-                    } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0])) {
+                    } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0]) && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
                         pYesButtons[0].setDisable(false);
                         pNoButtons[0].setDisable(false);
                     } else { // EVERYONE HAS BLACKJACK
@@ -1222,17 +1222,11 @@ public class FrontEnd extends Application {
                             }
                         } else { // Everyone has Blackjack and Dealer does not
                             showDealerHiddenCard(group);
-                            if (pInUse[3]) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
-                                backEnd.payPlayer(pIDs[3], pWagerEntries[3], 3);
-                            }
-                            if (pInUse[2]) {
-                                backEnd.payPlayer(pIDs[2], pWagerEntries[2], 3);
-                            }
-                            if (pInUse[1]) {
-                                backEnd.payPlayer(pIDs[1], pWagerEntries[1], 3);
-                            }
-                            if (pInUse[0]) {
-                                backEnd.payPlayer(pIDs[0], pWagerEntries[0], 3);
+
+                            for (int i = pInUse.length - 1; i >= 0; i--) {
+                                if (pInUse[i]) { // Players win TODO UPDATE TEXT? SHOW BLACKJACK CELEBRATION?
+                                    backEnd.payPlayer(pIDs[i], pWagerEntries[i], 3);
+                                }
                             }
                         }
                     }
@@ -1273,30 +1267,139 @@ public class FrontEnd extends Application {
             }
         });
 
-        pYesButtons[0].setOnAction((event) -> {
+        pYesButtons[3].setOnAction((event) -> {
             
-        });
-        pYesButtons[1].setOnAction((event) -> {
+            pYesButtons[3].setDisable(true);
+            pNoButtons[3].setDisable(true);
 
+            if (pInUse[2] && !backEnd.isPlayerHandBlackjack(activeHands[2]) && backEnd.canAffordInsurance(pIDs[2], pWagerEntries[2])) {
+                pYesButtons[2].setDisable(false);
+                pNoButtons[2].setDisable(false);
+            } else if (pInUse[1] && !backEnd.isPlayerHandBlackjack(activeHands[1]) && backEnd.canAffordInsurance(pIDs[1], pWagerEntries[1])) {
+                pYesButtons[1].setDisable(false);
+                pNoButtons[1].setDisable(false);
+            } else if (pInUse[0] && !backEnd.isPlayerHandBlackjack(activeHands[0]) && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    showDealerHiddenCard(group);
+                    continueButton.setDisable(false);
+                    continueButton.setVisible(true);
+                } else {
+
+                }
+            }
         });
         pYesButtons[2].setOnAction((event) -> {
+            pYesButtons[2].setDisable(true);
+            pNoButtons[2].setDisable(true);
 
+            if (pInUse[1] && backEnd.canAffordInsurance(pIDs[1], pWagerEntries[1])) {
+                pYesButtons[1].setDisable(false);
+                pNoButtons[1].setDisable(false);
+            } else if (pInUse[0]  && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    
+                } else {
+                    
+                }
+            }
         });
-        pYesButtons[3].setOnAction((event) -> {
+        pYesButtons[1].setOnAction((event) -> {
+            pYesButtons[1].setDisable(true);
+            pNoButtons[1].setDisable(true);
 
+            if (pInUse[0] && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    
+                } else {
+                    
+                }
+            }
         });
-        pNoButtons[0].setOnAction((event) -> {
+        pYesButtons[0].setOnAction((event) -> {
+            pYesButtons[0].setDisable(true);
+            pNoButtons[0].setDisable(true);
 
+            if (backEnd.isDealerBlackjack()) {
+                    
+            } else {
+                
+            }
         });
-        pNoButtons[1].setOnAction((event) -> {
 
+        pNoButtons[3].setOnAction((event) -> {
+            pYesButtons[3].setDisable(true);
+            pNoButtons[3].setDisable(true);
+
+            if (pInUse[2] && backEnd.canAffordInsurance(pIDs[2], pWagerEntries[2])) {
+                pYesButtons[2].setDisable(false);
+                pNoButtons[2].setDisable(false);
+            } else if (pInUse[1] && backEnd.canAffordInsurance(pIDs[1], pWagerEntries[1])) {
+                pYesButtons[1].setDisable(false);
+                pNoButtons[1].setDisable(false);
+            } else if (pInUse[0] && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    
+                } else {
+                    
+                }
+            }
         });
         pNoButtons[2].setOnAction((event) -> {
-
+            pYesButtons[2].setDisable(true);
+            pNoButtons[2].setDisable(true);
+            
+            if (pInUse[1] && backEnd.canAffordInsurance(pIDs[1], pWagerEntries[1])) {
+                pYesButtons[1].setDisable(false);
+                pNoButtons[1].setDisable(false);
+            } else if (pInUse[0] && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    
+                } else {
+                    
+                }
+            }
         });
-        pNoButtons[3].setOnAction((event) -> {
+        pNoButtons[1].setOnAction((event) -> {
+            pYesButtons[1].setDisable(true);
+            pNoButtons[1].setDisable(true);
 
+            if (pInUse[0] && backEnd.canAffordInsurance(pIDs[0], pWagerEntries[0])) {
+                pYesButtons[0].setDisable(false);
+                pNoButtons[0].setDisable(false);
+            } else {
+                if (backEnd.isDealerBlackjack()) {
+                    
+                } else {
+                    
+                }
+            }
         });
+        pNoButtons[0].setOnAction((event) -> {
+            pYesButtons[0].setDisable(true);
+            pNoButtons[0].setDisable(true);
+            
+            if (backEnd.isDealerBlackjack()) {
+                    
+            } else {
+                
+            }
+        });
+        
 
         pHitButtons[0].setOnAction((event) -> {
 
