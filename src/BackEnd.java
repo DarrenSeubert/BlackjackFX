@@ -241,9 +241,10 @@ public class BackEnd {
     public boolean canSplit(int playerID, double wager, int handIndex) {
         Player player = dm.playerTable.get(playerID);
 
-        return player.getHands().get(handIndex).getCardList().get(0).getValue() == 
-            player.getHands().get(handIndex).getCardList().get(1).getValue() && 
-            player.getCash() >= wager;
+        System.out.println("FROM FRONT END: " + this.getPlayer(playerID).getHands().get(handIndex).getCardList());
+        System.out.println("Card List Size: " + player.getHands().get(handIndex).getCardList().size());
+        return player.getHands().get(handIndex).getCardList().get(0).getValue() == player.getHands().get(handIndex).getCardList().get(1).getValue() 
+            && player.getCash() >= wager;
     }
 
     /**

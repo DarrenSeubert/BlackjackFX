@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -1236,11 +1237,11 @@ public class FrontEnd extends Application {
                 // List<Card> p1CardList = backEnd.getPlayer(pIDs[0]).getHands().get(pHandIndexes[0]).getCardList();
                 // List<Card> p2CardList = backEnd.getPlayer(pIDs[1]).getHands().get(pHandIndexes[1]).getCardList();
                 // List<Card> p3CardList = backEnd.getPlayer(pIDs[2]).getHands().get(pHandIndexes[2]).getCardList();
-                // List<Card> p4CardList = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]).getCardList();
+                List<Card> p4CardList = backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]).getCardList();
                 // System.out.println("P1 HAND: " + p1CardList);
                 // System.out.println("P2 HAND: " + p2CardList);
                 // System.out.println("P3 HAND: " + p3CardList);
-                // System.out.println("P4 HAND: " + p4CardList);
+                System.out.println("P4 HAND: " + p4CardList);
 
                 System.out.println("DEALER HAND: " + backEnd.getDealer().getHand());
                 System.out.println("CARD LIST SIZE: " + backEnd.getDecks().getCardList().size());
@@ -1268,7 +1269,8 @@ public class FrontEnd extends Application {
         });
 
         pYesButtons[3].setOnAction((event) -> {
-            
+            backEnd.addOrSubtractCashToPlayer(pIDs[3], -(pWagerEntries[3] / 2.0));
+            pCashTexts[3].setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
             pYesButtons[3].setDisable(true);
             pNoButtons[3].setDisable(true);
 
@@ -1282,12 +1284,27 @@ public class FrontEnd extends Application {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
+                pYesButtons[3].setVisible(false);
+                pNoButtons[3].setVisible(false);
+
                 if (backEnd.isDealerBlackjack()) {
                     showDealerHiddenCard(group);
+                    backEnd.addOrSubtractCashToPlayer(pIDs[3], pWagerEntries[3] * 1.5);
+                    pCashTexts[3].setText("Cash: $" + backEnd.getPlayer(pIDs[3]).getCash());
                     continueButton.setDisable(false);
                     continueButton.setVisible(true);
                 } else {
-
+                    pHitButtons[3].setDisable(false);
+                    pStandButtons[3].setDisable(false);
+                    if (backEnd.canDouble(pIDs[3], pWagerEntries[3])) {
+                        pDoubleButtons[3].setDisable(false);
+                    }
+                    System.out.println("FRONT: " + backEnd.getPlayer(pIDs[3]).getHands().get(pHandIndexes[3]).getCardList());
+                    // TODO Figure out where hands should be stored
+                    /*if (backEnd.canSplit(pIDs[3], pWagerEntries[3], pHandIndexes[3])) {
+                        pSplitButtons[3].setDisable(false);
+                    }*/
+                    pSurrenderButtons[3].setDisable(false);
                 }
             }
         });
