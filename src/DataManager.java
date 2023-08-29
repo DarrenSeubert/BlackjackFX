@@ -43,12 +43,9 @@ public class DataManager {
     }
 
     /**
-     * 
-     * 
-     * @param csvFilePath
-     * @return
+     * Method that loads the players file into the players hash table
      */
-    public void loadPlayerFile() {
+    public void loadPlayersFile() {
         int IDIndex = 0;
         int nameIndex = 1;
         int cashIndex = 2;
@@ -82,7 +79,7 @@ public class DataManager {
                 cash = Double.parseDouble(val[cashIndex].replaceAll("\"",""));
 
                 player = new Player(ID, name, cash);
-                playerTable.put(player.getIDNumber(), player);
+                playerTable.put(player.getID(), player);
             }
 
             br.close();
@@ -94,11 +91,12 @@ public class DataManager {
     }
 
     /**
+     * Method that updates an existing player in the players file from the players table
      * 
-     * @param playerID
-     * @param cash
+     * @param playerID The ID number of the player
+     * @param cash The amount of cash that the player has
      */
-    public void updateExistingPlayerInPlayerFile(int playerID, double cash) {
+    public void updateExistingPlayerInPlayersFile(int playerID) { // TODO: Maybe switch to passing a player object in. Used to pass in cash as a param
         String readLine = "";
 
         try {
@@ -142,7 +140,7 @@ public class DataManager {
                 if (i + 2 == lineToEdit) {
                     pr.write(playerID + ",");
                     pr.write(playerTable.get(playerID).getName() + ",");
-                    pr.write(cash + "\n");
+                    pr.write(playerTable.get(playerID).getCash() + "\n"); // FIXME: Was just cash as passed in variable
                     continue;
                 }
 
@@ -166,12 +164,12 @@ public class DataManager {
     }
 
     /**
-     * 
+     * A method that writes a new player into the players file
      * 
      * @param player
      */
     public void writeNewPlayerToFile(Player player) {
-        int ID = player.getIDNumber();
+        int ID = player.getID();
         String name = player.getName();
         double cash = player.getCash();
 
@@ -197,7 +195,6 @@ public class DataManager {
             br.close();
 
             PrintWriter pr = new PrintWriter(file);
-            
 
             for (int i = 0; i < fileCont.size(); i++) { // Starts at Line 1
                 for (int j = 0; j < val.length; j++) {

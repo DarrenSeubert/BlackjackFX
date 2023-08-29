@@ -27,6 +27,15 @@ public class Hand {
     /**
      * 
      * 
+     * @param card
+     */
+    public void addCard(Card card) {
+        cardList.add(card);
+    }
+
+    /**
+     * 
+     * 
      * @return
      */
     public ArrayList<Integer> getPossibleHandValues() {
@@ -55,13 +64,6 @@ public class Hand {
         }
 
         return possibleHandValues;
-    }
-
-    /**
-     * 
-     */
-    public void clearHand() {
-        cardList.removeAll(cardList);
     }
 
     @Override

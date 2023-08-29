@@ -6,7 +6,7 @@
 public class App {
     public static void main(String[] args) {
         DataManager dataManager = new DataManager();
-        dataManager.loadPlayerFile();
+        dataManager.loadPlayersFile();
 
         BackEnd engine = new BackEnd(dataManager);
 
