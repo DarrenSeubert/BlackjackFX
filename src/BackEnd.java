@@ -243,7 +243,7 @@ public class BackEnd {
      * @return
      */
     public boolean canSplit(Player player, int playerIndex) {
-        return player.getHand(playerIndex, false).getCardList().get(0).getValue() == player.getHand(playerIndex, false).getCardList().get(1).getValue() 
+        return player.getHand(playerIndex, false).getCardList().get(0).getValueInt() == player.getHand(playerIndex, false).getCardList().get(1).getValueInt() 
             && player.getCash() >= player.getWager(playerIndex);
     }
 

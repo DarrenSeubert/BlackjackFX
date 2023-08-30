@@ -1203,7 +1203,7 @@ public class FrontEnd extends Application {
         });
 
         pYesButtons[3].setOnAction((event) -> {
-            backEnd.chargePlayer(players[3], 4, true);
+            backEnd.chargePlayer(players[3], 3, true);
             pCashTexts[3].setText("Cash: $" + players[3].getCash());
             pYesButtons[3].setDisable(true);
             pNoButtons[3].setDisable(true);

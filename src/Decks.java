@@ -48,10 +48,10 @@ public class Decks {
             cutCardInDeck = false;
         }
 
-        // TODO For Testing, Remove
-        cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.Five));
+        // FIXME For Testing, Remove
+        cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.Eight));
         cardList.add(1, new Card(Card.Suit.Club, Card.Value.Ace));
-        cardList.add(2, new Card(Card.Suit.Diamond, Card.Value.Five));
+        cardList.add(2, new Card(Card.Suit.Diamond, Card.Value.Ten));
         cardList.add(3, new Card(Card.Suit.Club, Card.Value.Nine));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ten));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Nine));
