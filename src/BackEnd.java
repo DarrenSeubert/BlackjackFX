@@ -41,11 +41,11 @@ public class BackEnd {
             throw new NoSuchElementException("Error: Player Does Not Exist");
         }
 
-        Player newPlayer = dm.playerTable.get(playerID);
-        newPlayer.clearHands();
-        newPlayer.clearWagers();
+        Player player = dm.playerTable.get(playerID);
+        player.clearHands();
+        player.clearWagers();
 
-        return newPlayer;
+        return player;
     }
 
     /**
