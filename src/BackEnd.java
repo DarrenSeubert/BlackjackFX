@@ -9,6 +9,7 @@ public class BackEnd {
     private Dealer dealer;
     private Decks decks;
     private DataManager dm;
+    private boolean reshuffleNeeded;
 
     /**
      * Constructor for the BackEnd
@@ -18,6 +19,7 @@ public class BackEnd {
     public BackEnd(DataManager dataManager) {
         dealer = new Dealer();
         this.dm = dataManager;
+        reshuffleNeeded = false;
     }
 
     /**
@@ -55,6 +57,24 @@ public class BackEnd {
      */
     public Dealer getDealer() {
         return dealer;
+    }
+
+    /**
+     * 
+     * 
+     * @return
+     */
+    public boolean isReshuffleNeeded() {
+        return reshuffleNeeded;
+    }
+
+    /**
+     * 
+     * 
+     * @param value
+     */
+    public void setReshuffleNeeded(boolean value) {
+        reshuffleNeeded = value;
     }
 
     /**

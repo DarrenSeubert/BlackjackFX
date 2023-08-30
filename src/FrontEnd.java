@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -46,7 +45,6 @@ public class FrontEnd extends Application {
     private Player[] players;
     private ArrayList<ImageView> inPlayCards;
     private String greetingString;
-    private boolean reshuffleNeeded;
     private ImageView dealerHiddenCard;
 
     /**
@@ -56,7 +54,6 @@ public class FrontEnd extends Application {
         players = new Player[4];
         inPlayCards = new ArrayList<>();
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
-        reshuffleNeeded = false;
         dealerHiddenCard = null;
     }
 
@@ -318,7 +315,12 @@ public class FrontEnd extends Application {
                     Alert personIDAlert = new Alert(AlertType.INFORMATION);
                     personIDAlert.setTitle("BlackjackFX");
                     ((Stage) personIDAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    personIDAlert.setHeaderText(lookUpName + "'s ID Number(s): " + Arrays.toString(resultIDs));
+                    personIDAlert.setHeaderText("The Following Accounts were Found:");
+                    String lookupIDOutput = "";
+                    for (int i = 0; i < resultIDs.length; i++) {
+                        lookupIDOutput += backEnd.getPlayer(resultIDs[i]).getName() + ": " + resultIDs[i] + "\n";
+                    }
+                    personIDAlert.setContentText(lookupIDOutput);
                     personIDAlert.show();
                 }
             });
@@ -994,8 +996,8 @@ public class FrontEnd extends Application {
 
                 // Deal Starting Cards
                 if (players[3] != null) {
-                    if (backEnd.hitPlayerHand(players[3], 3, false)) {
-                        reshuffleNeeded = true;
+                    if (backEnd.hitPlayerHand(players[3], 3, false)) { // TODO: REWORK Shuffle Needed. Make it so only exists in backEnd and this check isn't needed
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[3], 3, false, group));
@@ -1003,7 +1005,7 @@ public class FrontEnd extends Application {
                 }
                 if (players[2] != null) {
                     if (backEnd.hitPlayerHand(players[2], 2, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[2], 2, false, group));
@@ -1011,7 +1013,7 @@ public class FrontEnd extends Application {
                 }
                 if (players[1] != null) {
                     if (backEnd.hitPlayerHand(players[1], 1, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[1], 1, false, group));
@@ -1019,14 +1021,14 @@ public class FrontEnd extends Application {
                 }
                 if (players[0] != null) {
                     if (backEnd.hitPlayerHand(players[0], 0, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[0], 0, false, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
-                    reshuffleNeeded = true;
+                    backEnd.setReshuffleNeeded(true);
                     displayCutCard(group);
                 }
                 inPlayCards.add(displayCard(null, -2, false, group));
@@ -1034,7 +1036,7 @@ public class FrontEnd extends Application {
                 
                 if (players[3] != null) {
                     if (backEnd.hitPlayerHand(players[3], 3, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[3], 3, false, group));
@@ -1042,7 +1044,7 @@ public class FrontEnd extends Application {
                 }
                 if (players[2] != null) {
                     if (backEnd.hitPlayerHand(players[2], 2, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[2], 2, false, group));
@@ -1050,7 +1052,7 @@ public class FrontEnd extends Application {
                 }
                 if (players[1] != null) {
                     if (backEnd.hitPlayerHand(players[1], 1, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[1], 1, false, group));
@@ -1058,14 +1060,14 @@ public class FrontEnd extends Application {
                 }
                 if (players[0] != null) {
                     if (backEnd.hitPlayerHand(players[0],0, false)) {
-                        reshuffleNeeded = true;
+                        backEnd.setReshuffleNeeded(true);
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[0], 0, false, group));
                     numOfCardsInShoe.setText(Integer.toString(backEnd.getDecks().getNumberOfCards())); 
                 }
                 if (backEnd.hitDealer()) {
-                    reshuffleNeeded = true;
+                    backEnd.setReshuffleNeeded(true);
                     displayCutCard(group);
                 }
                 dealerHiddenCard = displayCard(null, -2, false, group);
@@ -1462,7 +1464,7 @@ public class FrontEnd extends Application {
         });
 
         continueButton.setOnAction((event) -> {
-
+            resetTable();
         });
 
         mStage.show();
@@ -1479,6 +1481,10 @@ public class FrontEnd extends Application {
                 players[i].clearHands();
                 players[i].clearWagers();
             }
+        }
+
+        if (backEnd.isReshuffleNeeded()) {
+            backEnd.setReshuffleNeeded(false);
         }
     }
 

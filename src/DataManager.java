@@ -247,7 +247,7 @@ public class DataManager {
                 val = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 
                 currentName = val[nameIndex].replaceAll("\"","").trim().toLowerCase();
-                if (currentName.equals(nameToSearch.toLowerCase())) {
+                if (currentName.contains(nameToSearch.toLowerCase())) {
                     outputIDs.add(Integer.parseInt(val[IDIndex].replaceAll("\"","")));
                 }
             }
