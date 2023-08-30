@@ -96,7 +96,7 @@ public class DataManager {
      * @param playerID The ID number of the player
      * @param cash The amount of cash that the player has
      */
-    public void updateExistingPlayerInPlayersFile(int playerID) { // TODO: Maybe switch to passing a player object in. Used to pass in cash as a param
+    public void updateExistingPlayerInPlayersFile(Player player) {
         String readLine = "";
 
         try {
@@ -121,7 +121,7 @@ public class DataManager {
                 val = readLine.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 fileCont.add(val);
 
-                if (Integer.parseInt(val[0]) == playerID) {
+                if (Integer.parseInt(val[0]) == player.getID()) {
                     lineToEdit = lineCount;
                 }
             }
@@ -138,9 +138,9 @@ public class DataManager {
 
             for (int i = 0; i < fileCont.size(); i++) { // Starts at Line 2
                 if (i + 2 == lineToEdit) {
-                    pr.write(playerID + ",");
-                    pr.write(playerTable.get(playerID).getName() + ",");
-                    pr.write(playerTable.get(playerID).getCash() + "\n"); // FIXME: Was just cash as passed in variable
+                    pr.write(player.getID() + ",");
+                    pr.write(player.getName() + ",");
+                    pr.write(player.getCash() + "\n");
                     continue;
                 }
 
@@ -222,11 +222,10 @@ public class DataManager {
      * 
      * 
      * @param nameToSearch
-     * @return -1 if name is not on file, else the ID number of the given name
+     * @return An int array of all the ID numbers that have that name
      */
-    public int lookupPlayerID(String nameToSearch) { // TODO, Have this return all accounts with the given name, not just the oldest one
-        int outputID;
-        
+    public int[] lookupPlayerID(String nameToSearch) {
+        ArrayList<Integer> outputIDs = new ArrayList<Integer>();
         int IDIndex = 0;
         int nameIndex = 1;
         String line = "";
@@ -249,9 +248,7 @@ public class DataManager {
 
                 currentName = val[nameIndex].replaceAll("\"","").trim().toLowerCase();
                 if (currentName.equals(nameToSearch.toLowerCase())) {
-                    outputID = Integer.parseInt(val[IDIndex].replaceAll("\"",""));
-                    br.close();
-                    return outputID;
+                    outputIDs.add(Integer.parseInt(val[IDIndex].replaceAll("\"","")));
                 }
             }
 
@@ -262,6 +259,11 @@ public class DataManager {
             e2.printStackTrace();
         }
 
-        return -1;
+        int[] result = new int[outputIDs.size()];
+        for (int i = 0; i < outputIDs.size(); i++) {
+            result[i] = outputIDs.get(i);
+        }
+        
+        return result;
     }
 }

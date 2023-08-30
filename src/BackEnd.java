@@ -82,7 +82,7 @@ public class BackEnd {
      * @param lookupName
      * @return
      */
-    public int lookupPlayerID(String lookupName) {
+    public int[] lookupPlayerID(String lookupName) {
         return dm.lookupPlayerID(lookupName);
     }
 
@@ -108,7 +108,7 @@ public class BackEnd {
         } else {
             Player player = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + cashAmount);
             dm.playerTable.put(playerID, player);
-            dm.updateExistingPlayerInPlayersFile(playerID);
+            dm.updateExistingPlayerInPlayersFile(player);
             return true;
         }
     }
@@ -139,11 +139,11 @@ public class BackEnd {
             decks.getCardList().remove(0);
             decks.setCutCardInDeck(false);
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
             return true;
         } else {
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
             return false;
         }
     }
@@ -155,13 +155,13 @@ public class BackEnd {
      */
     public boolean hitDealer() {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
             return true;
         } else {
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
-            decks.getUsedCardList().add(decks.getCardList().remove(0)); // TODO Maybe move adding card to used to when clear hand is called
+            decks.getUsedCardList().add(decks.getCardList().remove(0));
             return false;
         }
     }
@@ -304,7 +304,7 @@ public class BackEnd {
         } else {
             player.addOrSubtractCash(-wager);
             dm.playerTable.put(player.getID(), player);
-            dm.updateExistingPlayerInPlayersFile(player.getID());
+            dm.updateExistingPlayerInPlayersFile(player);
             return true;
         }
     }
@@ -350,7 +350,7 @@ public class BackEnd {
         } else {
             player.addOrSubtractCash(cashAmount);
             dm.playerTable.put(player.getID(), player);
-            dm.updateExistingPlayerInPlayersFile(player.getID());
+            dm.updateExistingPlayerInPlayersFile(player);
             return true;
         }
     }

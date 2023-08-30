@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -306,8 +307,8 @@ public class FrontEnd extends Application {
             Button okButton = (Button) lookupAccountIDPrompt.getDialogPane().lookupButton(ButtonType.OK);
             okButton.setOnAction((okEvent) -> {
                 String lookUpName = lookupAccountIDPrompt.getEditor().getText().trim();
-                int resultID = backEnd.lookupPlayerID(lookUpName);
-                if (resultID == -1) {
+                int[] resultIDs = backEnd.lookupPlayerID(lookUpName);
+                if (resultIDs.length == 0) {
                     Alert personDNEAlert = new Alert(AlertType.ERROR);
                     personDNEAlert.setTitle("BlackjackFX");
                     ((Stage) personDNEAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
@@ -317,7 +318,7 @@ public class FrontEnd extends Application {
                     Alert personIDAlert = new Alert(AlertType.INFORMATION);
                     personIDAlert.setTitle("BlackjackFX");
                     ((Stage) personIDAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    personIDAlert.setHeaderText(lookUpName + "'s ID Number is: " + resultID);
+                    personIDAlert.setHeaderText(lookUpName + "'s ID Number(s): " + Arrays.toString(resultIDs));
                     personIDAlert.show();
                 }
             });
