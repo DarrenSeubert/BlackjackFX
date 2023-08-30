@@ -88,6 +88,8 @@ public class BackEnd {
      * @param cashAmount
      * @return
      */
+    // START HERE
+    // FIXME: Does not update local players. Redo entire paying system to streamline function calls
     // TODO Maybe separate out this method into two: 
     // 1) For known player already exits (For in game paying)
     // 2) For not known if player already exits (For adding money to an account pre game)
@@ -268,6 +270,18 @@ public class BackEnd {
         return player.getCash() >= player.getWager(playerIndex) / 2.0;
     }
 
+    /**
+     * 
+     * @param player
+     * @param playerIndex
+     * @param option
+     * @return
+     */
+    // TODO Implement
+    public boolean wagerPlayer(Player player, int playerIndex, int option) {
+        return false;
+    }
+
     /** Method that pays a player based on the option passed in
      * 
      * @param playerID The ID of the player to edit
@@ -276,7 +290,8 @@ public class BackEnd {
      *               1: Win <p>
      *               2: Push <p>
      *               3: Blackjack <p>
-     *               4: Surrender <p>
+     *               4: Insurance <p>
+     *               5: Surrender <p>
      * @return True on success, else false
      */
     public boolean payPlayer(Player player, int playerIndex, int option) {
@@ -287,6 +302,8 @@ public class BackEnd {
         } else if (option == 3) {
             return payPlayerHelper(player, player.getWager(playerIndex) * 2.5);
         } else if (option == 4) {
+            return payPlayerHelper(player, player.getWager(playerIndex) * 1.5);
+        } else if (option == 5) {
             return payPlayerHelper(player, player.getWager(playerIndex) * 0.5);
         } else {
             return false;

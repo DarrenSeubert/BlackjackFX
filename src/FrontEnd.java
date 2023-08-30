@@ -1223,7 +1223,7 @@ public class FrontEnd extends Application {
 
                 if (backEnd.isDealerBlackjack()) {
                     showDealerHiddenCard(group);
-                    backEnd.addOrSubtractCashToPlayer(players[3].getID(), players[3].getWager(3) * 1.5);
+                    backEnd.payPlayer(players[3], 3, 4);
                     pCashTexts[3].setText("Cash: $" + players[3].getCash());
                     continueButton.setDisable(false);
                     continueButton.setVisible(true);
