@@ -384,7 +384,7 @@ public class FrontEnd extends Application {
                 int IDEntry = IDCashPair.getKey();
                 double cashEntry = IDCashPair.getValue();
 
-                if (backEnd.addOrSubtractCashToPlayer(IDEntry, cashEntry)) {
+                if (backEnd.manageCash(IDEntry, cashEntry)) {
                     Alert successAlert = new Alert(AlertType.INFORMATION);
                     successAlert.setTitle("BlackjackFX");
                     ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
@@ -841,7 +841,7 @@ public class FrontEnd extends Application {
                         pWagerFields[0].requestFocus();
                         throw new IllegalArgumentException(players[0].getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(players[0].getID(), -players[0].getWager(0))) {
+                    if (!backEnd.chargePlayer(players[0], 0, false)) {
                         pWagerFields[0].clear();
                         pWagerFields[0].requestFocus();
                         throw new ArithmeticException(players[0].getName());
@@ -853,7 +853,7 @@ public class FrontEnd extends Application {
                     } catch (NumberFormatException e) {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) { // TODO: Maybe add function to do this pay back dance
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
                         throw new NumberFormatException(players[1].getName());
@@ -861,15 +861,15 @@ public class FrontEnd extends Application {
                     if (players[1].getWager(1) <= 0) {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
                         throw new IllegalArgumentException(players[1].getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(players[1].getID(), -players[1].getWager(1))) {
+                    if (!backEnd.chargePlayer(players[1], 1, false)) {
                         pWagerFields[1].clear();
                         pWagerFields[1].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
                         throw new ArithmeticException(players[1].getName());
@@ -884,10 +884,10 @@ public class FrontEnd extends Application {
                         System.out.println("RAN");
                         
 
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
                         throw new NumberFormatException(players[2].getName());
@@ -895,21 +895,21 @@ public class FrontEnd extends Application {
                     if (players[2].getWager(2) <= 0) {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
                         throw new IllegalArgumentException(players[2].getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(players[2].getID(), -players[2].getWager(2))) {
+                    if (!backEnd.chargePlayer(players[2], 2, false)) {
                         pWagerFields[2].clear();
                         pWagerFields[2].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
                         throw new ArithmeticException(players[2].getName());
@@ -921,13 +921,13 @@ public class FrontEnd extends Application {
                     } catch (NumberFormatException e) {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
-                        if (players[2] != null && backEnd.addOrSubtractCashToPlayer(players[2].getID(), players[2].getWager(1))) {
+                        if (players[2] != null && backEnd.payPlayer(players[2], 2, 2)) {
                             pCashTexts[2].setText("Cash: $" + players[2].getCash());
                         }
                         throw new NumberFormatException(players[3].getName());
@@ -935,27 +935,27 @@ public class FrontEnd extends Application {
                     if (players[3].getWager(3) <= 0) {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
-                        if (players[2] != null && backEnd.addOrSubtractCashToPlayer(players[2].getID(), players[2].getWager(1))) {
+                        if (players[2] != null && backEnd.payPlayer(players[2], 2, 2)) {
                             pCashTexts[2].setText("Cash: $" + players[2].getCash());
                         }
                         throw new IllegalArgumentException(players[3].getName());
                     }
-                    if (!backEnd.addOrSubtractCashToPlayer(players[3].getID(), -players[3].getWager(3))) {
+                    if (!backEnd.chargePlayer(players[3], 3, false)) {
                         pWagerFields[3].clear();
                         pWagerFields[3].requestFocus();
-                        if (players[0] != null && backEnd.addOrSubtractCashToPlayer(players[0].getID(), players[0].getWager(0))) {
+                        if (players[0] != null && backEnd.payPlayer(players[0], 0, 2)) {
                             pCashTexts[0].setText("Cash: $" + players[0].getCash());
                         }
-                        if (players[1] != null && backEnd.addOrSubtractCashToPlayer(players[1].getID(), players[1].getWager(1))) {
+                        if (players[1] != null && backEnd.payPlayer(players[1], 1, 2)) {
                             pCashTexts[1].setText("Cash: $" + players[1].getCash());
                         }
-                        if (players[2] != null && backEnd.addOrSubtractCashToPlayer(players[2].getID(), players[2].getWager(1))) {
+                        if (players[2] != null && backEnd.payPlayer(players[2], 2, 2)) {
                             pCashTexts[2].setText("Cash: $" + players[2].getCash());
                         }
                         throw new ArithmeticException(players[3].getName());
@@ -1203,7 +1203,7 @@ public class FrontEnd extends Application {
         });
 
         pYesButtons[3].setOnAction((event) -> {
-            backEnd.addOrSubtractCashToPlayer(players[3].getID(), -(players[3].getWager(3) / 2.0));
+            backEnd.chargePlayer(players[3], 4, true);
             pCashTexts[3].setText("Cash: $" + players[3].getCash());
             pYesButtons[3].setDisable(true);
             pNoButtons[3].setDisable(true);

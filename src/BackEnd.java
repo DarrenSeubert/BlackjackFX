@@ -50,7 +50,11 @@ public class BackEnd {
             throw new NoSuchElementException("Error: Player Does Not Exist");
         }
 
-        return dm.playerTable.get(playerID);
+        Player newPlayer = dm.playerTable.get(playerID);
+        newPlayer.clearHands();
+        newPlayer.clearWagers();
+
+        return newPlayer;
     }
 
     /**
@@ -88,17 +92,12 @@ public class BackEnd {
      * @param cashAmount
      * @return
      */
-    // START HERE
-    // FIXME: Does not update local players. Redo entire paying system to streamline function calls
-    // TODO Maybe separate out this method into two: 
-    // 1) For known player already exits (For in game paying)
-    // 2) For not known if player already exits (For adding money to an account pre game)
-    public boolean addOrSubtractCashToPlayer(int playerID, double cashAmount) {
+    public boolean manageCash(int playerID, double cashAmount) {
         if (!checkIfPlayerExists(playerID) || cashAmount == 0 || (cashAmount < 0 && dm.playerTable.get(playerID).getCash() + cashAmount < 0)) {
             return false;
         } else {
-            Player updatedPlayer = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + cashAmount);
-            dm.playerTable.put(playerID, updatedPlayer);
+            Player player = new Player(playerID, dm.playerTable.get(playerID).getName(), dm.playerTable.get(playerID).getCash() + cashAmount);
+            dm.playerTable.put(playerID, player);
             dm.updateExistingPlayerInPlayersFile(playerID);
             return true;
         }
@@ -271,15 +270,26 @@ public class BackEnd {
     }
 
     /**
+     * Note: Wager must be in player's wagers array before calling this method
      * 
      * @param player
      * @param playerIndex
-     * @param option
      * @return
      */
-    // TODO Implement
-    public boolean wagerPlayer(Player player, int playerIndex, int option) {
-        return false;
+    public boolean chargePlayer(Player player, int playerIndex, boolean insurance) {
+        double wager = player.getWager(playerIndex);
+        if (insurance) {
+            wager /= 2.0;
+        }
+
+        if (!checkIfPlayerExists(player.getID()) || (player.getCash() - wager < 0)) {
+            return false;
+        } else {
+            player.addOrSubtractCash(-wager);
+            dm.playerTable.put(player.getID(), player);
+            dm.updateExistingPlayerInPlayersFile(player.getID());
+            return true;
+        }
     }
 
     /** Method that pays a player based on the option passed in
@@ -321,7 +331,7 @@ public class BackEnd {
         if (cashAmount == 0 || (cashAmount < 0 && player.getCash() + cashAmount < 0)) {
             return false;
         } else {
-            player.setCash(player.getCash() + cashAmount, dm);
+            player.addOrSubtractCash(cashAmount);
             dm.playerTable.put(player.getID(), player);
             dm.updateExistingPlayerInPlayersFile(player.getID());
             return true;

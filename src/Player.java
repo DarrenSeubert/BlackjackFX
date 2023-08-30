@@ -120,10 +120,8 @@ public class Player {
      * @param amount
      * @param dm
      */
-    public void setCash(double amount, DataManager dm) {
-        cash = dm.playerTable.get(ID).getCash() + amount;
-        dm.playerTable.put(ID, this);
-        dm.updateExistingPlayerInPlayersFile(ID);
+    public void addOrSubtractCash(double amount) {
+        cash += amount;
     }
 
     /**
