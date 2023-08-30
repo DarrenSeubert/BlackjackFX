@@ -33,7 +33,6 @@ import javafx.util.Pair;
 public class FrontEnd extends Application {
     private static BackEnd backEnd;
     private Stage mStage;
-    private String greetingString;
     
     /*
      * Each Possible Hand (After 4 Splits) at Table is Represented by a Pair<Player, Integer>.
@@ -45,7 +44,7 @@ public class FrontEnd extends Application {
      */
     private Player[] players;
     private ArrayList<ImageView> inPlayCards;
-
+    private String greetingString;
     private boolean reshuffleNeeded;
     private ImageView dealerHiddenCard;
 
@@ -54,7 +53,6 @@ public class FrontEnd extends Application {
      */
     public FrontEnd() {
         players = new Player[4];
-
         inPlayCards = new ArrayList<>();
         greetingString = "Welcome to BlackjackFX!\nEnter Number of Decks:";
         reshuffleNeeded = false;
@@ -280,7 +278,7 @@ public class FrontEnd extends Application {
             result.ifPresent(nameCashPair -> {
                 backEnd.addNewPlayerToGame(nameCashPair.getKey(), nameCashPair.getValue());
 
-                int playerIDNumber = backEnd.getDm().getLargestIDNumber();
+                int playerIDNumber = backEnd.getLargestDmIDNumber();
                 Alert successAlert = new Alert(AlertType.INFORMATION);
                 successAlert.setTitle("BlackjackFX");
                 ((Stage) successAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
@@ -308,7 +306,7 @@ public class FrontEnd extends Application {
             Button okButton = (Button) lookupAccountIDPrompt.getDialogPane().lookupButton(ButtonType.OK);
             okButton.setOnAction((okEvent) -> {
                 String lookUpName = lookupAccountIDPrompt.getEditor().getText().trim();
-                int resultID = backEnd.getDm().lookupPlayerID(lookUpName);
+                int resultID = backEnd.lookupPlayerID(lookUpName);
                 if (resultID == -1) {
                     Alert personDNEAlert = new Alert(AlertType.ERROR);
                     personDNEAlert.setTitle("BlackjackFX");
@@ -1077,7 +1075,7 @@ public class FrontEnd extends Application {
                 if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
                     // Checks what buttons should be visible and makes sure they are disabled
                     for (int i = players.length - 1; i >= 0; i--) {
-                        if (players[i] != null && !backEnd.isPlayerHandBlackjack(players[i].getHand(i, false))) {
+                        if (players[i] != null && !backEnd.isPlayerHandBlackjack(players[i], i, false)) {
                             pYesButtons[i].setVisible(true);
                             pNoButtons[i].setVisible(true);
                             pYesButtons[i].setDisable(true);
@@ -1086,16 +1084,16 @@ public class FrontEnd extends Application {
                     }
 
                     // Finds the first player without Blackjack and can afford insurance enables their buttons
-                    if (players[3] != null && !backEnd.isPlayerHandBlackjack(players[3].getHand(3, false)) && backEnd.canAffordInsurance(players[3], 3)) {
+                    if (players[3] != null && !backEnd.isPlayerHandBlackjack(players[3], 3, false) && backEnd.canAffordInsurance(players[3], 3)) {
                         pYesButtons[3].setDisable(false);
                         pNoButtons[3].setDisable(false);
-                    } else if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2].getHand(2, false)) && backEnd.canAffordInsurance(players[2], 2)) {
+                    } else if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2], 2, false) && backEnd.canAffordInsurance(players[2], 2)) {
                         pYesButtons[2].setDisable(false);
                         pNoButtons[2].setDisable(false);
-                    } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false)) && backEnd.canAffordInsurance(players[1], 1)) {
+                    } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false) && backEnd.canAffordInsurance(players[1], 1)) {
                         pYesButtons[1].setDisable(false);
                         pNoButtons[1].setDisable(false);
-                    } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+                    } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                         pYesButtons[0].setDisable(false);
                         pNoButtons[0].setDisable(false);
                     } else { // EVERYONE HAS BLACKJACK
@@ -1119,13 +1117,13 @@ public class FrontEnd extends Application {
                     if (backEnd.isDealerBlackjack()) { // Dealer has Blackjack (Showing Value 10)
                         showDealerHiddenCard(group);
                         for (int i = 0; i < players.length; i++) {
-                            if (players[i] != null && backEnd.isPlayerHandBlackjack(players[i].getHand(i, false))) {
+                            if (players[i] != null && backEnd.isPlayerHandBlackjack(players[i], i, false)) {
                                 backEnd.payPlayer(players[i], i, 2);
                             } 
                         }
                     } else { // Dealer does not have Blackjack
                         // Determine first player without Blackjack
-                        if (players[3] != null && !backEnd.isPlayerHandBlackjack(players[3].getHand(3, false))) {
+                        if (players[3] != null && !backEnd.isPlayerHandBlackjack(players[3], 3, false)) {
                             pHitButtons[3].setDisable(false);
                             pStandButtons[3].setDisable(false);
                             pSurrenderButtons[3].setDisable(false);
@@ -1135,7 +1133,7 @@ public class FrontEnd extends Application {
                             if (backEnd.canSplit(players[3], 3)) {
                                 pSplitButtons[3].setDisable(false);
                             }
-                        } else if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2].getHand(2, false))) {
+                        } else if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2], 2, false)) {
                             pHitButtons[2].setDisable(false);
                             pStandButtons[2].setDisable(false);
                             pSurrenderButtons[2].setDisable(false);
@@ -1145,7 +1143,7 @@ public class FrontEnd extends Application {
                             if (backEnd.canSplit(players[2], 2)) {
                                 pSplitButtons[2].setDisable(false);
                             }
-                        } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false))) {
+                        } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false)) {
                             pHitButtons[1].setDisable(false);
                             pStandButtons[1].setDisable(false);
                             pSurrenderButtons[1].setDisable(false);
@@ -1155,7 +1153,7 @@ public class FrontEnd extends Application {
                             if (backEnd.canSplit(players[1], 1)) {
                                 pSplitButtons[1].setDisable(false);
                             }
-                        } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false))) {
+                        } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false)) {
                             pHitButtons[0].setDisable(false);
                             pStandButtons[0].setDisable(false);
                             pSurrenderButtons[0].setDisable(false);
@@ -1208,13 +1206,13 @@ public class FrontEnd extends Application {
             pYesButtons[3].setDisable(true);
             pNoButtons[3].setDisable(true);
 
-            if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2].getHand(2, false)) && backEnd.canAffordInsurance(players[2], 2)) {
+            if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2], 2, false) && backEnd.canAffordInsurance(players[2], 2)) {
                 pYesButtons[2].setDisable(false);
                 pNoButtons[2].setDisable(false);
-            } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false)) && backEnd.canAffordInsurance(players[1], 1)) {
+            } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false) && backEnd.canAffordInsurance(players[1], 1)) {
                 pYesButtons[1].setDisable(false);
                 pNoButtons[1].setDisable(false);
-            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
@@ -1241,46 +1239,96 @@ public class FrontEnd extends Application {
             }
         });
         pYesButtons[2].setOnAction((event) -> {
+            backEnd.chargePlayer(players[2], 2, true);
+            pCashTexts[2].setText("Cash: $" + players[2].getCash());
             pYesButtons[2].setDisable(true);
             pNoButtons[2].setDisable(true);
 
-            if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false)) && backEnd.canAffordInsurance(players[1], 1)) {
+            if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false) && backEnd.canAffordInsurance(players[1], 1)) {
                 pYesButtons[1].setDisable(false);
                 pNoButtons[1].setDisable(false);
-            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
+                pYesButtons[2].setVisible(false);
+                pNoButtons[2].setVisible(false);
+
                 if (backEnd.isDealerBlackjack()) {
-                    
+                    showDealerHiddenCard(group);
+                    backEnd.payPlayer(players[2], 2, 4);
+                    pCashTexts[2].setText("Cash: $" + players[2].getCash());
+                    continueButton.setDisable(false);
+                    continueButton.setVisible(true);
                 } else {
-                    
+                    pHitButtons[2].setDisable(false);
+                    pStandButtons[2].setDisable(false);
+                    if (backEnd.canDouble(players[2], 2)) {
+                        pDoubleButtons[2].setDisable(false);
+                    }
+                    if (backEnd.canSplit(players[2], 2)) {
+                        pSplitButtons[2].setDisable(false);
+                    }
+                    pSurrenderButtons[2].setDisable(false);
                 }
             }
         });
         pYesButtons[1].setOnAction((event) -> {
+            backEnd.chargePlayer(players[1], 1, true);
+            pCashTexts[1].setText("Cash: $" + players[1].getCash());
             pYesButtons[1].setDisable(true);
             pNoButtons[1].setDisable(true);
 
-            if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
+                pYesButtons[1].setVisible(false);
+                pNoButtons[1].setVisible(false);
+
                 if (backEnd.isDealerBlackjack()) {
-                    
+                    showDealerHiddenCard(group);
+                    backEnd.payPlayer(players[1], 1, 4);
+                    pCashTexts[1].setText("Cash: $" + players[1].getCash());
+                    continueButton.setDisable(false);
+                    continueButton.setVisible(true);
                 } else {
-                    
+                    pHitButtons[1].setDisable(false);
+                    pStandButtons[1].setDisable(false);
+                    if (backEnd.canDouble(players[1], 1)) {
+                        pDoubleButtons[1].setDisable(false);
+                    }
+                    if (backEnd.canSplit(players[1], 1)) {
+                        pSplitButtons[1].setDisable(false);
+                    }
+                    pSurrenderButtons[1].setDisable(false);
                 }
             }
         });
         pYesButtons[0].setOnAction((event) -> {
+            backEnd.chargePlayer(players[0], 0, true);
+            pCashTexts[0].setText("Cash: $" + players[0].getCash());
             pYesButtons[0].setDisable(true);
             pNoButtons[0].setDisable(true);
 
+            pYesButtons[0].setVisible(false);
+            pNoButtons[0].setVisible(false);
             if (backEnd.isDealerBlackjack()) {
-                    
+                showDealerHiddenCard(group);
+                backEnd.payPlayer(players[0], 0, 4);
+                pCashTexts[0].setText("Cash: $" + players[0].getCash());
+                continueButton.setDisable(false);
+                continueButton.setVisible(true);
             } else {
-                
+                pHitButtons[0].setDisable(false);
+                pStandButtons[0].setDisable(false);
+                if (backEnd.canDouble(players[0], 0)) {
+                    pDoubleButtons[0].setDisable(false);
+                }
+                if (backEnd.canSplit(players[0], 0)) {
+                    pSplitButtons[0].setDisable(false);
+                }
+                pSurrenderButtons[0].setDisable(false);
             }
         });
 
@@ -1288,13 +1336,13 @@ public class FrontEnd extends Application {
             pYesButtons[3].setDisable(true);
             pNoButtons[3].setDisable(true);
 
-            if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2].getHand(2, false)) && backEnd.canAffordInsurance(players[2], 2)) {
+            if (players[2] != null && !backEnd.isPlayerHandBlackjack(players[2], 2, false) && backEnd.canAffordInsurance(players[2], 2)) {
                 pYesButtons[2].setDisable(false);
                 pNoButtons[2].setDisable(false);
-            } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false)) && backEnd.canAffordInsurance(players[1], 1)) {
+            } else if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false) && backEnd.canAffordInsurance(players[1], 1)) {
                 pYesButtons[1].setDisable(false);
                 pNoButtons[1].setDisable(false);
-            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
@@ -1309,10 +1357,10 @@ public class FrontEnd extends Application {
             pYesButtons[2].setDisable(true);
             pNoButtons[2].setDisable(true);
             
-            if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1].getHand(1, false)) && backEnd.canAffordInsurance(players[1], 1)) {
+            if (players[1] != null && !backEnd.isPlayerHandBlackjack(players[1], 1, false) && backEnd.canAffordInsurance(players[1], 1)) {
                 pYesButtons[1].setDisable(false);
                 pNoButtons[1].setDisable(false);
-            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {
@@ -1327,7 +1375,7 @@ public class FrontEnd extends Application {
             pYesButtons[1].setDisable(true);
             pNoButtons[1].setDisable(true);
 
-            if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0].getHand(0, false)) && backEnd.canAffordInsurance(players[0], 0)) {
+            if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                 pYesButtons[0].setDisable(false);
                 pNoButtons[0].setDisable(false);
             } else {

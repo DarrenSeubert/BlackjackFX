@@ -51,8 +51,9 @@ public class Decks {
         // FIXME For Testing, Remove
         cardList.add(0, new Card(Card.Suit.Diamond, Card.Value.Eight));
         cardList.add(1, new Card(Card.Suit.Club, Card.Value.Ace));
-        cardList.add(2, new Card(Card.Suit.Diamond, Card.Value.Ten));
-        cardList.add(3, new Card(Card.Suit.Club, Card.Value.Nine));
+        cardList.add(2, new Card(Card.Suit.Diamond, Card.Value.Ace));
+        cardList.add(3, new Card(Card.Suit.Club, Card.Value.Ace));
+        cardList.add(4, new Card(Card.Suit.Club, Card.Value.Ace));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ten));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Nine));
         // cardList.add(0, new Card(Card.Suit.Club, Card.Value.Ace));

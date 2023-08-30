@@ -28,16 +28,7 @@ public class BackEnd {
     public Decks getDecks() {
         return decks;
     }
-
-    /**
-     * Getter method for the Data Manager
-     * 
-     * @return The Data Manager
-     */
-    public DataManager getDm() {
-        return dm;
-    }
-
+    
     /**
      * A method that returns the Player
      * 
@@ -88,6 +79,25 @@ public class BackEnd {
     /**
      * 
      * 
+     * @param lookupName
+     * @return
+     */
+    public int lookupPlayerID(String lookupName) {
+        return dm.lookupPlayerID(lookupName);
+    }
+
+    /**
+     * 
+     * 
+     * @return
+     */
+    public int getLargestDmIDNumber() {
+        return dm.getLargestIDNumber();
+    }
+
+    /**
+     * 
+     * 
      * @param playerID
      * @param cashAmount
      * @return
@@ -117,9 +127,11 @@ public class BackEnd {
     }
 
     /**
+     *
      * 
-     * 
-     * @param hand Hand of player to hit
+     * @param player
+     * @param playerIndex
+     * @param isSplitHand
      * @return True if reshuffle is needed, else false
      */
     public boolean hitPlayerHand(Player player, int playerIndex, boolean isSplitHand) {
@@ -157,11 +169,13 @@ public class BackEnd {
     /**
      * 
      * 
-     * @param playerID
+     * @param player
      * @param handIndex
+     * @param isSplitHand
      * @return True is hand is a bust, else false
      */
-    public boolean isPlayerHandBust(Hand hand) {
+    public boolean isPlayerHandBust(Player player, int handIndex, boolean isSplitHand) {
+        Hand hand = player.getHand(handIndex, isSplitHand);
          if (hand.getPossibleHandValues().size() == 0) {
             return true;
         } else {
@@ -217,10 +231,13 @@ public class BackEnd {
     /**
      * 
      * 
-     * @param playerID
+     * @param player
+     * @param playerIndex
+     * @param isSplitHand
      * @return True if given player has Blackjack, else false
      */
-    public boolean isPlayerHandBlackjack(Hand hand) {
+    public boolean isPlayerHandBlackjack(Player player, int playerIndex, boolean isSplitHand) {
+        Hand hand = player.getHand(playerIndex, isSplitHand);
         if (hand.getCardList().size() != 2) {
             return false;
         } else {
@@ -238,8 +255,7 @@ public class BackEnd {
      * 
      * 
      * @param playerID
-     * @param wager
-     * @param handIndex
+     * @param playerIndex
      * @return
      */
     public boolean canSplit(Player player, int playerIndex) {
@@ -250,8 +266,8 @@ public class BackEnd {
     /**
      * 
      * 
-     * @param playerID
-     * @param wager
+     * @param player
+     * @param playerIndex
      * @return
      */
     public boolean canDouble(Player player, int playerIndex) {
@@ -261,8 +277,8 @@ public class BackEnd {
     /**
      * 
      * 
-     * @param playerID
-     * @param originalWager
+     * @param player
+     * @param playerIndex
      * @return
      */
     public boolean canAffordInsurance(Player player, int playerIndex) {
@@ -274,6 +290,7 @@ public class BackEnd {
      * 
      * @param player
      * @param playerIndex
+     * @param insurance
      * @return
      */
     public boolean chargePlayer(Player player, int playerIndex, boolean insurance) {
@@ -294,8 +311,8 @@ public class BackEnd {
 
     /** Method that pays a player based on the option passed in
      * 
-     * @param playerID The ID of the player to edit
-     * @param wager Original wager amount by the player
+     * @param player The player to be paid
+     * @param playerIndex The index of the player
      * @param option Option that determines how much the player is paid <p>
      *               1: Win <p>
      *               2: Push <p>
