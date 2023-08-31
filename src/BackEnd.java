@@ -160,6 +160,7 @@ public class BackEnd {
             decks.setCutCardInDeck(false);
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0));
+            reshuffleNeeded = true;
             return true;
         } else {
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
@@ -178,6 +179,7 @@ public class BackEnd {
             decks.getUsedCardList().add(decks.getCardList().remove(0));
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0));
+            reshuffleNeeded = true;
             return true;
         } else {
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
