@@ -996,7 +996,7 @@ public class FrontEnd extends Application {
 
                 // Deal Starting Cards
                 if (players[3] != null) {
-                    if (backEnd.hitPlayerHand(players[3], 3, false)) { // TODO REWORK Shuffle Needed. Make it so only exists in backEnd and this check isn't needed
+                    if (backEnd.hitPlayerHand(players[3], 3, false)) { // TODO REWORK Shuffle Needed. Get rid of if statement check
                         displayCutCard(group);
                     }
                     inPlayCards.add(displayCard(players[3], 3, false, group));
