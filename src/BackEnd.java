@@ -152,7 +152,7 @@ public class BackEnd {
      * @param player
      * @param playerIndex
      * @param isSplitHand
-     * @return True if reshuffle is needed, else false
+     * @return True if reshuffle is needed, else false // FIXME Change to False if bust
      */
     public boolean hitPlayerHand(Player player, int playerIndex, boolean isSplitHand) {
         if (decks.getCardList().get(0).getSuit().equals(Card.Suit.Cut)) { // Checks if cut card is to be dealt

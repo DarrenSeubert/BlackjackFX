@@ -315,10 +315,10 @@ public class FrontEnd extends Application {
                     Alert personIDAlert = new Alert(AlertType.INFORMATION);
                     personIDAlert.setTitle("BlackjackFX");
                     ((Stage) personIDAlert.getDialogPane().getScene().getWindow()).getIcons().add(new Image(Constants.blackjackLogoFilePath));
-                    personIDAlert.setHeaderText("The Following Accounts were Found:");
+                    personIDAlert.setHeaderText("The Following ID Numbers were Found:");
                     String lookupIDOutput = "";
                     for (int i = 0; i < resultIDs.length; i++) {
-                        lookupIDOutput += backEnd.getPlayer(resultIDs[i]).getName() + ": " + resultIDs[i] + "\n";
+                        lookupIDOutput += resultIDs[i] + ": " + backEnd.getPlayer(resultIDs[i]).getName() + "\n";
                     }
                     personIDAlert.setContentText(lookupIDOutput);
                     personIDAlert.show();
@@ -1068,7 +1068,7 @@ public class FrontEnd extends Application {
                 if (backEnd.insuranceNeeded()) { // Insurance (Dealer showing an Ace)
                     // Checks what buttons should be visible and makes sure they are disabled
                     for (int i = players.length - 1; i >= 0; i--) {
-                        if (players[i] != null && !backEnd.isPlayerHandBlackjack(players[i], i, false)) {
+                        if (players[i] != null && !backEnd.isPlayerHandBlackjack(players[i], i, false) && backEnd.canAffordInsurance(players[i], i)) {
                             pYesButtons[i].setVisible(true);
                             pNoButtons[i].setVisible(true);
                             pYesButtons[i].setDisable(true);
@@ -1089,7 +1089,7 @@ public class FrontEnd extends Application {
                     } else if (players[0] != null && !backEnd.isPlayerHandBlackjack(players[0], 0, false) && backEnd.canAffordInsurance(players[0], 0)) {
                         pYesButtons[0].setDisable(false);
                         pNoButtons[0].setDisable(false);
-                    } else { // EVERYONE HAS BLACKJACK
+                    } else { // EVERYONE HAS BLACKJACK OR FIXME CAN'T AFFORD IT 
                         showDealerHiddenCard(group);
                         if (backEnd.isDealerBlackjack()) { // TODO FIGURE OUT HOW ROUND IS TERMINATED
                             for (int i = players.length - 1; i >= 0; i--) {
@@ -1219,6 +1219,7 @@ public class FrontEnd extends Application {
                     continueButton.setDisable(false);
                     continueButton.setVisible(true);
                 } else {
+                    // FIXME: Buttons not appearing correctly
                     pHitButtons[3].setDisable(false);
                     pStandButtons[3].setDisable(false);
                     if (backEnd.canDouble(players[3], 3)) {
@@ -1254,6 +1255,7 @@ public class FrontEnd extends Application {
                     continueButton.setDisable(false);
                     continueButton.setVisible(true);
                 } else {
+                    // FIXME: Buttons not appearing correctly
                     pHitButtons[2].setDisable(false);
                     pStandButtons[2].setDisable(false);
                     if (backEnd.canDouble(players[2], 2)) {
@@ -1286,6 +1288,7 @@ public class FrontEnd extends Application {
                     continueButton.setDisable(false);
                     continueButton.setVisible(true);
                 } else {
+                    // FIXME: Buttons not appearing correctly
                     pHitButtons[1].setDisable(false);
                     pStandButtons[1].setDisable(false);
                     if (backEnd.canDouble(players[1], 1)) {
@@ -1313,6 +1316,7 @@ public class FrontEnd extends Application {
                 continueButton.setDisable(false);
                 continueButton.setVisible(true);
             } else {
+                // FIXME: Buttons not appearing correctly
                 pHitButtons[0].setDisable(false);
                 pStandButtons[0].setDisable(false);
                 if (backEnd.canDouble(players[0], 0)) {
