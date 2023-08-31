@@ -9,7 +9,7 @@ public class BackEnd {
     private Dealer dealer;
     private Decks decks;
     private DataManager dm;
-    private boolean reshuffleNeeded;
+    private boolean shuffleNeeded;
 
     /**
      * Constructor for the BackEnd
@@ -19,7 +19,7 @@ public class BackEnd {
     public BackEnd(DataManager dataManager) {
         dealer = new Dealer();
         this.dm = dataManager;
-        reshuffleNeeded = false;
+        shuffleNeeded = false;
     }
 
     /**
@@ -64,8 +64,8 @@ public class BackEnd {
      * 
      * @return
      */
-    public boolean isReshuffleNeeded() {
-        return reshuffleNeeded;
+    public boolean isShuffleNeeded() {
+        return shuffleNeeded;
     }
 
     /**
@@ -73,8 +73,8 @@ public class BackEnd {
      * 
      * @param value
      */
-    public void setReshuffleNeeded(boolean value) {
-        reshuffleNeeded = value;
+    public void setShuffleNeeded(boolean value) {
+        shuffleNeeded = value;
     }
 
     /**
@@ -160,7 +160,7 @@ public class BackEnd {
             decks.setCutCardInDeck(false);
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0));
-            reshuffleNeeded = true;
+            shuffleNeeded = true;
             return true;
         } else {
             player.addCard(playerIndex, isSplitHand, decks.getCardList().get(0));
@@ -179,7 +179,7 @@ public class BackEnd {
             decks.getUsedCardList().add(decks.getCardList().remove(0));
             dealer.getHand().getCardList().add(decks.getCardList().get(0));
             decks.getUsedCardList().add(decks.getCardList().remove(0));
-            reshuffleNeeded = true;
+            shuffleNeeded = true;
             return true;
         } else {
             dealer.getHand().getCardList().add(decks.getCardList().get(0));

@@ -1473,8 +1473,8 @@ public class FrontEnd extends Application {
             }
         }
 
-        if (backEnd.isReshuffleNeeded()) {
-            backEnd.setReshuffleNeeded(false);
+        if (backEnd.isShuffleNeeded()) {
+            backEnd.setShuffleNeeded(false);
         }
     }
 
