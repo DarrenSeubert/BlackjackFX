@@ -19,7 +19,7 @@ public class DataManager {
     private int largestIDNumber;
 
     /**
-     * 
+     * Constructor for the Data Manager
      */
     public DataManager() {
         playerTable = new Hashtable<Integer, Player>();
@@ -166,7 +166,7 @@ public class DataManager {
     /**
      * A method that writes a new player into the players file
      * 
-     * @param player
+     * @param player The player to write to file
      */
     public void writeNewPlayerToFile(Player player) {
         int ID = player.getID();
@@ -219,9 +219,9 @@ public class DataManager {
     }
 
     /**
+     * A method that looks up player IDs given the name to search
      * 
-     * 
-     * @param nameToSearch
+     * @param nameToSearch The name to search
      * @return An int array of all the ID numbers that have that name
      */
     public int[] lookupPlayerID(String nameToSearch) {

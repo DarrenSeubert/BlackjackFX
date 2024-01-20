@@ -11,7 +11,6 @@ public class Dealer {
      */
     public Dealer() {
         hand = new Hand();
-
     }
 
     /**
